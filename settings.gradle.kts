@@ -34,4 +34,14 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include("plugin-coverage")
+rootDir.resolve("module").listFiles()?.forEach { file ->
+  if (file.isDirectory && file?.list { _, name -> name == "build.gradle.kts" }
+      ?.isNotEmpty() == true
+  ) {
+    val name = file.name
+    include(":$name")
+    project(":$name").projectDir = file("module/$name")
+  } else {
+    throw Exception("Invalid module directory: $file")
+  }
+}

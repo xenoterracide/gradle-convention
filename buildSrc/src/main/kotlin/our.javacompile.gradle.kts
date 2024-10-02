@@ -6,7 +6,6 @@ import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
   `java-library`
-  id("our.bom")
   id("net.ltgt.errorprone")
 }
 
@@ -21,8 +20,12 @@ java {
   withJavadocJar()
   withSourcesJar()
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(21))
+    languageVersion.set(JavaLanguageVersion.of(17))
   }
+}
+
+tasks.compileJava {
+  options.release.set(11)
 }
 
 tasks.javadoc {

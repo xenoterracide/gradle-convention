@@ -7,9 +7,7 @@ plugins {
 }
 
 val copyright = "// © Copyright \$YEAR Caleb Cushing\n"
-val javaLicense =
-  "// SPDX-License-Identifier: AGPL-3.0-or-later WITH Universal-FOSS-exception-1.0 AND CC-BY-4.0" +
-    " OR CC-BY-NC-4.0\n\n"
+val javaLicense = "// SPDX-License-Identifier: Apache-2.0\n\n"
 val gradleLicense = "// SPDX-License-Identifier: MIT\n\n"
 
 spotless {

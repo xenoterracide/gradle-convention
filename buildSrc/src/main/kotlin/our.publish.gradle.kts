@@ -4,12 +4,20 @@
 plugins {
   `maven-publish`
   id("com.xenoterracide.gradle.semver")
+  id("com.gradle.plugin-publish")
 }
 
-val repo = "spring-app-commons"
+group = rootProject.group
+
+val repo = rootProject.name
 val username = "xenoterracide"
 val githubUrl = "https://github.com"
 val repoShort = "$username/$repo"
+
+gradlePlugin {
+  website.set("$githubUrl/$repoShort")
+  vcsUrl.set("${website.get()}.git")
+}
 
 publishing {
   publications {
@@ -17,15 +25,20 @@ publishing {
       from(components["java"])
     }
     withType<MavenPublication>().configureEach {
+      artifactId = project.name
+      groupId = rootProject.group.toString()
+      version = semver.gitDescribed.version
+
+      logger.quiet("publishing {}:{}:{}", groupId, artifactId, version)
+
       versionMapping {
         allVariants {
           fromResolutionResult()
         }
       }
+
       pom {
-        artifactId = project.name
-        groupId = rootProject.group.toString()
-        version = semver.gitDescribed.version
+
         description = project.description
         inceptionYear = "2024"
         url = "$githubUrl/$repoShort"
@@ -81,16 +94,7 @@ publishing {
     maven {
       name = "gh"
       url = uri("https://maven.pkg.github.com/$repoShort")
-      credentials {
-        // use properties because gradles credentials errors if missing
-        providers.gradleProperty("ghUsername").let { username = it.orNull }
-        providers.gradleProperty("ghPassword").let { password = it.orNull }
-        // avoid congiguration cache missing on credentials
-        if (username == null || password == null) {
-          username = System.getenv("GITHUB_ACTOR")
-          password = System.getenv("GITHUB_TOKEN")
-        }
-      }
+      credentials(PasswordCredentials::class)
     }
   }
 }

@@ -15,4 +15,5 @@ dependencies {
   implementation(libs.plugin.spotbugs)
   implementation(libs.plugin.errorprone)
   implementation(libs.plugin.semver)
+  implementation(libs.plugin.gradle.plugin.publish)
 }
