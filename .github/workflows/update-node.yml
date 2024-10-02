@@ -1,0 +1,44 @@
+name: Update Node
+on:
+  schedule:
+    #         ┌───────────── minute (0 - 59)
+    #         │ ┌───────────── hour (0 - 23)
+    #         │ │ ┌───────────── day of the month (1 - 31)
+    #         │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+    #         │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #         * * * * *
+    - cron: "0 4 * * 0" # 4am UTC every Sunday
+  push:
+    branches:
+      - build/auto-update
+jobs:
+  update-node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+      - uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - run: npm install
+      - run: npm update
+      - uses: peter-evans/create-pull-request@v7
+        id: create_pr
+        with:
+          title: "chore(deps): update node"
+          branch: topic/update-node
+          token: ${{ secrets.GH_MERGE_PAT }}
+      - run: gh pr merge --auto --squash ${{ steps.create_pr.outputs.pull-request-number }}
+        if: ${{ steps.create_pr.outputs.pull-request-number != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_MERGE_PAT }}

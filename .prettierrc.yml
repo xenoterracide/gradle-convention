@@ -1,0 +1,8 @@
+printWidth: 120
+xmlWhitespaceSensitivity: ignore
+plugins:
+  - "@prettier/plugin-xml"
+  - prettier-plugin-properties
+  - prettier-plugin-java
+  - prettier-plugin-toml
+  - prettier-plugin-sh

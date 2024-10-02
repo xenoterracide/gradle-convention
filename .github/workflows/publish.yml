@@ -1,0 +1,31 @@
+name: Publish
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+    branches:
+      - main
+jobs:
+  publish:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+      - run: ./gradlew publish --build-cache --scan
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ secrets.GITHUB_ACTOR }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ secrets.GITHUB_TOKEN }}
