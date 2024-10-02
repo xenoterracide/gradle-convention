@@ -1,0 +1,6 @@
+.gradle/
+gradlew*
+gradle/wrapper/
+node_modules/
+build/
+.idea/
