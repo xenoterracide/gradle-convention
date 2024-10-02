@@ -151,7 +151,7 @@ jakarta-transaction = [
 ]
 
 [plugins]
-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "1.+" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version = "2.+" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version = "1.+" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.+" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring" }
