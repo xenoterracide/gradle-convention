@@ -1,16 +1,22 @@
 // © Copyright 2024 Caleb Cushing
 // SPDX-License-Identifier: MIT
 
+import org.semver4j.Semver
+
 buildscript { dependencyLocking { lockAllConfigurations() } }
 
 plugins {
   our.spotless
   alias(libs.plugins.dependency.analysis)
+  alias(libs.plugins.semver)
 }
 
 dependencyLocking { lockAllConfigurations() }
 
 group = "com.xenoterracide.gradle.convention"
+version = providers.environmentVariable("CI")
+  .map { semver.gitDescribed }
+  .orElse(Semver("0.0.0")).get().toString()
 
 tasks.dependencies {
   dependsOn(subprojects.map { "${it.path}:dependencies" })
