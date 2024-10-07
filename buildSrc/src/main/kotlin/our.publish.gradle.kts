@@ -3,11 +3,11 @@
 
 plugins {
   `maven-publish`
-  id("com.xenoterracide.gradle.semver")
   id("com.gradle.plugin-publish")
 }
 
 group = rootProject.group
+version = rootProject.version
 
 val repo = rootProject.name
 val username = "xenoterracide"
@@ -26,8 +26,8 @@ publishing {
     }
     withType<MavenPublication>().configureEach {
       artifactId = project.name
-      groupId = rootProject.group.toString()
-      version = semver.gitDescribed.version
+      groupId = project.group.toString()
+      version = project.version.toString()
 
       logger.quiet("publishing {}:{}:{}", groupId, artifactId, version)
 
@@ -78,7 +78,7 @@ publishing {
           developer {
             id = username
             name = "Caleb Cushing"
-            email = "xenoterracide@gmail.com"
+            email = "caleb.cushing@gmail.com"
           }
         }
         scm {

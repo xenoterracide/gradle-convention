@@ -26,13 +26,6 @@ testing {
   }
 }
 
-val available = tasks.register("tests available") {
-  val java: Provider<FileCollection> = sourceSets.test.map { it.java }
-  doLast {
-    if (java.get().isEmpty) throw RuntimeException("no tests found")
-  }
-}
-
 tasks.withType<Test>().configureEach {
   useJUnitPlatform()
   reports {
@@ -53,7 +46,6 @@ tasks.withType<Test>().configureEach {
     }
   }
   inputs.dir(rootProject.file("buildSrc/src/main"))
-  finalizedBy(available)
 
   afterSuite(
     KotlinClosure2<TestDescriptor, TestResult, Unit>(

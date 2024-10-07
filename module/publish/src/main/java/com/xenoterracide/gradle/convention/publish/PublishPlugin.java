@@ -50,7 +50,7 @@ public class PublishPlugin implements Plugin<Project> {
         pub.setVersion(project.getVersion().toString());
         pub.suppressAllPomMetadataWarnings();
         pub.versionMapping(strategy -> strategy.allVariants(VariantVersionMappingStrategy::fromResolutionResult));
-        log.quiet("publishing {}:{}:{}", pub.getGroupId(), pub.getArtifactId(), pub.getVersion());
+        log.quiet("publishing {} {}:{}:{}", pub.getName(), pub.getGroupId(), pub.getArtifactId(), pub.getVersion());
 
         pub.pom(pom -> {
           pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
@@ -70,7 +70,7 @@ public class PublishPlugin implements Plugin<Project> {
           pom.developers(developers -> {
             developers.developer(developer -> {
               developer.getName().set("Caleb Cushing");
-              developer.getEmail().set("xenoterracide@gmail.com");
+              developer.getEmail().set("caleb.cushing@gmail.com");
               developer.getId().set("xenoterracide");
             });
           });
