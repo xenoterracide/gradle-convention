@@ -78,7 +78,7 @@ publishing {
           developer {
             id = username
             name = "Caleb Cushing"
-            email = "xenoterracide@gmail.com"
+            email = "caleb.cushing@gmail.com"
           }
         }
         scm {
