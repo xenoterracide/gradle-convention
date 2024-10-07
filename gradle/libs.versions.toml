@@ -69,6 +69,7 @@ log4j-jul = { module = "org.apache.logging.log4j:log4j-jul" }
 mockito = { module = "org.mockito:mockito-core" }
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
+plugin-convention-publish = "com.xenoterracide.gradle.convention:publish:0.+"
 plugin-semver = "com.xenoterracide:gradle-semver:0.+"
 plugin-spotbugs = "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.+"
 plugin-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.+"

@@ -22,6 +22,13 @@ dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
 
   repositories {
+    maven("https://maven.pkg.github.com/xenoterracide/gradle-convention") {
+      name = "gh"
+      mavenContent {
+        includeGroup("com.xenoterracide.gradle.convention")
+      }
+      credentials(PasswordCredentials::class)
+    }
     gradlePluginPortal() // this should only be necessary in buildSrc/settings.gradle.kts
   }
 }
