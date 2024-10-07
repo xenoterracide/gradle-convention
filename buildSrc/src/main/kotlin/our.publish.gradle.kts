@@ -21,15 +21,8 @@ gradlePlugin {
 
 publishing {
   publications {
-    register<MavenPublication>("maven") {
-      from(components["java"])
-    }
     withType<MavenPublication>().configureEach {
-      artifactId = project.name
-      groupId = project.group.toString()
-      version = project.version.toString()
-
-      logger.quiet("publishing {}:{}:{}", groupId, artifactId, version)
+      logger.quiet("publishing {} {}:{}:{}", name, groupId, artifactId, version)
 
       versionMapping {
         allVariants {
@@ -38,7 +31,6 @@ publishing {
       }
 
       pom {
-
         description = project.description
         inceptionYear = "2024"
         url = "$githubUrl/$repoShort"
