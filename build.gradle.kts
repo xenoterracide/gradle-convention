@@ -27,6 +27,7 @@ dependencyAnalysis {
         severity("fail")
       }
       onUnusedDependencies {
+        exclude(libs.junit.api)
         exclude(libs.junit.parameters)
         exclude(libs.assertj)
         exclude(libs.spring.test)
