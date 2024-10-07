@@ -14,7 +14,7 @@ plugins {
 dependencyLocking { lockAllConfigurations() }
 
 group = "com.xenoterracide.gradle.convention"
-version = providers.environmentVariable("CI")
+version = providers.environmentVariable("IS_PUBLISHING")
   .map { semver.gitDescribed }
   .orElse(Semver("0.0.0")).get().toString()
 
