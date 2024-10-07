@@ -17,7 +17,7 @@ dependencies {
 gradlePlugin {
   plugins {
     create("pub") {
-      id = "${project.group}.${project.name}"
+      id = "${rootProject.group}.${project.name}"
       displayName = "My conventions for coverage"
       tags = setOf("coverage", "jacoco", "convention")
       implementationClass = "$id.CoveragePlugin"

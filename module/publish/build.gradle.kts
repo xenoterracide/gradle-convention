@@ -17,7 +17,7 @@ dependencies {
 gradlePlugin {
   plugins {
     create("pub") {
-      id = "${project.group}.${project.name}"
+      id = "${rootProject.group}.${project.name}"
       displayName = "My conventions for publishing"
       tags = setOf("publish", "convention")
       implementationClass = "$id.PublishPlugin"
