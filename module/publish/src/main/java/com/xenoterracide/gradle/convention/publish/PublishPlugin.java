@@ -26,7 +26,6 @@ public class PublishPlugin implements Plugin<Project> {
     project.setVersion(rootProject.getVersion());
 
     project.getPlugins().apply(MavenPublishPlugin.class);
-    var providers = project.getProviders();
 
     var publishing = project.getExtensions().getByType(PublishingExtension.class);
     publishing.repositories(pubRepo -> {
