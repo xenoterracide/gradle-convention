@@ -22,7 +22,7 @@ gradlePlugin {
 publishing {
   publications {
     withType<MavenPublication>().configureEach {
-      logger.quiet("publishing {} {}:{}:{}", name, groupId, artifactId, version)
+      logger.quiet("publication {} {}:{}:{}", name, groupId, artifactId, version)
 
       versionMapping {
         allVariants {

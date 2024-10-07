@@ -16,11 +16,12 @@ dependencies {
 
 gradlePlugin {
   plugins {
-    create("pub") {
+    register("plugin") {
       id = "${rootProject.group}.${project.name}"
       displayName = "My conventions for publishing"
       tags = setOf("publish", "convention")
       implementationClass = "$id.PublishPlugin"
+      logger.quiet("publication {} {}:{}", name, id, version)
     }
   }
 }
