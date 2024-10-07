@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 plugins {
-  `maven-publish`
   id("com.gradle.plugin-publish")
+  // id("com.xenoterracide.gradle.convention.publish")
 }
 
 group = rootProject.group
