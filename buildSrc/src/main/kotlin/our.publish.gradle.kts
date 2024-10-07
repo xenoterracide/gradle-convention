@@ -21,9 +21,6 @@ gradlePlugin {
 
 publishing {
   publications {
-    register<MavenPublication>("maven") {
-      from(components["java"])
-    }
     withType<MavenPublication>().configureEach {
       artifactId = project.name
       groupId = project.group.toString()
