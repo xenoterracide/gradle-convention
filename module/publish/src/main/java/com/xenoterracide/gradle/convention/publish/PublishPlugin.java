@@ -36,7 +36,6 @@ public class PublishPlugin implements Plugin<Project> {
       });
     });
     var publications = publishing.getPublications();
-    var providers = project.getProviders();
 
     var log = project.getLogger();
     publications
@@ -68,9 +67,9 @@ public class PublishPlugin implements Plugin<Project> {
             });
           });
           pom.scm(scm -> {
-            scm.getConnection().set(providers.provider(() -> repo.cloneUrl().toString()));
-            scm.getDeveloperConnection().set(providers.provider(() -> "scm:git:" + repo.cloneUrl().toString()));
-            scm.getUrl().set(providers.provider(() -> repo.websiteUrl().toString()));
+            scm.getConnection().set(repo.cloneUrl().map(Object::toString));
+            scm.getDeveloperConnection().set(repo.cloneUrl().map(url -> "scm:git:" + url));
+            scm.getUrl().set(repo.websiteUrl().map(Object::toString));
           });
         });
       });
