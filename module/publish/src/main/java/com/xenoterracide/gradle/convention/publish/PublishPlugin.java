@@ -7,7 +7,6 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
-import org.gradle.api.publish.VariantVersionMappingStrategy;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.jspecify.annotations.NonNull;
@@ -24,6 +23,7 @@ public class PublishPlugin implements Plugin<Project> {
 
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
+    project.setVersion(rootProject.getVersion());
 
     project.getPlugins().apply(MavenPublishPlugin.class);
 
@@ -37,19 +37,11 @@ public class PublishPlugin implements Plugin<Project> {
     });
     var publications = publishing.getPublications();
 
-    publications
-      .register("maven", MavenPublication.class)
-      .configure(pub -> pub.from(project.getComponents().getByName("java")));
-
     var log = project.getLogger();
     publications
       .withType(MavenPublication.class)
       .configureEach(pub -> {
-        pub.setGroupId(project.getGroup().toString());
-        pub.setArtifactId(project.getName());
-        pub.setVersion(project.getVersion().toString());
         pub.suppressAllPomMetadataWarnings();
-        pub.versionMapping(strategy -> strategy.allVariants(VariantVersionMappingStrategy::fromResolutionResult));
         log.quiet("publishing {} {}:{}:{}", pub.getName(), pub.getGroupId(), pub.getArtifactId(), pub.getVersion());
 
         pub.pom(pom -> {
