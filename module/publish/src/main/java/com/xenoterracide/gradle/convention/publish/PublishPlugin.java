@@ -70,7 +70,7 @@ public class PublishPlugin implements Plugin<Project> {
           pom.developers(developers -> {
             developers.developer(developer -> {
               developer.getName().set("Caleb Cushing");
-              developer.getEmail().set("xenoterracide@gmail.com");
+              developer.getEmail().set("caleb.cushing@gmail.com");
               developer.getId().set("xenoterracide");
             });
           });
