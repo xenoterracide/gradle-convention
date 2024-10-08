@@ -25,7 +25,3 @@ gradlePlugin {
     }
   }
 }
-
-tasks.withType<Test>().configureEach {
-  enabled = false
-}
