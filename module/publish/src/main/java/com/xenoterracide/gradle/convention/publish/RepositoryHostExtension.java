@@ -5,7 +5,6 @@ package com.xenoterracide.gradle.convention.publish;
 
 import java.net.URI;
 import org.gradle.api.provider.Property;
-import org.gradle.api.provider.Provider;
 
 /**
  * Extension for configuring information regarding where your repository lives.
@@ -40,17 +39,10 @@ public interface RepositoryHostExtension {
    */
   Property<String> getExtension();
 
-  default Provider<URI> cloneUrl() {
-    return this.websiteUrl().zip(this.getExtension(), (a, b) -> a.resolve("." + b));
-  }
-
-  default Provider<URI> websiteUrl() {
-    return this.getHost().zip(this.getNamespace(), (a, b) -> a.resolve(b)).zip(this.getName(), (a, b) -> a.resolve(b));
-  }
-
-  default Provider<URI> packageUrl() {
-    var ghPackages = URI.create("https://maven.pkg.github.com");
-
-    return this.getNamespace().zip(this.getName(), (a, b) -> ghPackages.resolve(a).resolve(b));
-  }
+  /**
+   * Where the jars are uploaded to, for example {@code https://maven.pkg.github.com}
+   *
+   * @return jar repository host
+   */
+  Property<URI> getDevelopmentPackageHost();
 }

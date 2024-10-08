@@ -18,8 +18,11 @@ public class PublishPlugin implements Plugin<Project> {
 
   @Override
   public void apply(@NonNull Project project) {
-    var repo = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
-    var legal = project.getExtensions().create("publicationLegal", PublicationLegal.class);
+    var repo = new RepositoryHostResolver(
+      project.getExtensions().create("repositoryHost", RepositoryHostExtension.class),
+      project
+    );
+    var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
 
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
@@ -28,13 +31,6 @@ public class PublishPlugin implements Plugin<Project> {
     project.getPlugins().apply(MavenPublishPlugin.class);
 
     var publishing = project.getExtensions().getByType(PublishingExtension.class);
-    publishing.repositories(pubRepo -> {
-      pubRepo.maven(maven -> {
-        maven.setName("gh");
-        maven.setUrl(repo.packageUrl());
-        maven.credentials(PasswordCredentials.class);
-      });
-    });
     var publications = publishing.getPublications();
 
     var log = project.getLogger();
@@ -42,7 +38,7 @@ public class PublishPlugin implements Plugin<Project> {
       .withType(MavenPublication.class)
       .configureEach(pub -> {
         pub.suppressAllPomMetadataWarnings();
-        log.quiet("publishing {} {}:{}:{}", pub.getName(), pub.getGroupId(), pub.getArtifactId(), pub.getVersion());
+        log.quiet("publication {} {}:{}:{}", pub.getName(), pub.getGroupId(), pub.getArtifactId(), pub.getVersion());
 
         pub.pom(pom -> {
           pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
@@ -54,7 +50,7 @@ public class PublishPlugin implements Plugin<Project> {
                 licenses.license(pl -> {
                   pl.getName().set(license);
                   pl.getUrl().set("https://spdx.org/licenses/" + license + ".html");
-                  pl.getComments().set("See README.md for more information.");
+                  pl.getComments().set("See git repo README.md for more information.");
                   pl.getDistribution().set("repo");
                 })
               );
@@ -73,5 +69,12 @@ public class PublishPlugin implements Plugin<Project> {
           });
         });
       });
+    publishing.repositories(pubRepo -> {
+      pubRepo.maven(maven -> {
+        maven.setName("gh");
+        maven.setUrl(repo.packageUrl());
+        maven.credentials(PasswordCredentials.class);
+      });
+    });
   }
 }

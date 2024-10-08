@@ -6,7 +6,7 @@ package com.xenoterracide.gradle.convention.publish;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.SetProperty;
 
-public interface PublicationLegal {
+public interface PublicationLegalExtension {
   Property<Number> getInceptionYear();
 
   SetProperty<String> getSpdxLicenseIdentifiers();
