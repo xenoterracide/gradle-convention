@@ -9,5 +9,5 @@ plugins {
   id("our.checkstyle")
   id("our.spotbugs")
   id("our.spotless")
-  id("our.publish")
+  id("our.convention")
 }

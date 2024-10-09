@@ -8,7 +8,7 @@ plugins {
   our.javacompile
   our.javatest
   our.spotless
-  our.publish
+  our.convention
 }
 
 dependencies {
