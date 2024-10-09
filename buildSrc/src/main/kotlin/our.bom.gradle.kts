@@ -1,8 +1,6 @@
 // © Copyright 2023-2024 Caleb Cushing
 // SPDX-License-Identifier: MIT
 
-import org.gradle.accessors.dm.LibrariesForLibs
-
 plugins {
   `java-library`
 }
@@ -10,8 +8,6 @@ plugins {
 dependencyLocking {
   lockAllConfigurations()
 }
-
-val libs = the<LibrariesForLibs>()
 
 configurations.configureEach {
   exclude(group = "org.slf4j", module = "slf4j-nop")

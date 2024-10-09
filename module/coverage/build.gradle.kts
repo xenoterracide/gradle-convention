@@ -8,10 +8,11 @@ plugins {
   our.javacompile
   our.javatest
   our.spotless
-  our.publish
+  our.convention
 }
 
 dependencies {
+  testImplementation(libs.commons.io)
 }
 
 gradlePlugin {
@@ -23,8 +24,4 @@ gradlePlugin {
       implementationClass = "$id.CoveragePlugin"
     }
   }
-}
-
-tasks.withType<Test>().configureEach {
-  enabled = false
 }
