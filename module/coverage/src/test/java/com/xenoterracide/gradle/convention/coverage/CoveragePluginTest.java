@@ -6,7 +6,6 @@ package com.xenoterracide.gradle.convention.coverage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import org.apache.commons.io.file.PathUtils;
 import org.gradle.testkit.runner.GradleRunner;
@@ -27,11 +26,11 @@ public class CoveragePluginTest {
   @SuppressWarnings("NullAway")
   public void setupRunner() throws IOException {
     var project = "coverage-integration-test";
-    Files.writeString(testProjectDir.resolve("settings.gradle"), "rootProject.name = '%s'".formatted(project));
     var pathToCoveredProject = PathUtils.current()
       .toAbsolutePath()
       .getParent()
       .getParent()
+      .resolve("integration-test")
       .resolve(project)
       .toAbsolutePath();
     log.info("directory {}", pathToCoveredProject);

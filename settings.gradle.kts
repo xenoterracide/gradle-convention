@@ -41,7 +41,5 @@ rootDir.resolve("module").listFiles()?.forEach { file ->
     val name = file.name
     include(":$name")
     project(":$name").projectDir = file("module/$name")
-  } else {
-    throw Exception("Invalid module directory: $file")
   }
 }
