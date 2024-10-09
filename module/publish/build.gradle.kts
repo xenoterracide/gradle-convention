@@ -16,12 +16,12 @@ dependencies {
 
 gradlePlugin {
   plugins {
-    register("plugin") {
+    register("publish") {
       id = "${rootProject.group}.${project.name}"
       displayName = "My conventions for publishing"
       tags = setOf("publish", "convention")
       implementationClass = "$id.PublishPlugin"
-      logger.quiet("publication {} {}:{}", name, id, version)
+      description = "My conventions for publishing, mostly makes it easy to add repository wide spdx licenses"
     }
   }
 }
