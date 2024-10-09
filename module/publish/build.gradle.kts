@@ -21,7 +21,7 @@ gradlePlugin {
       displayName = "My conventions for publishing"
       tags = setOf("publish", "convention")
       implementationClass = "$id.PublishPlugin"
-      description = "My conventions for publishing, mostly makes it easy to add repository wide spdx licenses"
+      description = "makes it easy to add repository wide spdx licenses"
     }
   }
 }
