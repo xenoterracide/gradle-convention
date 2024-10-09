@@ -18,13 +18,6 @@ import org.slf4j.LoggerFactory;
 
 public class CoveragePluginTest {
 
-  static final String GROOVY_SCRIPT =
-    """
-    plugins {
-      id("com.xenoterracide.gradle.convention.coverage")
-    }
-    """;
-
   Logger log = LoggerFactory.getLogger(this.getClass());
 
   @TempDir
@@ -33,19 +26,20 @@ public class CoveragePluginTest {
   @BeforeEach
   @SuppressWarnings("NullAway")
   public void setupRunner() throws IOException {
-    Files.writeString(testProjectDir.resolve("settings.gradle"), "rootProject.name = 'hello-world'");
+    var project = "coverage-integration-test";
+    Files.writeString(testProjectDir.resolve("settings.gradle"), "rootProject.name = '%s'".formatted(project));
     var pathToCoveredProject = PathUtils.current()
       .toAbsolutePath()
       .getParent()
       .getParent()
-      .resolve("integration-test-coverered-project")
+      .resolve(project)
       .toAbsolutePath();
     log.info("directory {}", pathToCoveredProject);
     PathUtils.copyDirectory(pathToCoveredProject, testProjectDir);
   }
 
   @Test
-  void debug() throws IOException {
+  void debug() {
     var build = GradleRunner.create()
       // .withDebug(true)
       .withProjectDir(testProjectDir.toFile())

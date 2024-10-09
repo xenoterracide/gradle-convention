@@ -4,7 +4,7 @@
 plugins {
   id("com.gradle.plugin-publish")
   id("com.xenoterracide.gradle.convention.publish")
-  id("com.xenoterracide.gradle.convention.coverage")
+  // id("com.xenoterracide.gradle.convention.coverage")
 }
 
 val repo = rootProject.name

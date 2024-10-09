@@ -4,6 +4,7 @@
 package com.xenoterracide.gradle.convention.coverage;
 
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaBasePlugin;
@@ -34,24 +35,28 @@ public class CoveragePlugin implements Plugin<Project> {
     });
 
     tasks
-      .withType(JacocoReport.class)
-      .configureEach(jacocoReport -> {
-        var tests = tasks.withType(Test.class);
-        jacocoReport.dependsOn(tests);
-        tests.forEach(jacocoReport::executionData);
-      });
-
-    tasks
       .withType(JacocoCoverageVerification.class)
       .configureEach(verification -> {
         verification.dependsOn(tasks.withType(JacocoReport.class));
         // execution data needs to be aggregated from all exec files in the project for multi jvm test suite testing
-        verification.executionData(tasks.withType(JacocoReport.class).stream().map(JacocoReport::getExecutionData));
+        project.getLogger().quiet("adding execution data for verification");
+        verification.executionData(
+          tasks.withType(JacocoReport.class).stream().map(JacocoReport::getExecutionData).collect(Collectors.toList())
+        );
         verification.violationRules(rules -> {
           rules.rule(r -> {
             r.limit(l -> l.setMinimum(coverage.getMinimum().orElse(0.9).map(BigDecimal::valueOf).get()));
           });
         });
+      });
+
+    tasks
+      .withType(JacocoReport.class)
+      .configureEach(jacocoReport -> {
+        var tests = tasks.withType(Test.class);
+        jacocoReport.dependsOn(tests);
+        project.getLogger().quiet("adding execution data for tests");
+        tests.forEach(jacocoReport::executionData);
       });
   }
 }
