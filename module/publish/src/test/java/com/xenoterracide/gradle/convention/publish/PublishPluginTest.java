@@ -7,6 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 import org.gradle.api.Project;
+import org.gradle.api.plugins.JavaLibraryPlugin;
+import org.gradle.api.publish.PublishingExtension;
+import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,9 +23,18 @@ class PublishPluginTest {
   @BeforeEach
   void setup() {
     project = ProjectBuilder.builder().withName("that").build();
+    project.getPluginManager().apply(JavaLibraryPlugin.class);
     project.getPluginManager().apply(PublishPlugin.class);
     respositoryHost = project.getExtensions().getByType(RepositoryHostExtension.class);
     publicationLegal = project.getExtensions().getByType(PublicationLegalExtension.class);
+    project
+      .getExtensions()
+      .getByType(PublishingExtension.class)
+      .publications(publications -> {
+        publications.register("mavenJava", MavenPublication.class, mavenPublication -> {
+          mavenPublication.from(project.getComponents().getByName("java"));
+        });
+      });
   }
 
   @Test
