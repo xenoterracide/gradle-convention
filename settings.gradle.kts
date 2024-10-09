@@ -35,7 +35,7 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootDir.resolve("module").listFiles()?.forEach { file ->
-  if (file.isDirectory && file?.list { _, name -> name == "build.gradle.kts" }
+  if (file.isDirectory && file?.list { _, name -> name.startsWith("build.gradle") }
       ?.isNotEmpty() == true
   ) {
     val name = file.name

@@ -1,0 +1,17 @@
+plugins {
+  id("java-library")
+  id("jvm-test-suite")
+  id("com.xenoterracide.gradle.convention.coverage")
+}
+
+testing {
+  suites {
+    test {
+      useJUnitJupiter()
+    }
+  }
+}
+
+repositories {
+  mavenCentral()
+}

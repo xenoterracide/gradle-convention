@@ -12,6 +12,7 @@ plugins {
 }
 
 dependencies {
+  testImplementation(libs.commons.io)
 }
 
 gradlePlugin {
