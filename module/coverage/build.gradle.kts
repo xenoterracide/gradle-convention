@@ -25,3 +25,7 @@ gradlePlugin {
     }
   }
 }
+
+coverage {
+  minimum.set(0.3)
+}
