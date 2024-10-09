@@ -1,4 +1,4 @@
-name: Publish
+name: publish-to-github-packages
 on:
   workflow_run:
     workflows: ["Build"]
@@ -14,11 +14,12 @@ jobs:
     permissions:
       contents: write
       packages: write
+    env:
+      IS_PUBLISHING: 1
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
-          fetch-depth: 0
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -30,4 +31,3 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ secrets.GITHUB_ACTOR }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ secrets.GITHUB_TOKEN }}
-          IS_PUBLISHING: 1
