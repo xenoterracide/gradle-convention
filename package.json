@@ -20,7 +20,7 @@
     "release": "git push --tags && gh release create v$npm_config_semver --generate-notes build/libs/*.jar --verify-tag",
     "release:dry-run": "npm run release:prepare && git tag -d v$npm_config_semver",
     "prerelease:prepare": "echo $npm_config_semver",
-    "release:prepare": "git tag -m $npm_config_semver -a v$npm_config_semver && ./gradlew build && ./gradlew clean assemble shadowJar",
+    "release:prepare": "git tag -m $npm_config_semver -a v$npm_config_semver && ./gradlew build && ./gradlew clean assemble",
     "prerelease": "npm run release:prepare",
     "postinstall": "git config core.hooksPath .config/git/hooks",
     "prepublishOnly": "pinst --disable",
