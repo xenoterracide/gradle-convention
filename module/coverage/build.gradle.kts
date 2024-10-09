@@ -17,11 +17,12 @@ dependencies {
 
 gradlePlugin {
   plugins {
-    create("pub") {
+    create("coverage") {
       id = "${rootProject.group}.${project.name}"
       displayName = "My conventions for coverage"
-      tags = setOf("coverage", "jacoco", "convention")
+      tags = setOf("coverage", "jacoco", "convention", "jvm-test-suite")
       implementationClass = "$id.CoveragePlugin"
+      description = "My conventions for coverage, supports unified coverage for multiple jvm-test-suites"
     }
   }
 }
