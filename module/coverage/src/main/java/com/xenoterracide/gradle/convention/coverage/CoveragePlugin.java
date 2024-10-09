@@ -24,6 +24,7 @@ public class CoveragePlugin implements Plugin<Project> {
 
   @Override
   public void apply(@NonNull Project project) {
+    project.getPlugins().apply(JavaBasePlugin.class);
     project.getPlugins().apply(JacocoPlugin.class);
     var coverage = project.getExtensions().create("coverage", CoveragePluginExtension.class);
 
