@@ -46,7 +46,7 @@ publicationLegal {
 
 under the hood it will set the licenses as follows, you
 
-```
+```java
   pl.getName().set(license);
   pl.getUrl().set("https://spdx.org/licenses/" + license + ".html");
   pl.getComments().set("See git repo README.md for more information.");
