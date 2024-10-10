@@ -57,7 +57,7 @@ This plugin also makes it convenient to set up publishing to githubs own package
 this.
 
 ```kts
-repositooryHost {
+repositoryHost {
   host.set("https://github.com")                             // default
   name.set("repositoryName")                                 // default is rootProject.name
   namespace.set("myUser")                                    // default is xenoterracide
