@@ -1,11 +1,9 @@
 name: publish-to-gradle-plugin-portal
 on:
   workflow_run:
-    workflows: ["Full"]
-    types:
-      - completed
-    tags:
-      - v*
+    workflows: [full]
+    types: [completed]
+    tags: [v*]
 jobs:
   publish:
     if: github.event.workflow_run.conclusion == 'success'

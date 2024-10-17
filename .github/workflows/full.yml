@@ -1,4 +1,4 @@
-name: Full
+name: full
 on:
   push:
     branches: [main]
