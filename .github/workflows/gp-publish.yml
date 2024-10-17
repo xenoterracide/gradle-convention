@@ -5,7 +5,7 @@ on:
     types: [completed]
 jobs:
   publish:
-    if: github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_commit.id, 'v')
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -14,6 +14,7 @@ jobs:
     env:
       IS_PUBLISHING: 1
     steps:
+      - run: echo ${{ github.event.workflow_run.head_commit }} && exit 1
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_commit.id }}
