@@ -15,6 +15,8 @@ import org.gradle.api.provider.Property;
 public interface RepositoryHostExtension {
   /**
    * Host URI for the repository, for example {@code https://github.com}
+   *
+   * @return host
    */
   Property<URI> getHost();
 
