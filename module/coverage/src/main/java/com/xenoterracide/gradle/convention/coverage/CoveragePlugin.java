@@ -27,6 +27,8 @@ public class CoveragePlugin implements Plugin<Project> {
   public void apply(@NonNull Project project) {
     project.getPlugins().apply(JavaBasePlugin.class);
     project.getPlugins().apply(JacocoPlugin.class);
+
+    var log = project.getLogger();
     var coverage = project.getExtensions().create("coverage", CoveragePluginExtension.class);
 
     var tasks = project.getTasks();
@@ -37,9 +39,10 @@ public class CoveragePlugin implements Plugin<Project> {
     tasks
       .withType(JacocoCoverageVerification.class)
       .configureEach(verification -> {
-        verification.dependsOn(tasks.withType(JacocoReport.class));
+        var jacocoReports = tasks.withType(JacocoReport.class);
+        verification.dependsOn(jacocoReports);
         // execution data needs to be aggregated from all exec files in the project for multi jvm test suite testing
-        project.getLogger().quiet("adding execution data for verification");
+        log.debug("{}: aggregate execution data {}", project.getName(), jacocoReports.getNames());
         verification.executionData(
           tasks.withType(JacocoReport.class).stream().map(JacocoReport::getExecutionData).collect(Collectors.toList())
         );
@@ -55,7 +58,7 @@ public class CoveragePlugin implements Plugin<Project> {
       .configureEach(jacocoReport -> {
         var tests = tasks.withType(Test.class);
         jacocoReport.dependsOn(tests);
-        project.getLogger().quiet("adding execution data for tests");
+        log.debug("{}: execution data for {}", project.getName(), tests.getNames());
         tests.forEach(jacocoReport::executionData);
       });
   }
