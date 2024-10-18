@@ -1,11 +1,9 @@
 name: publish-to-github-packages
 on:
   workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
-    branches:
-      - main
+    workflows: [build]
+    types: [completed]
+    branches: [main]
 jobs:
   publish:
     if: github.event.workflow_run.conclusion == 'success'
