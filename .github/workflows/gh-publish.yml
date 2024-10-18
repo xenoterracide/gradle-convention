@@ -1,11 +1,9 @@
 name: publish-to-github-packages
 on:
   workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
-    branches:
-      - main
+    workflows: [build]
+    types: [completed]
+    branches: [main]
 jobs:
   publish:
     if: github.event.workflow_run.conclusion == 'success'
@@ -19,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_commit.id }}
+          ref: ${{ github.event.workflow_run.head_branch}}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
