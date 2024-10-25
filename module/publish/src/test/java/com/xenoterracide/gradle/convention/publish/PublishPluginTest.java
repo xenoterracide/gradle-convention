@@ -45,7 +45,7 @@ class PublishPluginTest {
     assertThat(resolver.websiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
     assertThat(resolver.cloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
     assertThat(resolver.packageUrl().get()).hasToString("https://maven.pkg.github.com/xenoterracide/that");
-    assertThat(resolver.developerConnection().get()).isEqualTo("scm:git:https://example.org/xenoterracide/that.git");
+    assertThat(resolver.developerConnection().get()).isEqualTo("scm:git:https://github.com/xenoterracide/that.git");
   }
 
   @Test
