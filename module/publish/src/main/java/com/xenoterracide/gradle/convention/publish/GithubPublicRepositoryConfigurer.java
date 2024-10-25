@@ -18,7 +18,6 @@ import org.gradle.api.Action;
  *   <dt>extension</dt>
  *   <dd>git</dd>
  * </dl>
- * </p>
  *
  * @see RepositoryHostExtension
  */
