@@ -1,6 +1,11 @@
 // © Copyright 2024 Caleb Cushing
 // SPDX-License-Identifier: MIT
 
+import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfigurer
+
+// © Copyright 2024 Caleb Cushing
+// SPDX-License-Identifier: MIT
+
 plugins {
   id("com.gradle.plugin-publish")
   id("com.xenoterracide.gradle.convention.publish")
@@ -11,6 +16,9 @@ val repo = rootProject.name
 val username = "xenoterracide"
 val githubUrl = "https://github.com"
 val repoShort = "$username/$repo"
+
+repositoryHost(GithubPublicRepositoryConfigurer())
+repositoryHost.namespace.set("xenoterracide")
 
 gradlePlugin {
   website.set("$githubUrl/$repoShort")

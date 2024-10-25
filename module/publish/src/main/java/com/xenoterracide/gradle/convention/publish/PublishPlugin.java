@@ -20,8 +20,6 @@ public class PublishPlugin implements Plugin<Project> {
   public void apply(@NonNull Project project) {
     var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
 
-    var repo = new RepositoryHostResolver(rhe, project);
-
     var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
 
     var rootProject = project.getRootProject();
@@ -30,6 +28,7 @@ public class PublishPlugin implements Plugin<Project> {
 
     project.getPlugins().apply(MavenPublishPlugin.class);
 
+    var repo = rhe.getResolver();
     var publishing = project.getExtensions().getByType(PublishingExtension.class);
     var publications = publishing.getPublications();
 
@@ -63,16 +62,16 @@ public class PublishPlugin implements Plugin<Project> {
             });
           });
           pom.scm(scm -> {
-            scm.getConnection().set(repo.cloneUrl().map(Object::toString));
-            scm.getUrl().set(repo.websiteUrl().map(Object::toString));
-            scm.getDeveloperConnection().set(repo.developerConnection());
+            scm.getConnection().set(repo.getCloneUrl().map(Object::toString));
+            scm.getUrl().set(repo.getWesiteUrl().map(Object::toString));
+            scm.getDeveloperConnection().set(repo.getDeveloperConnection());
           });
         });
       });
     publishing.repositories(pubRepo -> {
       pubRepo.maven(maven -> {
         maven.setName("gh");
-        maven.setUrl(repo.packageUrl());
+        maven.setUrl(repo.getPackageUrl());
         maven.credentials(PasswordCredentials.class);
       });
     });
