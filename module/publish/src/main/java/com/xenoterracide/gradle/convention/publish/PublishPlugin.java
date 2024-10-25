@@ -18,10 +18,10 @@ public class PublishPlugin implements Plugin<Project> {
 
   @Override
   public void apply(@NonNull Project project) {
-    var repo = new RepositoryHostResolver(
-      project.getExtensions().create("repositoryHost", RepositoryHostExtension.class),
-      project
-    );
+    var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
+
+    var repo = new RepositoryHostResolver(rhe, project);
+
     var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
 
     var rootProject = project.getRootProject();
@@ -59,13 +59,13 @@ public class PublishPlugin implements Plugin<Project> {
             developers.developer(developer -> {
               developer.getName().set("Caleb Cushing");
               developer.getEmail().set("caleb.cushing@gmail.com");
-              developer.getId().set("xenoterracide");
+              developer.getId().set(rhe.getNamespace());
             });
           });
           pom.scm(scm -> {
             scm.getConnection().set(repo.cloneUrl().map(Object::toString));
-            scm.getDeveloperConnection().set(repo.cloneUrl().map(url -> "scm:git:" + url));
             scm.getUrl().set(repo.websiteUrl().map(Object::toString));
+            scm.getDeveloperConnection().set(repo.developerConnection());
           });
         });
       });

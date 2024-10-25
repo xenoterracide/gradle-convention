@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 class PublishPluginTest {
 
   Project project;
-  RepositoryHostExtension respositoryHost;
+  RepositoryHostExtension repositoryHost;
   PublicationLegalExtension publicationLegal;
 
   @BeforeEach
@@ -25,7 +25,7 @@ class PublishPluginTest {
     project = ProjectBuilder.builder().withName("that").build();
     project.getPluginManager().apply(JavaLibraryPlugin.class);
     project.getPluginManager().apply(PublishPlugin.class);
-    respositoryHost = project.getExtensions().getByType(RepositoryHostExtension.class);
+    repositoryHost = project.getExtensions().getByType(RepositoryHostExtension.class);
     publicationLegal = project.getExtensions().getByType(PublicationLegalExtension.class);
     project
       .getExtensions()
@@ -38,22 +38,27 @@ class PublishPluginTest {
   }
 
   @Test
-  void explicitlySet() {
-    var resolver = new RepositoryHostResolver(respositoryHost, project);
-    respositoryHost.getNamespace().set("user");
-    respositoryHost.getHost().set(URI.create("https://example.org"));
-    respositoryHost.getDevelopmentPackageHost().set(URI.create("https://package.example.org"));
-
-    assertThat(resolver.websiteUrl().get()).hasToString("https://example.org/user/that");
-    assertThat(resolver.cloneUrl().get()).hasToString("https://example.org/user/that.git");
-    assertThat(resolver.packageUrl().get()).hasToString("https://package.example.org/user/that");
-  }
-
-  @Test
-  void defaults() {
-    var resolver = new RepositoryHostResolver(respositoryHost, project);
+  void githubConfigurer() {
+    var resolver = new RepositoryHostResolver(repositoryHost, project);
+    new GithubPublicRepositoryConfigurer().execute(repositoryHost);
+    repositoryHost.getNamespace().set("xenoterracide");
     assertThat(resolver.websiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
     assertThat(resolver.cloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
     assertThat(resolver.packageUrl().get()).hasToString("https://maven.pkg.github.com/xenoterracide/that");
+    assertThat(resolver.developerConnection().get()).isEqualTo("scm:git:https://example.org/user/that.git");
+  }
+
+  @Test
+  void explicitlySet() {
+    var resolver = new RepositoryHostResolver(repositoryHost, project);
+    repositoryHost.getNamespace().set("user");
+    repositoryHost.getHost().set(URI.create("https://example.org"));
+    repositoryHost.getDevelopmentPackageHost().set(URI.create("https://package.example.org"));
+    repositoryHost.getExtension().set("hg");
+
+    assertThat(resolver.websiteUrl().get()).hasToString("https://example.org/user/that");
+    assertThat(resolver.cloneUrl().get()).hasToString("https://example.org/user/that.hg");
+    assertThat(resolver.packageUrl().get()).hasToString("https://package.example.org/user/that");
+    assertThat(resolver.developerConnection().get()).isEqualTo("scm:hg:https://example.org/user/that.hg");
   }
 }
