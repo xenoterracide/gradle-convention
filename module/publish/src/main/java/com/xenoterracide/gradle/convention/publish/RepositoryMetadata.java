@@ -11,7 +11,7 @@ import org.gradle.api.provider.Provider;
 /**
  * Converts properties into relevant urls
  */
-public class RepositoryHostResolver {
+public class RepositoryMetadata {
 
   private final Provider<URI> host;
   private final Provider<String> namespace;
@@ -23,7 +23,7 @@ public class RepositoryHostResolver {
   private final BiFunction<URI, String, URI> resolver = (uri, path) ->
     uri.resolve(String.join("/", uri.getPath(), path));
 
-  RepositoryHostResolver(RepositoryHostExtension extension, Project project) {
+  RepositoryMetadata(RepositoryHostExtension extension, Project project) {
     this.name = extension.getName().convention(project.getRootProject().getName());
     this.host = extension.getHost();
     this.namespace = extension.getNamespace();

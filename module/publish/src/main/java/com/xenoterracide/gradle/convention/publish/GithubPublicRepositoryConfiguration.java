@@ -21,7 +21,12 @@ import org.gradle.api.Action;
  *
  * @see RepositoryHostExtension
  */
-public class GithubPublicRepositoryConfigurer implements Action<RepositoryHostExtension> {
+public class GithubPublicRepositoryConfiguration implements Action<RepositoryHostExtension> {
+
+  /**
+   * default constructor.
+   */
+  public GithubPublicRepositoryConfiguration() {}
 
   @Override
   public void execute(RepositoryHostExtension rhe) {

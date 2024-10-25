@@ -17,6 +17,12 @@ public abstract class RepositoryHostExtension {
 
   private final Project project;
 
+  /**
+   * default constructor.
+   *
+   * @param project
+   *   to configure the repository metadata
+   */
   public RepositoryHostExtension(Project project) {
     this.project = project;
   }
@@ -50,13 +56,18 @@ public abstract class RepositoryHostExtension {
   public abstract Property<String> getExtension();
 
   /**
-   * Where the jars are uploaded to
+   * Where the snapshot and pre-release jars are uploaded to
    *
    * @return jar artifact host
    */
   public abstract Property<URI> getDevelopmentPackageHost();
 
-  public RepositoryHostResolver getResolver() {
-    return new RepositoryHostResolver(this, this.project);
+  /**
+   * Repository Metadata
+   *
+   * @return repository metadata
+   */
+  public RepositoryMetadata getRepository() {
+    return new RepositoryMetadata(this, this.project);
   }
 }

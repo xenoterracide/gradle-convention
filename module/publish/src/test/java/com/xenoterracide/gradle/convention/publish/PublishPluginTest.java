@@ -39,8 +39,8 @@ class PublishPluginTest {
 
   @Test
   void githubConfigurer() {
-    var resolver = new RepositoryHostResolver(repositoryHost, project);
-    new GithubPublicRepositoryConfigurer().execute(repositoryHost);
+    var resolver = new RepositoryMetadata(repositoryHost, project);
+    new GithubPublicRepositoryConfiguration().execute(repositoryHost);
     repositoryHost.getNamespace().set("xenoterracide");
     assertThat(resolver.getWesiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
     assertThat(resolver.getCloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
@@ -50,7 +50,7 @@ class PublishPluginTest {
 
   @Test
   void explicitlySet() {
-    var resolver = new RepositoryHostResolver(repositoryHost, project);
+    var resolver = new RepositoryMetadata(repositoryHost, project);
     repositoryHost.getNamespace().set("user");
     repositoryHost.getHost().set(URI.create("https://example.org"));
     repositoryHost.getDevelopmentPackageHost().set(URI.create("https://package.example.org"));

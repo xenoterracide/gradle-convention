@@ -16,6 +16,11 @@ import org.jspecify.annotations.NonNull;
  */
 public class PublishPlugin implements Plugin<Project> {
 
+  /**
+   * default constructor.
+   */
+  public PublishPlugin() {}
+
   @Override
   public void apply(@NonNull Project project) {
     var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
@@ -28,7 +33,7 @@ public class PublishPlugin implements Plugin<Project> {
 
     project.getPlugins().apply(MavenPublishPlugin.class);
 
-    var repo = rhe.getResolver();
+    var repo = rhe.getRepository();
     var publishing = project.getExtensions().getByType(PublishingExtension.class);
     var publications = publishing.getPublications();
 
