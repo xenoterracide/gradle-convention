@@ -69,7 +69,7 @@ create-pr:
 	gh pr create --body "" || exit 0
 
 merge-squash:
-	gh pr merge --squash --delete-branch --auto
+	gh pr merge --squash --delete-branch --auto --body ""
 
 run-url:
 	$(call check_defined, workflow)
