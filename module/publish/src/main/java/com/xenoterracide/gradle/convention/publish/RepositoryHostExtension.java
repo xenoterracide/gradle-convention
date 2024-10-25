@@ -14,14 +14,14 @@ import org.gradle.api.provider.Property;
  */
 public interface RepositoryHostExtension {
   /**
-   * Host URI for the repository, for example {@code https://github.com}
+   * Host URI for the repository
    *
    * @return host
    */
   Property<URI> getHost();
 
   /**
-   * Repository name, will otherwise default to your {@code rootProject.name}
+   * Repository name
    *
    * @return name
    */
@@ -35,16 +35,16 @@ public interface RepositoryHostExtension {
   Property<String> getNamespace();
 
   /**
-   * Repository extension, defaults to {@code git}
+   * Repository extension
    *
    * @return repository extension
    */
   Property<String> getExtension();
 
   /**
-   * Where the jars are uploaded to, for example {@code https://maven.pkg.github.com}
+   * Where the jars are uploaded to
    *
-   * @return jar repository host
+   * @return jar artifact host
    */
   Property<URI> getDevelopmentPackageHost();
 }

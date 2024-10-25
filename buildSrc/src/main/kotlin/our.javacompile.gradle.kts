@@ -20,7 +20,7 @@ java {
   withJavadocJar()
   withSourcesJar()
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(17))
+    languageVersion.set(JavaLanguageVersion.of(21))
   }
 }
 
@@ -46,7 +46,7 @@ tasks.javadoc {
   }
 }
 
-tasks.withType<Jar> {
+tasks.withType<Jar>().configureEach {
   archiveBaseName.set(project.path.substring(1).replace(":", "-"))
 }
 

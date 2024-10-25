@@ -22,13 +22,11 @@ class RepositoryHostResolver {
     uri.resolve(String.join("/", uri.getPath(), path));
 
   RepositoryHostResolver(@NonNull RepositoryHostExtension extension, @NonNull Project project) {
-    this.host = extension.getHost().convention(URI.create("https://github.com"));
-    this.namespace = extension.getNamespace().convention("xenoterracide");
     this.name = extension.getName().convention(project.getRootProject().getName());
-    this.extension = extension.getExtension().convention("git");
-    this.developmentPackageHost = extension
-      .getDevelopmentPackageHost()
-      .convention(URI.create("https://maven.pkg.github.com"));
+    this.host = extension.getHost();
+    this.namespace = extension.getNamespace();
+    this.extension = extension.getExtension();
+    this.developmentPackageHost = extension.getDevelopmentPackageHost();
   }
 
   Provider<URI> cloneUrl() {
@@ -41,5 +39,9 @@ class RepositoryHostResolver {
 
   Provider<URI> packageUrl() {
     return this.developmentPackageHost.zip(namespace, resolver).zip(name, resolver);
+  }
+
+  Provider<String> developerConnection() {
+    return this.cloneUrl().zip(extension, (uri, ext) -> String.join(":", "scm", ext, uri.toString()));
   }
 }
