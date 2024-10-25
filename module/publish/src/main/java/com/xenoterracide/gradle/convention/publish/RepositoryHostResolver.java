@@ -32,6 +32,8 @@ public class RepositoryHostResolver {
   }
 
   /**
+   * Url you can clone from
+   *
    * @return clone url
    */
   public Provider<URI> getCloneUrl() {
@@ -39,6 +41,8 @@ public class RepositoryHostResolver {
   }
 
   /**
+   * Website url for the repository
+   *
    * @return website url
    */
   public Provider<URI> getWesiteUrl() {
@@ -46,6 +50,8 @@ public class RepositoryHostResolver {
   }
 
   /**
+   * Development package url for publishing to, like maven central or a private artifactory
+   *
    * @return development package url
    */
   public Provider<URI> getPackageUrl() {
@@ -53,6 +59,8 @@ public class RepositoryHostResolver {
   }
 
   /**
+   * Maven pom developer connection
+   *
    * @return developer connection
    */
   public Provider<String> getDeveloperConnection() {
