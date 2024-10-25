@@ -4,6 +4,7 @@
 package com.xenoterracide.gradle.convention.publish;
 
 import java.net.URI;
+import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
 
 /**
@@ -12,39 +13,61 @@ import org.gradle.api.provider.Property;
  * @implNote this convention concatenates these properties into final urls such as a clone url
  *   {@code $host/$namespace/$name.$extension} and the website url {@code $host/$namespace/$name}.
  */
-public interface RepositoryHostExtension {
+public abstract class RepositoryHostExtension {
+
+  private final Project project;
+
+  /**
+   * default constructor.
+   *
+   * @param project
+   *   to configure the repository metadata
+   */
+  public RepositoryHostExtension(Project project) {
+    this.project = project;
+  }
+
   /**
    * Host URI for the repository
    *
    * @return host
    */
-  Property<URI> getHost();
+  public abstract Property<URI> getHost();
 
   /**
    * Repository name
    *
    * @return name
    */
-  Property<String> getName();
+  public abstract Property<String> getName();
 
   /**
    * on GitHub this would be your user or organization
    *
    * @return namespace
    */
-  Property<String> getNamespace();
+  public abstract Property<String> getNamespace();
 
   /**
    * Repository extension
    *
    * @return repository extension
    */
-  Property<String> getExtension();
+  public abstract Property<String> getExtension();
 
   /**
-   * Where the jars are uploaded to
+   * Where the snapshot and pre-release jars are uploaded to
    *
    * @return jar artifact host
    */
-  Property<URI> getDevelopmentPackageHost();
+  public abstract Property<URI> getDevelopmentPackageHost();
+
+  /**
+   * Repository Metadata
+   *
+   * @return repository metadata
+   */
+  public RepositoryMetadata getRepository() {
+    return new RepositoryMetadata(this, this.project);
+  }
 }

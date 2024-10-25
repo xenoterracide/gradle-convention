@@ -39,26 +39,26 @@ class PublishPluginTest {
 
   @Test
   void githubConfigurer() {
-    var resolver = new RepositoryHostResolver(repositoryHost, project);
-    new GithubPublicRepositoryConfigurer().execute(repositoryHost);
+    var resolver = new RepositoryMetadata(repositoryHost, project);
+    new GithubPublicRepositoryConfiguration().execute(repositoryHost);
     repositoryHost.getNamespace().set("xenoterracide");
-    assertThat(resolver.websiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
-    assertThat(resolver.cloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
-    assertThat(resolver.packageUrl().get()).hasToString("https://maven.pkg.github.com/xenoterracide/that");
-    assertThat(resolver.developerConnection().get()).isEqualTo("scm:git:https://github.com/xenoterracide/that.git");
+    assertThat(resolver.getWesiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
+    assertThat(resolver.getCloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
+    assertThat(resolver.getPackageUrl().get()).hasToString("https://maven.pkg.github.com/xenoterracide/that");
+    assertThat(resolver.getDeveloperConnection().get()).isEqualTo("scm:git:https://github.com/xenoterracide/that.git");
   }
 
   @Test
   void explicitlySet() {
-    var resolver = new RepositoryHostResolver(repositoryHost, project);
+    var resolver = new RepositoryMetadata(repositoryHost, project);
     repositoryHost.getNamespace().set("user");
     repositoryHost.getHost().set(URI.create("https://example.org"));
     repositoryHost.getDevelopmentPackageHost().set(URI.create("https://package.example.org"));
     repositoryHost.getExtension().set("hg");
 
-    assertThat(resolver.websiteUrl().get()).hasToString("https://example.org/user/that");
-    assertThat(resolver.cloneUrl().get()).hasToString("https://example.org/user/that.hg");
-    assertThat(resolver.packageUrl().get()).hasToString("https://package.example.org/user/that");
-    assertThat(resolver.developerConnection().get()).isEqualTo("scm:hg:https://example.org/user/that.hg");
+    assertThat(resolver.getWesiteUrl().get()).hasToString("https://example.org/user/that");
+    assertThat(resolver.getCloneUrl().get()).hasToString("https://example.org/user/that.hg");
+    assertThat(resolver.getPackageUrl().get()).hasToString("https://package.example.org/user/that");
+    assertThat(resolver.getDeveloperConnection().get()).isEqualTo("scm:hg:https://example.org/user/that.hg");
   }
 }
