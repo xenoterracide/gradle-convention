@@ -46,7 +46,7 @@ tasks.javadoc {
   }
 }
 
-tasks.withType<Jar> {
+tasks.withType<Jar>().configureEach {
   archiveBaseName.set(project.path.substring(1).replace(":", "-"))
 }
 
