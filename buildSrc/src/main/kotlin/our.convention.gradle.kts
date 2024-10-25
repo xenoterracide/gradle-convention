@@ -1,7 +1,10 @@
 // © Copyright 2024 Caleb Cushing
 // SPDX-License-Identifier: MIT
 
-import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfigurer
+import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfiguration
+
+// © Copyright 2024 Caleb Cushing
+// SPDX-License-Identifier: MIT
 
 // © Copyright 2024 Caleb Cushing
 // SPDX-License-Identifier: MIT
@@ -12,17 +15,12 @@ plugins {
   id("com.xenoterracide.gradle.convention.coverage")
 }
 
-val repo = rootProject.name
-val username = "xenoterracide"
-val githubUrl = "https://github.com"
-val repoShort = "$username/$repo"
-
-repositoryHost(GithubPublicRepositoryConfigurer())
+repositoryHost(GithubPublicRepositoryConfiguration())
 repositoryHost.namespace.set("xenoterracide")
 
 gradlePlugin {
-  website.set("$githubUrl/$repoShort")
-  vcsUrl.set("${website.get()}.git")
+  website.set(repositoryHost.repository.wesiteUrl.map { it.toString() })
+  vcsUrl.set(repositoryHost.repository.cloneUrl.map { it.toString() })
 }
 
 publicationLegal {
