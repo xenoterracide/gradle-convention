@@ -4,7 +4,7 @@
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@prettier/plugin-xml": "^3.2.2",
-    "git-conventional-commits": "^2.6.5",
+    "git-conventional-commits": "^2.7.0",
     "lint-staged": "^15.2.0",
     "pinst": "3",
     "prettier": "^3.1.1",
