@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /**
  * Plugin to reduce configuration overhead for publishing to maven repositories.
  * This plugin primarily configures {@link org.gradle.api.publish.maven.plugins.MavenPublishPlugin}

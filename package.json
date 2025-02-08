@@ -14,10 +14,6 @@
     "prettier-plugin-toml": "^2.0.1"
   },
   "scripts": {
-    "release": "git push --tags",
-    "prerelease:prepare": "echo $npm_config_semver",
-    "release:prepare": "git tag -m $npm_config_semver -a v$npm_config_semver && ./gradlew build && ./gradlew clean assemble",
-    "prerelease": "npm run release:prepare",
     "postinstall": "git config core.hooksPath .config/git/hooks",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"

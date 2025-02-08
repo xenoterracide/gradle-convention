@@ -1,1 +1,5 @@
+// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+//
+// SPDX-License-Identifier: MIT
+
 rootProject.name = "coverage-integration-test"
