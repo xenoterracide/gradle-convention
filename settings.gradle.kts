@@ -1,4 +1,5 @@
-// © Copyright 2024 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+//
 // SPDX-License-Identifier: MIT
 
 rootProject.name = "gradle-convention"
@@ -35,7 +36,9 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootDir.resolve("module").listFiles()?.forEach { file ->
-  if (file.isDirectory && file?.list { _, name -> name.startsWith("build.gradle") }
+  if (file.isDirectory &&
+    file
+      ?.list { _, name -> name.startsWith("build.gradle") }
       ?.isNotEmpty() == true
   ) {
     val name = file.name

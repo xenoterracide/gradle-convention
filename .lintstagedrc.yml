@@ -12,7 +12,7 @@
   - ktlint --format
 "Makefile":
   - "reuse annotate --license 'MIT' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights"
-"*.github/workflows/*yml":
+"*.github/workflows/*.yml":
   - *prettier
 # Documentation
 "(*.md|*.adoc)":
