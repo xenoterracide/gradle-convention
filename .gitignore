@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+#
+# SPDX-License-Identifier: CC0-1.0
+
 # direnv
 !.envrc
-# asdf
-.tool-versions
+
+# I think idea is adding this directory
+.kotlin/
 
 ### Java template
 # Compiled class file
@@ -52,6 +57,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
+coverage
 *.lcov
 
 # nyc test coverage
