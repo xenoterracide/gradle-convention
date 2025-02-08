@@ -1,6 +1,7 @@
 <!--
-© Copyright 2024 Caleb Cushing.
-SPDX-License-Identifier: CC-BY-4.0
+SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+
+SPDX-License-Identifier: CC-BY-NC-4.0
 -->
 
 # My Conventions
@@ -28,7 +29,8 @@ coverage {
 
 **WARNING:** this plugin sets up defaults for me, that will _not_ be suitable for your project.
 
-See the [`package-info`](https://github.com/xenoterracide/gradle-convention/blob/main/module/publish/src/main/java/com/xenoterracide/gradle/convention/publish/package-info.java)
+See the [
+`package-info`](https://github.com/xenoterracide/gradle-convention/blob/main/module/publish/src/main/java/com/xenoterracide/gradle/convention/publish/package-info.java)
 
 ## Contributing
 
