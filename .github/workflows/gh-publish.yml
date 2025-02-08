@@ -1,9 +1,14 @@
+# SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+#
+# SPDX-License-Identifier: CC0-1.0
+
 name: publish-to-github-packages
 on:
   workflow_run:
     workflows: [build]
     types: [completed]
-    branches: [main]
+    branches: ["**"]
+    tags: [v*]
 jobs:
   publish:
     if: github.event.workflow_run.conclusion == 'success'
