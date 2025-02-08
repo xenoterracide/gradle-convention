@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+//
+// SPDX-License-Identifier: MIT
+
 plugins {
   id("java-library")
   id("jvm-test-suite")
