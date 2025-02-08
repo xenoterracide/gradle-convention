@@ -1,4 +1,4 @@
-# Copyright 2024 - 2025 Caleb Cushing
+# SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
 #
 # SPDX-License-Identifier: MIT
 
