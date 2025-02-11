@@ -33,7 +33,7 @@ hibernate-jpa-modelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen", v
 hibernate-validator = { module = "org.hibernate.validator:hibernate-validator" }
 httpcomponents-client5 = { module = "org.apache.httpcomponents.client5:httpclient5" }
 httpcomponents-core5-reactive = { module = "org.apache.httpcomponents.core5:httpcore5-reactive" }
-immutables-bom = "org.immutables:bom:2+"
+immutables-bom = "org.immutables:bom:2.10.1"
 immutables-annotate = { module = "org.immutables:annotate" }
 immutables-annotations = { module = "org.immutables:value-annotations" }
 immutables-builder = { module = "org.immutables:builder" }
