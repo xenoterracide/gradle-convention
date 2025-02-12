@@ -7,6 +7,7 @@ import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
   `java-library`
+  id("our.bom")
   id("net.ltgt.errorprone")
 }
 
@@ -25,18 +26,9 @@ java {
   }
 }
 
-tasks.compileJava {
-  options.release.set(11)
-}
-
-tasks.javadoc {
-  // because classes is what runs source generation
+tasks.withType<Javadoc>().configureEach {
   dependsOn(tasks.classes)
-  // so we can reference generated classes in our javadoc
   source(sourceSets.main.map { it.output.generatedSourcesDirs })
-  // because jpamodelgen puts non java sources in java source dirs https://hibernate.atlassian.net/browse/HHH-18676
-  include("**/*.java")
-
   (options as StandardJavadocDocletOptions).apply {
     addMultilineStringsOption("tag").value =
       listOf(
@@ -76,7 +68,21 @@ tasks.withType<JavaCompile>().configureEach {
     )
     disableWarningsInGeneratedCode.set(true)
     excludedPaths.set(".*/build/generated/sources/annotationProcessor/.*")
-    option("NullAway:AnnotatedPackages", "com.xenoterracide")
+    option("Nullaway:AcknowledgeRestrictiveAnnotations", true)
+    option("NullAway:HandleTestAssertionLibraries", true)
+    option("NullAway:CheckContracts", true)
+    option("NullAway:ExcludedFieldAnnotations", "org.junit.jupiter.api.io.TempDir")
+    option("NullAway:AnnotatedPackages", listOf("com", "org", "net", "io", "dev", "graphql").joinToString(","))
+    option(
+      "NullAway:UnannotatedSubPackages",
+      listOf(
+        "io.vavr",
+        "org.apache.commons.lang3",
+        "org.assertj",
+        "org.eclipse.jgit",
+        "org.junit",
+      ).joinToString(","),
+    )
 
     val errors =
       mutableListOf(
@@ -260,8 +266,6 @@ tasks.withType<JavaCompile>().configureEach {
         ),
       )
       disable("JavaTimeDefaultTimeZone")
-      option("NullAway:HandleTestAssertionLibraries", true)
-      option("NullAway:ExcludedFieldAnnotations", "org.junit.jupiter.api.io.TempDir")
     }
 
     error(*errors.toTypedArray())
