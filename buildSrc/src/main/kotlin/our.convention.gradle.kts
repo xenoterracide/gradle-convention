@@ -4,16 +4,12 @@
 
 import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfiguration
 
-// © Copyright 2024 Caleb Cushing
-// SPDX-License-Identifier: MIT
-
-// © Copyright 2024 Caleb Cushing
-// SPDX-License-Identifier: MIT
 
 plugins {
+  id("com.autonomousapps.dependency-analysis")
   id("com.gradle.plugin-publish")
-  id("com.xenoterracide.gradle.convention.publish")
   id("com.xenoterracide.gradle.convention.coverage")
+  id("com.xenoterracide.gradle.convention.publish")
 }
 
 repositoryHost(GithubPublicRepositoryConfiguration())
