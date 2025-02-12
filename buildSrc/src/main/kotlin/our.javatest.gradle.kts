@@ -2,14 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-import gradle.kotlin.dsl.accessors._e054d9723d982fdb55b1e388b8ab0cbf.testing
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
+  `java-gradle-plugin`
   `java-library`
-  `java-test-fixtures`
 }
 
 val libs = the<LibrariesForLibs>()
@@ -18,17 +17,54 @@ testing {
   suites {
     withType<JvmTestSuite>().configureEach {
       dependencies {
+        implementation(gradleTestKit())
         implementation(platform(libs.junit.bom))
         implementation.bundle(libs.bundles.test.impl)
-        runtimeOnly(platform(libs.junit.bom))
         runtimeOnly.bundle(libs.bundles.test.runtime)
+      }
+    }
+
+    val test by getting(JvmTestSuite::class) {
+      dependencies {
+        implementation(project())
+      }
+    }
+
+    val testIntegration by registering(JvmTestSuite::class) {
+      gradlePlugin.testSourceSet(sources)
+      dependencies {
+        runtimeOnly(project())
       }
     }
   }
 }
 
+tasks.check {
+  dependsOn(testing.suites.named("testIntegration"))
+}
+
+val available =
+  tasks.register("tests available") {
+    val java: Provider<FileCollection> = sourceSets.test.map { it.java }
+    doLast {
+      if (java.get().isEmpty) throw RuntimeException("no tests found")
+    }
+  }
+
 tasks.withType<Test>().configureEach {
+  jvmArgs("-XX:+EnableDynamicAgentLoading")
   useJUnitPlatform()
+  maxParallelForks =
+    Runtime
+      .getRuntime()
+      .availableProcessors()
+      .div(2)
+      .or(1)
+  systemProperties(
+    "junit.jupiter.execution.parallel.enabled" to "true",
+    "junit.jupiter.execution.parallel.mode.default" to "concurrent",
+    "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent",
+  )
   reports {
     junitXml.required.set(false)
     html.required.set(false)
@@ -47,6 +83,7 @@ tasks.withType<Test>().configureEach {
     }
   }
   inputs.dir(rootProject.file("buildSrc/src/main"))
+  finalizedBy(available)
 
   afterSuite(
     KotlinClosure2<TestDescriptor, TestResult, Unit>(

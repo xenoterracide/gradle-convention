@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: MIT
 
 import org.gradle.accessors.dm.LibrariesForLibs
+import java.util.Locale
 
 plugins {
-  `java-test-fixtures`
   checkstyle
 }
 
@@ -17,15 +17,13 @@ tasks.withType<Checkstyle>().configureEach {
 
 fun checkstyleConfig(filename: String): File {
   val path = ".config/checkstyle/$filename"
-  val f = layout.projectDirectory.file(path).asFile
-  if (f.exists()) return f
-  if (rootProject.file(path).exists()) return rootProject.file(path)
-  // test is weaker, and non main source sets are not production code
-  return rootProject.file(".config/checkstyle/test.xml")
+  val f = file(path)
+  return if (f.exists()) f else rootProject.file(path)
 }
 
 tasks.withType<Checkstyle>().configureEach {
-  this.name.substringAfter("checkstyle").replaceFirstChar { it.lowercase() }.let { filename ->
-    configFile = checkstyleConfig("$filename.xml")
-  }
+  configFile =
+    checkstyleConfig(
+      this.name.removePrefix("checkstyle").replaceFirstChar { it.lowercase(Locale.getDefault()) } + ".xml",
+    )
 }
