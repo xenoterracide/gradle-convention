@@ -59,7 +59,7 @@ plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plug
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
 plugin-semver = "com.xenoterracide.gradle:semver:0.+"
-plugin-spotbugs = "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.+"
+plugin-spotbugs = "com.github.spotbugs:com.github.spotbugs.gradle.plugin:6.+"
 semver = "org.semver4j:semver4j:5.+"
 slf4j-api = { module = "org.slf4j:slf4j-api" }
 slf4j-bom = "org.slf4j:slf4j-bom:2.+"
@@ -121,5 +121,5 @@ spring-test = ["spring-test", "spring-boot-test-core", "spring-boot-autoconfigur
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version = "1.+" }
 shadow = { id = "com.gradleup.shadow", version = "8.+" }
-semver = { id = "com.xenoterracide.gradle.semver", version = "0.+" }
+semver = { id = "com.xenoterracide.gradle.semver", version = "0.12.+" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring" }

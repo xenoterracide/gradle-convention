@@ -29,7 +29,7 @@ dependencyResolutionManagement {
   rulesMode = RulesMode.FAIL_ON_PROJECT_RULES
 
   repositories {
-    mavenCentral()
+    gradlePluginPortal()
   }
 }
 
