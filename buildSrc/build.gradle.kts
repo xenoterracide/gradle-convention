@@ -15,7 +15,6 @@ dependencies {
   implementation(libs.plugin.convention.coverage)
   implementation(libs.plugin.convention.publish)
   implementation(libs.plugin.gradle.plugin.publish)
-  implementation(libs.plugin.spotbugs)
   implementation(libs.plugin.errorprone)
   implementation(libs.plugin.dependency.analysis)
 }

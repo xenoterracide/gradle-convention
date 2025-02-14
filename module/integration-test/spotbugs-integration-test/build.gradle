@@ -1,0 +1,21 @@
+// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+//
+// SPDX-License-Identifier: MIT
+
+plugins {
+  id("java-library")
+  id("jvm-test-suite")
+  id("com.xenoterracide.gradle.convention.spotbugs")
+}
+
+testing {
+  suites {
+    test {
+      useJUnitJupiter()
+    }
+  }
+}
+
+repositories {
+  mavenCentral()
+}

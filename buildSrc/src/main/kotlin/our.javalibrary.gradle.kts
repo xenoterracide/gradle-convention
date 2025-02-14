@@ -9,5 +9,4 @@ plugins {
   id("our.javacompile")
   id("our.javatest")
   id("our.checkstyle")
-  id("our.spotbugs")
 }
