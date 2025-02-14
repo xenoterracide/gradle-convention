@@ -11,4 +11,11 @@
       matchHost: "https://maven.pkg.github.com",
     },
   ],
+  packageRules: [
+    {
+      description: "Only allow major standard upgrades",
+      matchUpdateTypes: ["minor", "patch", "pin"],
+      enabled: false,
+    },
+  ],
 }
