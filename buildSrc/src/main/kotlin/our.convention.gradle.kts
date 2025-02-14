@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfiguration
+import org.gradle.accessors.dm.LibrariesForLibs
 
 
 plugins {
@@ -10,10 +11,17 @@ plugins {
   id("com.gradle.plugin-publish")
   id("com.xenoterracide.gradle.convention.coverage")
   id("com.xenoterracide.gradle.convention.publish")
+  id("com.xenoterracide.gradle.convention.spotbugs")
 }
 
 repositoryHost(GithubPublicRepositoryConfiguration())
 repositoryHost.namespace.set("xenoterracide")
+
+val libs = the<LibrariesForLibs>()
+
+dependencies {
+  spotbugs(libs.spotbugs)
+}
 
 gradlePlugin {
   website.set(repositoryHost.repository.wesiteUrl.map { it.toString() })
