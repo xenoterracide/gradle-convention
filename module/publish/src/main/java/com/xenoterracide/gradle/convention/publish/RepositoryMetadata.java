@@ -33,7 +33,7 @@ public class RepositoryMetadata {
   }
 
   /**
-   * Url you can clone from
+   * Url you can clone from.
    *
    * @return clone url
    */
@@ -42,7 +42,7 @@ public class RepositoryMetadata {
   }
 
   /**
-   * Website url for the repository
+   * Website url for the repository.
    *
    * @return website url
    */
@@ -51,7 +51,7 @@ public class RepositoryMetadata {
   }
 
   /**
-   * Development package url for publishing to, like maven central or a private artifactory
+   * Development package url for publishing to, like maven central or a private artifactory.
    *
    * @return development package url
    */
@@ -60,7 +60,7 @@ public class RepositoryMetadata {
   }
 
   /**
-   * Maven pom developer connection
+   * Maven pom developer connection.
    *
    * @return developer connection
    */

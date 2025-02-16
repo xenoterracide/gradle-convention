@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+// CHECKSTYLE:OFF: JavadocMissingWhitespaceAfterAsterisk
 /**
  * Plugin to reduce configuration overhead for publishing to maven repositories.
  * This plugin primarily configures {@link org.gradle.api.publish.maven.plugins.MavenPublishPlugin}.
@@ -53,9 +54,8 @@
  *}
  * </p>
  */
+// CHECKSTYLE:ON: JavadocMissingWhitespaceAfterAsterisk
 @NullMarked
-@NonNullApi
 package com.xenoterracide.gradle.convention.publish;
 
-import org.gradle.api.NonNullApi;
 import org.jspecify.annotations.NullMarked;
