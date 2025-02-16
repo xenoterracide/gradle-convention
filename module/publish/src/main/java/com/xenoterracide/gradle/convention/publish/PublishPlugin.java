@@ -23,22 +23,22 @@ public class PublishPlugin implements Plugin<Project> {
   public PublishPlugin() {}
 
   @Override
+  @SuppressWarnings("checkstyle:MethodLength")
   public void apply(@NonNull Project project) {
-    var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
-
-    var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
-
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
     project.setVersion(rootProject.getVersion());
 
     project.getPlugins().apply(MavenPublishPlugin.class);
 
+    var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
+    var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
     var repo = rhe.getRepository();
     var publishing = project.getExtensions().getByType(PublishingExtension.class);
     var publications = publishing.getPublications();
 
     var log = project.getLogger();
+    // CHECKSTYLE:OFF: LambdaBodyLength
     publications
       .withType(MavenPublication.class)
       .configureEach(pub -> {
@@ -74,6 +74,7 @@ public class PublishPlugin implements Plugin<Project> {
           });
         });
       });
+    // CHECKSTYLE:ON: LambdaBodyLength
     publishing.repositories(pubRepo -> {
       pubRepo.maven(maven -> {
         maven.setName("gh");

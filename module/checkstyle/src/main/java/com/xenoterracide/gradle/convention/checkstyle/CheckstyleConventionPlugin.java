@@ -15,6 +15,7 @@ import org.gradle.api.plugins.quality.CheckstylePlugin;
  *
  * <p>Applies the checkstyle plugin and configures it to use the {@code .config/checkstyle/<sourceSet>.xml} either in
  * the local project, or falling back to the root project.
+ * </p>
  */
 public class CheckstyleConventionPlugin implements Plugin<Project> {
 

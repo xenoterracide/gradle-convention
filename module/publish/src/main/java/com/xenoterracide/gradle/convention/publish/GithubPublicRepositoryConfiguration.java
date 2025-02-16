@@ -8,14 +8,14 @@ import java.net.URI;
 import org.gradle.api.Action;
 
 /**
- * configures the repository host for GitHub
- * <p>
- * sets the following properties
+ * configures the repository host for GitHub.
+ *
+ * <p>sets the following properties
  * <dl>
  *   <dt>host</dt>
- *   <dd>https://github.com</dd>
+ *   <dd>{@code https://github.com}</dd>
  *   <dt>developmentPackageHost</dt>
- *   <dd>https://maven.pkg.github.com</dd>
+ *   <dd>{@code https://maven.pkg.github.com}</dd>
  *   <dt>extension</dt>
  *   <dd>git</dd>
  * </dl>

@@ -18,14 +18,19 @@ import org.jspecify.annotations.NonNull;
  * <p>It sets the following defaults:
  *
  * <ul>
- *   <li>Disables all but the spotbugsMain task
- *   <li>Sets the exclude filter to .config/spotbugs/exclude.xml
- *   <li>Sets the effort to MAX
- *   <li>Sets the report level to LOW
- *   <li>Adds -longBugCodes to extra args
+ *   <li>Disables all but the spotbugsMain task</li>
+ *   <li>Sets the exclude filter to {@code .config/spotbugs/exclude.xml}</li>
+ *   <li>Sets the effort to MAX</li>
+ *   <li>Sets the report level to LOW</li>
+ *   <li>Adds {@code -longBugCodes} to extra args</li>
  * </ul>
  */
-public class SpotBugsConventionPlugin implements Plugin<Project> {
+public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
+
+  /**
+   * Default constructor.
+   */
+  public SpotBugsConventionPlugin() {}
 
   @Override
   public void apply(@NonNull Project project) {
