@@ -13,9 +13,8 @@
   ],
   packageRules: [
     {
-      matchPackageNames: ["com.gradle.develocity:com.gradle.develocity.gradle.plugin"],
+      matchPackageNames: ["com.gradle.develocity"],
       matchManagers: ["gradle"],
-      matchUpdateTypes: ["minor", "patch"],
       automerge: true,
     },
     {
