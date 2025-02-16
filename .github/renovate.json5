@@ -13,16 +13,16 @@
   ],
   packageRules: [
     {
-      description: "Only allow major standard upgrades",
-      matchManagers: ["gradle", "gradle-wrapper", "npm"],
-      matchUpdateTypes: ["minor", "patch", "pin"],
-      enabled: false,
-    },
-    {
       matchPackageNames: ["com.gradle.develocity:com.gradle.develocity.gradle.plugin"],
       matchManagers: ["gradle"],
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
+    },
+    {
+      description: "Only allow major standard upgrades",
+      matchManagers: ["gradle", "gradle-wrapper", "npm"],
+      matchUpdateTypes: ["minor", "patch", "pin"],
+      enabled: false,
     },
     {
       matchManagers: ["asdf", "github-actions"],
