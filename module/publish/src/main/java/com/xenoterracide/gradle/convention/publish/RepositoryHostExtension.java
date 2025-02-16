@@ -29,42 +29,42 @@ public abstract class RepositoryHostExtension {
   }
 
   /**
-   * Host URI for the repository
+   * Host URI for the repository.
    *
    * @return host
    */
   public abstract Property<URI> getHost();
 
   /**
-   * Repository name
+   * Repository name.
    *
    * @return name
    */
   public abstract Property<String> getName();
 
   /**
-   * on GitHub this would be your user or organization
+   * on GitHub this would be your user or organization.
    *
    * @return namespace
    */
   public abstract Property<String> getNamespace();
 
   /**
-   * Repository extension
+   * Repository extension.
    *
    * @return repository extension
    */
   public abstract Property<String> getExtension();
 
   /**
-   * Where the snapshot and pre-release jars are uploaded to
+   * Where the snapshot and pre-release jars are uploaded to.
    *
    * @return jar artifact host
    */
   public abstract Property<URI> getDevelopmentPackageHost();
 
   /**
-   * Repository Metadata
+   * Repository Metadata.
    *
    * @return repository metadata
    */
