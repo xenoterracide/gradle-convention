@@ -14,7 +14,6 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin;
 import org.gradle.testing.jacoco.plugins.JacocoPlugin;
 import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification;
 import org.gradle.testing.jacoco.tasks.JacocoReport;
-import org.jspecify.annotations.NonNull;
 
 /**
  * Coverage Plugin. Applies {@link JavaBasePlugin}, {@link JacocoPlugin} and configures coverage tasks.
@@ -24,8 +23,9 @@ import org.jspecify.annotations.NonNull;
  */
 public class CoveragePlugin implements Plugin<Project> {
 
+  // CHECKSTYLE:OFF MethodLength
   @Override
-  public void apply(@NonNull Project project) {
+  public void apply(Project project) {
     project.getPlugins().apply(JavaBasePlugin.class);
     project.getPlugins().apply(JacocoPlugin.class);
 
@@ -63,4 +63,5 @@ public class CoveragePlugin implements Plugin<Project> {
         tests.forEach(jacocoReport::executionData);
       });
   }
+  // CHECKSTYLE:ON MethodLength
 }

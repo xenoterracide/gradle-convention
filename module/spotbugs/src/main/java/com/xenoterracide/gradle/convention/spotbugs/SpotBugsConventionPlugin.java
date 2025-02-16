@@ -18,12 +18,13 @@ import org.jspecify.annotations.NonNull;
  * <p>It sets the following defaults:
  *
  * <ul>
- *   <li>Disables all but the spotbugsMain task
- *   <li>Sets the exclude filter to .config/spotbugs/exclude.xml
- *   <li>Sets the effort to MAX
- *   <li>Sets the report level to LOW
- *   <li>Adds -longBugCodes to extra args
+ *   <li>Disables all but the spotbugsMain task</li>
+ *   <li>Sets the exclude filter to .config/spotbugs/exclude.xml</li>
+ *   <li>Sets the effort to MAX</li>
+ *   <li>Sets the report level to LOW</li>
+ *   <li>Adds -longBugCodes to extra args</li>
  * </ul>
+ * </p>
  */
 public class SpotBugsConventionPlugin implements Plugin<Project> {
 
