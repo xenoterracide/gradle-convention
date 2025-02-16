@@ -19,7 +19,7 @@
       enabled: false,
     },
     {
-      matchPackageNames: ["com.gradle.develocity"],
+      matchPackageNames: ["com.gradle.develocity:com.gradle.develocity.gradle.plugin"],
       matchManagers: ["gradle"],
       matchUpdateTypes: ["minor", "patch"],
       automerge: true,
