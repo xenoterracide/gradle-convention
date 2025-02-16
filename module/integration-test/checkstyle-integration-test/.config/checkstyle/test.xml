@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--
+SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+
+SPDX-License-Identifier: CC0-1.0
+-->
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+  "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <module name="NewlineAtEndOfFile" />
+
+  <!-- Miscellaneous https://checkstyle.org/checks/misc/ -->
+  <module name="FileLength" />
+  <module name="FileTabCharacter" />
+
+  <!-- Checks for Size Violations https://checkstyle.org/checks/sizes/ -->
+  <property name="charset" value="UTF-8" />
+  <property name="severity" value="error" />
+
+  <!-- whitespace  https://checkstyle.org/checks/whitespace/ -->
+  <property name="fileExtensions" value="java, properties, xml" />
+</module>

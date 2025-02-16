@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package com.xenoterracide.gradle.convention.spotbugs;
+package com.xenoterracide.gradle.convention.checkstyle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SpotbugsConventionPluginIntegrationTest {
+public class CheckstyleConventionPluginIntegrationTest {
 
   Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -27,7 +27,7 @@ public class SpotbugsConventionPluginIntegrationTest {
   @BeforeEach
   @SuppressWarnings("NullAway")
   public void setupRunner() throws IOException {
-    var project = "spotbugs-integration-test";
+    var project = "checkstyle-integration-test";
     var pathToCoveredProject = PathUtils.current()
       .toAbsolutePath()
       .getParent()
