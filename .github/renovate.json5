@@ -20,6 +20,7 @@
     {
       description: "Only allow major standard upgrades",
       matchManagers: ["gradle", "gradle-wrapper", "npm"],
+      matchPackageNames: ["!com.gradle.develocity"],
       matchUpdateTypes: ["minor", "patch", "pin"],
       enabled: false,
     },
