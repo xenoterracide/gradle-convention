@@ -23,8 +23,8 @@ import org.gradle.testing.jacoco.tasks.JacocoReport;
  */
 public class CoveragePlugin implements Plugin<Project> {
 
-  // CHECKSTYLE:OFF MethodLength
   @Override
+  @SuppressWarnings("checkstyle:MethodLength")
   public void apply(Project project) {
     project.getPlugins().apply(JavaBasePlugin.class);
     project.getPlugins().apply(JacocoPlugin.class);
@@ -37,6 +37,7 @@ public class CoveragePlugin implements Plugin<Project> {
       task.dependsOn(tasks.withType(JacocoCoverageVerification.class));
     });
 
+    // CHECKSTYLE:OFF: LambdaBodyLength
     tasks
       .withType(JacocoCoverageVerification.class)
       .configureEach(verification -> {
@@ -53,6 +54,7 @@ public class CoveragePlugin implements Plugin<Project> {
           });
         });
       });
+    // CHECKSTYLE:ON: LambdaBodyLength
 
     tasks
       .withType(JacocoReport.class)
@@ -63,5 +65,4 @@ public class CoveragePlugin implements Plugin<Project> {
         tests.forEach(jacocoReport::executionData);
       });
   }
-  // CHECKSTYLE:ON MethodLength
 }

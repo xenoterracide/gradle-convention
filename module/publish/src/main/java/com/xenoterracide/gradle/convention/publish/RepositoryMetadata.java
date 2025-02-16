@@ -10,7 +10,7 @@ import org.gradle.api.Project;
 import org.gradle.api.provider.Provider;
 
 /**
- * Converts properties into relevant urls
+ * Converts properties into relevant urls.
  */
 public class RepositoryMetadata {
 
@@ -47,7 +47,7 @@ public class RepositoryMetadata {
    * @return website url
    */
   public Provider<URI> getWesiteUrl() {
-    return this.host.zip(this.namespace, resolver).zip(this.name, resolver);
+    return this.host.zip(this.namespace, this.resolver).zip(this.name, this.resolver);
   }
 
   /**
@@ -56,7 +56,7 @@ public class RepositoryMetadata {
    * @return development package url
    */
   public Provider<URI> getPackageUrl() {
-    return this.developmentPackageHost.zip(namespace, resolver).zip(name, resolver);
+    return this.developmentPackageHost.zip(this.namespace, this.resolver).zip(this.name, this.resolver);
   }
 
   /**
@@ -65,6 +65,6 @@ public class RepositoryMetadata {
    * @return developer connection
    */
   public Provider<String> getDeveloperConnection() {
-    return this.getCloneUrl().zip(extension, (uri, ext) -> String.join(":", "scm", ext, uri.toString()));
+    return this.getCloneUrl().zip(this.extension, (uri, ext) -> String.join(":", "scm", ext, uri.toString()));
   }
 }

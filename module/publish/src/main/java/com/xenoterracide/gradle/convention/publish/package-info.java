@@ -4,7 +4,7 @@
 
 /**
  * Plugin to reduce configuration overhead for publishing to maven repositories.
- * This plugin primarily configures {@link org.gradle.api.publish.maven.plugins.MavenPublishPlugin}
+ * This plugin primarily configures {@link org.gradle.api.publish.maven.plugins.MavenPublishPlugin}.
  *
  * <p>
  * Probably the best feature for other people here is the ability to configure maven's pom with its licenses.

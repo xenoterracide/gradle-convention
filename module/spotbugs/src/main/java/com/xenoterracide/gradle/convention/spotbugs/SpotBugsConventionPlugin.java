@@ -19,10 +19,10 @@ import org.jspecify.annotations.NonNull;
  *
  * <ul>
  *   <li>Disables all but the spotbugsMain task</li>
- *   <li>Sets the exclude filter to .config/spotbugs/exclude.xml</li>
+ *   <li>Sets the exclude filter to {@code .config/spotbugs/exclude.xml}</li>
  *   <li>Sets the effort to MAX</li>
  *   <li>Sets the report level to LOW</li>
- *   <li>Adds -longBugCodes to extra args</li>
+ *   <li>Adds {@code -longBugCodes} to extra args</li>
  * </ul>
  * </p>
  */
