@@ -21,7 +21,7 @@ import org.gradle.testing.jacoco.tasks.JacocoReport;
  * It forces 90% coverage to each project by default, but can be configured with the {@link CoveragePluginExtension},
  * e.g. {@code coverage { minimum.set(0.3) }}.
  */
-public class CoveragePlugin implements Plugin<Project> {
+public abstract class CoveragePlugin implements Plugin<Project> {
 
   @Override
   @SuppressWarnings("checkstyle:MethodLength")

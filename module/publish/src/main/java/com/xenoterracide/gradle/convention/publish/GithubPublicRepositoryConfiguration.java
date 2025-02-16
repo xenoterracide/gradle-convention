@@ -10,8 +10,7 @@ import org.gradle.api.Action;
 /**
  * configures the repository host for GitHub.
  *
- * <p>
- * sets the following properties
+ * <p>sets the following properties
  * <dl>
  *   <dt>host</dt>
  *   <dd>{@code https://github.com}</dd>
@@ -20,7 +19,6 @@ import org.gradle.api.Action;
  *   <dt>extension</dt>
  *   <dd>git</dd>
  * </dl>
- * </p>
  *
  * @see RepositoryHostExtension
  */

@@ -24,9 +24,13 @@ import org.jspecify.annotations.NonNull;
  *   <li>Sets the report level to LOW</li>
  *   <li>Adds {@code -longBugCodes} to extra args</li>
  * </ul>
- * </p>
  */
-public class SpotBugsConventionPlugin implements Plugin<Project> {
+public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
+
+  /**
+   * Default constructor.
+   */
+  public SpotBugsConventionPlugin() {}
 
   @Override
   public void apply(@NonNull Project project) {
