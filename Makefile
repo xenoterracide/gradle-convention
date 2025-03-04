@@ -28,7 +28,7 @@ build:
 	./gradlew build --console=plain
 
 .PHONY: merge
-merge: merge-head create-pr build watch-full watch-publish merge-squash
+merge: merge-head create-pr build watch-full merge-squash
 
 .PHONY: clean
 clean:
@@ -67,6 +67,7 @@ create-pr:
 	gh pr create --body "" || exit 0
 
 merge-head:
+	git fetch --all --prune --prune-tags --tags --force
 	git merge origin/HEAD
 
 merge-squash:
@@ -82,6 +83,3 @@ watch:
 
 watch-full:
 	@gh run watch $$($(call gh_head_run_id, "full")) --exit-status
-
-watch-publish:
-	@gh run watch $$($(call gh_head_run_id, "publish")) --exit-status
