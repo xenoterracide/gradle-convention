@@ -55,11 +55,14 @@ jobs:
         name: reuse
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle-wrapper.jar') }}
       - uses: peter-evans/create-pull-request@v7
+        continue-on-error: true
         id: create_pr
         with:
           title: "chore(deps): java"
           branch: deps/update-java
           token: ${{ secrets.GH_MERGE_PAT }}
+      - run: git diff && exit 1
+        if: failure()
       - run: gh pr merge --auto --squash ${{ steps.create_pr.outputs.pull-request-number }}
         if: ${{ steps.create_pr.outputs.pull-request-number != '' }}
         env:
