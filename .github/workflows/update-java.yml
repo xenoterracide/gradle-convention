@@ -57,7 +57,6 @@ jobs:
         name: reuse
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle-wrapper.jar') }}
       - uses: peter-evans/create-pull-request@v7.0.8
-        continue-on-error: true
         id: create_pr
         with:
           title: "chore(deps): java"
