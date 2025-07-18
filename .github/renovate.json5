@@ -17,9 +17,9 @@
     {
       // remember to sync with update-java
       // Run every day at 4am
-      schedule: ["* 4 * * *"],
+      schedule: ["* 4 * * 3"],
       matchManagers: ["gradle", "gradle-wrapper"],
-      enabled: false,
+      automerge: false,
     },
     {
       matchManagers: ["github-actions"],
