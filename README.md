@@ -32,6 +32,18 @@ coverage {
 See the [
 `package-info`](https://github.com/xenoterracide/gradle-convention/blob/main/module/publish/src/main/java/com/xenoterracide/gradle/convention/publish/package-info.java)
 
+## FAQ
+
+### Gradle Support
+
+Gradle and Java versions are tested as follows. Older versions may work but are unsupported. Version 1.x starts with
+Java 11 but may require 17 without notice.
+
+| Version | Gradle | Java |
+| ------- | ------ | ---- |
+| v0.2.x  | 8.x    | 11.x |
+| v0.3.x  | 9.x    | 17.x |
+
 ## Contributing
 
 ### Languages
