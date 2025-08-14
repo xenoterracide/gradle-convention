@@ -135,7 +135,7 @@ SPDX-License-Identifier: CC0-1.0
       <property name="allowUnknownTags" value="true" />
     </module>
     <module name="JavadocVariable">
-      <property name="scope" value="protected" />
+      <property name="accessModifiers" value="public,protected" />
     </module>
     <module name="MissingJavadocMethod" />
     <module name="MissingJavadocPackage" />
