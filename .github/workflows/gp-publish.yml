@@ -11,7 +11,7 @@ jobs:
   release-to-gh:
     timeout-minutes: 5
     if: github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_branch,'v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       packages: write
@@ -39,7 +39,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
   publish-to-portal:
     if: github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_branch,'v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
       IS_PUBLISHING: 1
