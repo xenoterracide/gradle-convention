@@ -6,7 +6,7 @@ name: build
 on: [push, workflow_call]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write

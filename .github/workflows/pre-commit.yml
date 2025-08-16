@@ -6,7 +6,7 @@ name: precommit
 on: [push, workflow_call]
 jobs:
   license:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5.0.0
@@ -20,7 +20,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: reuse lint
   format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5.0.0
@@ -34,7 +34,7 @@ jobs:
       - run: npm ci
       - run: npx prettier --ignore-unknown --check '**'
   format-kotlin:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5.0.0
         with:
