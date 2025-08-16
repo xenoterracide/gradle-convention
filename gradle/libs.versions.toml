@@ -56,7 +56,7 @@ maven-artifact = "org.apache.maven:maven-artifact:3.+"
 mockito = { module = "org.mockito:mockito-core", version = "5.+" }
 plugin-convention-checkstyle = { module = "com.xenoterracide.gradle.convention:checkstyle", version.ref = "plugin-convention" }
 plugin-convention-coverage = { module = "com.xenoterracide.gradle.convention:coverage", version.ref = "plugin-convention" }
-plugin-convention-publish = { module = "com.xenoterracide.gradle.convention:publish" }
+plugin-convention-publish = { module = "com.xenoterracide.gradle.convention:publish", version.ref = "plugin-convention" }
 plugin-convention-spotbugs = { module = "com.xenoterracide.gradle.convention:spotbugs" }
 plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:2.+"
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
