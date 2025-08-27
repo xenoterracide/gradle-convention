@@ -58,7 +58,7 @@ plugin-convention-checkstyle = { module = "com.xenoterracide.gradle.convention:c
 plugin-convention-coverage = { module = "com.xenoterracide.gradle.convention:coverage", version.ref = "plugin-convention" }
 plugin-convention-publish = { module = "com.xenoterracide.gradle.convention:publish", version.ref = "plugin-convention" }
 plugin-convention-spotbugs = { module = "com.xenoterracide.gradle.convention:spotbugs", version.ref = "plugin-convention" }
-plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:2.+"
+plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:3.+"
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
 plugin-semver = "com.xenoterracide.gradle:semver:0.+"
