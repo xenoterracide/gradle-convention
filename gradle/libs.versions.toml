@@ -17,7 +17,7 @@ checker-core = { module = "org.checkerframework:checker", version.ref = "checker
 commons-io = "commons-io:commons-io:2.+"
 commons-lang = "org.apache.commons:commons-lang3:3.+"
 compile-testing = "com.google.testing.compile:compile-testing:0.+"
-equalsverifier = "nl.jqno.equalsverifier:equalsverifier:3.+"
+equalsverifier = "nl.jqno.equalsverifier:equalsverifier:4.+"
 errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "ep" }
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "ep" }
 errorprone-nullaway = "com.uber.nullaway:nullaway:0.+"
