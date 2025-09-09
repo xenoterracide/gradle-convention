@@ -9,9 +9,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5.0.0
+      - &checkout-step
+        uses: actions/checkout@v5.0.0
         with:
-          ref: ${{ github.event.workflow_run.head_branch}}
+          ref: ${{ github.event.workflow_run.head_branch }}
           filter: "blob:none"
           fetch-depth: 0
       - uses: actions/setup-python@v6.0.0
@@ -23,11 +24,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5.0.0
-        with:
-          ref: ${{ github.event.workflow_run.head_branch}}
-          filter: "blob:none"
-          fetch-depth: 0
+      - *checkout-step
       - uses: actions/setup-node@v5.0.0
         with:
           cache: "npm"
@@ -36,11 +33,7 @@ jobs:
   format-kotlin:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
-        with:
-          ref: ${{ github.event.workflow_run.head_branch}}
-          filter: "blob:none"
-          fetch-depth: 0
+      - *checkout-step
       - uses: actions/setup-java@v5.0.0
         with:
           distribution: temurin
