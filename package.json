@@ -11,9 +11,6 @@
     "prettier-plugin-sh": "^0.18.0",
     "prettier-plugin-toml": "^2.0.6"
   },
-  "peerDependencies": {
-    "husky": "^9"
-  },
   "scripts": {
     "postinstall": "pip install -r requirements.txt && git config core.hooksPath .config/git/hooks"
   }

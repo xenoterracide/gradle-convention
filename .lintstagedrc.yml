@@ -20,7 +20,7 @@
   - "reuse annotate --license 'CC-BY-NC-4.0' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights"
   - *prettier
 # Trivial files
-"*.{xml,yml,yaml,properties,toml,json5}":
+"*.{xml,yml,yaml,properties,toml,json5,js}":
   - &cc0 "reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights"
   - *prettier
 ".{editorconfig,gitattributes,mailmap}":

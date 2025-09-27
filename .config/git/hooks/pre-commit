@@ -5,4 +5,4 @@
 # SPDX-License-Identifier: MIT
 [ -n "$CI" ] && exit 0
 
-yarn lint-staged --verbose
+yarn lint-staged
