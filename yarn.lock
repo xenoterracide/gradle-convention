@@ -321,8 +321,6 @@ __metadata:
     prettier-plugin-properties: "npm:^0.3.0"
     prettier-plugin-sh: "npm:^0.18.0"
     prettier-plugin-toml: "npm:^2.0.6"
-  peerDependencies:
-    husky: ^9
   languageName: unknown
   linkType: soft
 
