@@ -34,9 +34,8 @@ jobs:
         with:
           node-version: 22
           cache: "yarn"
-      - run: ls $(yarn config get cacheFolder)
       - run: yarn install --immutable --inline-builds --check-resolutions
-      - run: yarn prettier --ignore-unknown --check '**'
+      - run: yarn exec prettier --ignore-unknown --check '**'
   format-kotlin:
     runs-on: ubuntu-24.04
     steps:
