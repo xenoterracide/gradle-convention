@@ -34,6 +34,7 @@ jobs:
         with:
           node-version: 22
           cache: "yarn"
+      - run: yarn install --immutable
       - run: yarn prettier --ignore-unknown --check '**'
   format-kotlin:
     runs-on: ubuntu-24.04
