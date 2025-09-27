@@ -15,3 +15,7 @@ SPDX-License-Identifier = "CC0-1.0"
 path = ".tool-versions"
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
+[[annotations]]
+path = "gradle/wrapper/gradle-wrapper.jar"
+SPDX-FileCopyrightText = "See MANIFEST.MF in jar"
+SPDX-License-Identifier = "Apache-2.0"
