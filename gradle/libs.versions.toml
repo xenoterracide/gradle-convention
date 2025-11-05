@@ -122,7 +122,7 @@ test-runtime = ["junit-engine", "junit-launcher"]
 
 [plugins]
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis" }
-gradle-plugin-publish = { id = "com.gradle.plugin-publish", version = "1.+" }
+gradle-plugin-publish = { id = "com.gradle.plugin-publish", version = "2.+" }
 semver = { id = "com.xenoterracide.gradle.semver", version = "0.13.+" }
 shadow = { id = "com.gradleup.shadow", version = "8.+" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring" }
