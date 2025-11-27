@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.0
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           filter: "blob:none"
           fetch-depth: 0
       - run: git remote set-head --auto origin
@@ -48,9 +48,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.0
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           filter: "blob:none"
           fetch-depth: 0
+      - run: git remote set-head --auto origin
       - uses: actions/setup-java@v5.0.0
         with:
           distribution: temurin
@@ -63,6 +64,7 @@ jobs:
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
       - run: ./gradlew publishPlugins --no-configuration-cache
+        if: steps.git_num_file_changes.outputs.stdout > 0
         env:
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
