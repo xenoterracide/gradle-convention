@@ -8,6 +8,7 @@
   dependencyDashboard: true,
   timezone: "UTC",
   automergeStrategy: "rebase",
+  // Managers config will be applied via packageRules below
   hostRules: [
     {
       hostType: "maven",
@@ -15,6 +16,11 @@
     },
   ],
   packageRules: [
+    {
+      // Disable legacy requirements manager; we use pip-compile with PEP 621
+      matchManagers: ["pip_requirements"],
+      enabled: false,
+    },
     {
       // remember to sync with update-java
       // Run every day at 04:00 UTC (scheduled after update-java at 03:00)
