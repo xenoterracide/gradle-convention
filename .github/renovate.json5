@@ -17,6 +17,11 @@
   ],
   packageRules: [
     {
+      // Use pip-compile with PEP 621 pyproject at repo root
+      matchManagers: ["pip-compile"],
+      managerFilePatterns: ["^pyproject\\.toml$"],
+    },
+    {
       // Disable legacy requirements manager; we use pip-compile with PEP 621
       matchManagers: ["pip_requirements"],
       enabled: false,
