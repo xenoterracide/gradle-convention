@@ -1,4 +1,5 @@
-// SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
 //
 // SPDX-License-Identifier: CC0-1.0
 
@@ -16,6 +17,12 @@
     },
   ],
   packageRules: [
+    {
+      // Use pip-compile with PEP 621 pyproject at repo root
+      matchManagers: ["pip-compile"],
+      managerFilePatterns: ["^pyproject\\.toml$"],
+      schedule: ["0 4 * * 3"],
+    },
     {
       // Disable legacy requirements manager; we use pip-compile with PEP 621
       matchManagers: ["pip_requirements"],
