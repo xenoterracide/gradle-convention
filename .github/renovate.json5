@@ -21,7 +21,7 @@
       // Use pip-compile with PEP 621 pyproject at repo root
       matchManagers: ["pip-compile"],
       managerFilePatterns: ["^pyproject\\.toml$"],
-      schedule: ["* 4 * * 3"],
+      schedule: ["* 6 * * 3"],
     },
     {
       // Disable legacy requirements manager; we use pip-compile with PEP 621
