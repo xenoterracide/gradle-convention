@@ -60,6 +60,28 @@ add a way to export these to your `PATH` in your `~/.profile`
 - [Gradle](https://docs.gradle.org/current/userguide/command_line_interface.html)
 - [Yarn 4](https://yarnpkg.com/getting-started/install) (via Corepack)
 
+### Running tests
+
+Run the full verification suite for this project by invoking the `check` task.
+
+From this project directory:
+
+```sh
+cd gradle-convention
+./gradlew check
+```
+
+Or from the monorepo root targeting this build:
+
+```sh
+./gradlew -p gradle-convention check
+```
+
+Notes:
+
+- For Gradle plugin modules, `check` includes the integration test suite (`testIntegration`) configured via our shared test conventions.
+- Zero‑tests fail‑fast: modules that apply our test conventions must include at least one test under `src/test/java` (or Kotlin equivalent) or the build will fail.
+
 #### Fetching Dependencies
 
 In order to get snapshots of dependencies, you must have a GitHub token in your `~/.gradle/gradle.properties` file. This
