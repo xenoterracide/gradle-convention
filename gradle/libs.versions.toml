@@ -24,6 +24,7 @@ plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plug
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
 plugin-spotbugs = "com.github.spotbugs:com.github.spotbugs.gradle.plugin:6.+"
+spotbugs-gradle-plugin = "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.+"
 spotbugs = "com.github.spotbugs:spotbugs:4.+"
 jspecify = "org.jspecify:jspecify:1.+"
 

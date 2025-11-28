@@ -12,7 +12,7 @@ plugins {
 }
 
 dependencies {
-  implementation(libs.plugin.spotbugs)
+  implementation(libs.spotbugs.gradle.plugin)
   testImplementation(libs.commons.io)
 }
 
