@@ -8,6 +8,7 @@ buildscript { dependencyLocking { lockAllConfigurations() } }
 
 plugins {
   alias(libs.plugins.semver)
+  alias(libs.plugins.dependency.analysis)
   `lifecycle-base`
 }
 
@@ -23,4 +24,26 @@ version =
 
 tasks.dependencies {
   dependsOn(subprojects.map { it.tasks.dependencies })
+}
+
+tasks.check {
+  // Ensure dependency analysis build health runs as part of check (root project)
+  dependsOn(tasks.buildHealth)
+}
+
+dependencyAnalysis {
+  issues {
+    all {
+      onAny { severity("fail") }
+      // Convention modules don't have integration tests; ignore that source set for analysis
+      ignoreSourceSet("testIntegration")
+      onUnusedDependencies {
+        // our.javatest convention wires common test libs that may be unused by these modules
+        exclude(libs.junit.parameters)
+        exclude(libs.assertj)
+        exclude(libs.junit.api)
+        exclude("org.junit.jupiter:junit-jupiter")
+      }
+    }
+  }
 }

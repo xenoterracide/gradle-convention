@@ -10,7 +10,6 @@ import com.github.spotbugs.snom.SpotBugsPlugin;
 import com.github.spotbugs.snom.SpotBugsTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.jspecify.annotations.NonNull;
 
 /**
  * A plugin that applies the SpotBugs plugin and configures it with sensible defaults.
@@ -33,7 +32,7 @@ public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
   public SpotBugsConventionPlugin() {}
 
   @Override
-  public void apply(@NonNull Project project) {
+  public void apply(Project project) {
     project.getPluginManager().apply(SpotBugsPlugin.class);
     project
       .getTasks()

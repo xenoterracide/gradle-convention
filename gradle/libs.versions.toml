@@ -23,7 +23,7 @@ plugin-convention-spotbugs = { module = "com.xenoterracide.gradle.convention:spo
 plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:3.+"
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
-plugin-spotbugs = "com.github.spotbugs:com.github.spotbugs.gradle.plugin:6.+"
+plugin-spotbugs = { module = "com.github.spotbugs.snom:spotbugs-gradle-plugin", version = "6.+" }
 spotbugs = "com.github.spotbugs:spotbugs:4.+"
 jspecify = "org.jspecify:jspecify:1.+"
 
@@ -34,4 +34,5 @@ test-impl = ["junit-api", "assertj", "junit-parameters"]
 test-runtime = ["junit-engine", "junit-launcher"]
 
 [plugins]
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis" }
 semver = { id = "com.xenoterracide.gradle.semver", version = "0.13.+" }
