@@ -8,6 +8,7 @@ buildscript { dependencyLocking { lockAllConfigurations() } }
 
 plugins {
   alias(libs.plugins.semver)
+  alias(libs.plugins.dependency.analysis)
   `lifecycle-base`
 }
 
@@ -23,4 +24,9 @@ version =
 
 tasks.dependencies {
   dependsOn(subprojects.map { it.tasks.dependencies })
+}
+
+tasks.check {
+  // Ensure dependency analysis build health runs as part of check
+  dependsOn(tasks.buildHealth)
 }

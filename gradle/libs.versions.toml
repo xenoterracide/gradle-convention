@@ -34,4 +34,5 @@ test-impl = ["junit-api", "assertj", "junit-parameters"]
 test-runtime = ["junit-engine", "junit-launcher"]
 
 [plugins]
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis" }
 semver = { id = "com.xenoterracide.gradle.semver", version = "0.13.+" }
