@@ -18,14 +18,14 @@
  *   id("com.xenoterracide.gradle.convention.publish")
  * }
  *
- * repositoryHost(GithubPublicRepositoryHostConfiguration())
+ * repositoryHost(GithubPublicRepositoryConfiguration())
  * repositoryHost.namespace.set("xenoterracide")
  *
  * publicationLegal {
  *   // this is the same as `maven-publish` `pom.inceptionYear`
  *   inceptionYear.set(2024)
  *   // this does NOT take spdx expressions
- *   spdxIdentifiers.addAll("GPL-3.0-or-later", "Classpath-exception-2.0")
+ *   spdxLicenseIdentifiers.addAll("GPL-3.0-or-later", "Classpath-exception-2.0")
  * }
  * }
  *
