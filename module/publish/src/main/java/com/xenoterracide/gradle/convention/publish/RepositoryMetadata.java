@@ -38,7 +38,7 @@ public class RepositoryMetadata {
    * @return clone url
    */
   public Provider<URI> getCloneUrl() {
-    return this.getWesiteUrl().zip(this.extension, (uri, ext) -> uri.resolve(uri.getPath() + "." + ext));
+    return this.getWebsiteUrl().zip(this.extension, (uri, ext) -> uri.resolve(uri.getPath() + "." + ext));
   }
 
   /**
@@ -46,7 +46,7 @@ public class RepositoryMetadata {
    *
    * @return website url
    */
-  public Provider<URI> getWesiteUrl() {
+  public Provider<URI> getWebsiteUrl() {
     return this.host.zip(this.namespace, this.resolver).zip(this.name, this.resolver);
   }
 

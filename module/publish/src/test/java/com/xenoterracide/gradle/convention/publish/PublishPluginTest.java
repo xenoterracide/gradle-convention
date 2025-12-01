@@ -43,7 +43,7 @@ class PublishPluginTest {
     var resolver = new RepositoryMetadata(repositoryHost, project);
     new GithubPublicRepositoryConfiguration().execute(repositoryHost);
     repositoryHost.getNamespace().set("xenoterracide");
-    assertThat(resolver.getWesiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
+    assertThat(resolver.getWebsiteUrl().get()).hasToString("https://github.com/xenoterracide/that");
     assertThat(resolver.getCloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
     assertThat(resolver.getPackageUrl().get()).hasToString("https://maven.pkg.github.com/xenoterracide/that");
     assertThat(resolver.getDeveloperConnection().get()).isEqualTo("scm:git:https://github.com/xenoterracide/that.git");
@@ -57,7 +57,7 @@ class PublishPluginTest {
     repositoryHost.getDevelopmentPackageHost().set(URI.create("https://package.example.org"));
     repositoryHost.getExtension().set("hg");
 
-    assertThat(resolver.getWesiteUrl().get()).hasToString("https://example.org/user/that");
+    assertThat(resolver.getWebsiteUrl().get()).hasToString("https://example.org/user/that");
     assertThat(resolver.getCloneUrl().get()).hasToString("https://example.org/user/that.hg");
     assertThat(resolver.getPackageUrl().get()).hasToString("https://package.example.org/user/that");
     assertThat(resolver.getDeveloperConnection().get()).isEqualTo("scm:hg:https://example.org/user/that.hg");
