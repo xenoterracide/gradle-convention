@@ -68,7 +68,7 @@ public class PublishPlugin implements Plugin<Project> {
           });
           pom.scm(scm -> {
             scm.getConnection().set(repo.getCloneUrl().map(Object::toString));
-            scm.getUrl().set(repo.getWesiteUrl().map(Object::toString));
+            scm.getUrl().set(repo.getWebsiteUrl().map(Object::toString));
             scm.getDeveloperConnection().set(repo.getDeveloperConnection());
           });
         });
