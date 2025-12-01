@@ -10,7 +10,6 @@ import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
-import org.jspecify.annotations.NonNull;
 
 /**
  * Plugin for configuring publishinga java to a repository host.
@@ -24,7 +23,7 @@ public class PublishPlugin implements Plugin<Project> {
 
   @Override
   @SuppressWarnings("checkstyle:MethodLength")
-  public void apply(@NonNull Project project) {
+  public void apply(Project project) {
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
     project.setVersion(rootProject.getVersion());
