@@ -19,8 +19,10 @@ import org.gradle.api.plugins.quality.CheckstylePlugin;
  */
 public class CheckstyleConventionPlugin implements Plugin<Project> {
 
+  private static final String CHECKSTYLE = "checkstyle";
+
   static String getPath(String taskName) {
-    var sourceSetName = taskName.substring("checkstyle".length());
+    var sourceSetName = taskName.substring(CHECKSTYLE.length());
     var filename = sourceSetName.substring(0, 1).toLowerCase(Locale.ENGLISH) + sourceSetName.substring(1);
     return ".config/checkstyle/" + filename + ".xml";
   }
@@ -39,6 +41,6 @@ public class CheckstyleConventionPlugin implements Plugin<Project> {
       checkstyle.setConfigFile(config);
     });
 
-    project.getTasks().register("checkstyle", task -> task.dependsOn(checkstyleTasks));
+    project.getTasks().register(CHECKSTYLE, task -> task.dependsOn(checkstyleTasks));
   }
 }
