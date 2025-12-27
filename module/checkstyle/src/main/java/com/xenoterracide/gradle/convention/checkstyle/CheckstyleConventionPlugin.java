@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
 //
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.checkstyle;
 
@@ -19,8 +19,10 @@ import org.gradle.api.plugins.quality.CheckstylePlugin;
  */
 public class CheckstyleConventionPlugin implements Plugin<Project> {
 
+  private static final String CHECKSTYLE = "checkstyle";
+
   static String getPath(String taskName) {
-    var sourceSetName = taskName.substring("checkstyle".length());
+    var sourceSetName = taskName.substring(CHECKSTYLE.length());
     var filename = sourceSetName.substring(0, 1).toLowerCase(Locale.ENGLISH) + sourceSetName.substring(1);
     return ".config/checkstyle/" + filename + ".xml";
   }
@@ -28,17 +30,17 @@ public class CheckstyleConventionPlugin implements Plugin<Project> {
   @Override
   public void apply(Project project) {
     project.getPlugins().apply(CheckstylePlugin.class);
-    project
-      .getTasks()
-      .withType(Checkstyle.class)
-      .configureEach(checkstyle -> {
-        checkstyle.setShowViolations(true);
+    var checkstyleTasks = project.getTasks().withType(Checkstyle.class);
+    checkstyleTasks.configureEach(checkstyle -> {
+      checkstyle.setShowViolations(true);
 
-        var path = checkstyle.getName().transform(CheckstyleConventionPlugin::getPath);
+      var path = checkstyle.getName().transform(CheckstyleConventionPlugin::getPath);
 
-        var file = project.file(path);
-        var config = file.exists() ? file : project.getRootProject().file(path);
-        checkstyle.setConfigFile(config);
-      });
+      var file = project.file(path);
+      var config = file.exists() ? file : project.getRootProject().file(path);
+      checkstyle.setConfigFile(config);
+    });
+
+    project.getTasks().register(CHECKSTYLE, task -> task.dependsOn(checkstyleTasks));
   }
 }
