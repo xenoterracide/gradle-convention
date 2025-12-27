@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
 //
 // SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.checkstyle;
 
@@ -28,17 +29,17 @@ public class CheckstyleConventionPlugin implements Plugin<Project> {
   @Override
   public void apply(Project project) {
     project.getPlugins().apply(CheckstylePlugin.class);
-    project
-      .getTasks()
-      .withType(Checkstyle.class)
-      .configureEach(checkstyle -> {
-        checkstyle.setShowViolations(true);
+    var checkstyleTasks = project.getTasks().withType(Checkstyle.class);
+    checkstyleTasks.configureEach(checkstyle -> {
+      checkstyle.setShowViolations(true);
 
-        var path = checkstyle.getName().transform(CheckstyleConventionPlugin::getPath);
+      var path = checkstyle.getName().transform(CheckstyleConventionPlugin::getPath);
 
-        var file = project.file(path);
-        var config = file.exists() ? file : project.getRootProject().file(path);
-        checkstyle.setConfigFile(config);
-      });
+      var file = project.file(path);
+      var config = file.exists() ? file : project.getRootProject().file(path);
+      checkstyle.setConfigFile(config);
+    });
+
+    project.getTasks().register("checkstyle", task -> task.dependsOn(checkstyleTasks));
   }
 }
