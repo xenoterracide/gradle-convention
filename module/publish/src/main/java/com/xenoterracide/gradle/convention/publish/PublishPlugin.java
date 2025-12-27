@@ -19,6 +19,7 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 public class PublishPlugin implements Plugin<Project> {
 
   private static final String REPO = "repo";
+  private static final String STAGING_REPO = REPO;
 
   /**
    * default constructor.
@@ -26,7 +27,7 @@ public class PublishPlugin implements Plugin<Project> {
   public PublishPlugin() {}
 
   @Override
-  @SuppressWarnings("checkstyle:MethodLength")
+  @SuppressWarnings({ "checkstyle:MethodLength", "checkstyle:LambdaBodyLength" })
   public void apply(Project project) {
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
@@ -41,7 +42,6 @@ public class PublishPlugin implements Plugin<Project> {
     var publications = publishing.getPublications();
 
     var log = project.getLogger();
-    // CHECKSTYLE:OFF: LambdaBodyLength
     publications
       .withType(MavenPublication.class)
       .configureEach(pub -> {
@@ -65,7 +65,7 @@ public class PublishPlugin implements Plugin<Project> {
                   pl.getName().set(license);
                   pl.getUrl().set("https://spdx.org/licenses/" + license + ".html");
                   pl.getComments().set("See git repo README.md for more information.");
-                  pl.getDistribution().set("repo");
+                  pl.getDistribution().set(REPO);
                 })
               );
           });
@@ -83,7 +83,6 @@ public class PublishPlugin implements Plugin<Project> {
           });
         });
       });
-    // CHECKSTYLE:ON: LambdaBodyLength
     publishing.repositories(pubRepo -> {
       pubRepo.maven(maven -> {
         maven.setName("gh");
@@ -97,7 +96,7 @@ public class PublishPlugin implements Plugin<Project> {
       });
       pubRepo.maven(maven -> {
         maven.setName("staging");
-        maven.setUrl(project.getLayout().getBuildDirectory().dir(REPO));
+        maven.setUrl(project.getLayout().getBuildDirectory().dir(STAGING_REPO));
       });
     });
 
@@ -106,7 +105,7 @@ public class PublishPlugin implements Plugin<Project> {
       .register("stagingPath", task -> {
         task.setGroup("Publishing");
         task.setDescription("Print path to the primary publication location in the staging repository");
-        var stagingPath = project.getLayout().getBuildDirectory().dir(REPO);
+        var stagingPath = project.getLayout().getBuildDirectory().dir(STAGING_REPO);
         var groupPath = project.getGroup().toString().replace(".", "/");
         var artifactId = project.getName();
         var version = project.getVersion();
