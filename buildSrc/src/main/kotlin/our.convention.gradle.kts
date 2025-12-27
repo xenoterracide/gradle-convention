@@ -31,5 +31,5 @@ gradlePlugin {
 
 publicationLegal {
   inceptionYear.set(2024)
-  spdxLicenseIdentifiers.add("Apache-2.0")
+  spdxLicenseIdentifiers.add("GPL-3.0-or-later", "Classpath-exception-2.0")
 }
