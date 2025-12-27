@@ -9,7 +9,7 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.TaskAction;
 
 /**
@@ -31,7 +31,7 @@ public abstract class StagingPathTask extends DefaultTask {
    *
    * @return staging repository directory
    */
-  @Internal
+  @InputDirectory
   public abstract DirectoryProperty getStagingDirectory();
 
   /**
