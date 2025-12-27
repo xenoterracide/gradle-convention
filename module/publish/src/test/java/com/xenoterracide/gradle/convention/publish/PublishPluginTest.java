@@ -47,6 +47,19 @@ class PublishPluginTest {
     assertThat(resolver.getCloneUrl().get()).hasToString("https://github.com/xenoterracide/that.git");
     assertThat(resolver.getPackageUrl().get()).hasToString("https://maven.pkg.github.com/xenoterracide/that");
     assertThat(resolver.getDeveloperConnection().get()).isEqualTo("scm:git:https://github.com/xenoterracide/that.git");
+
+    var publishing = project.getExtensions().getByType(PublishingExtension.class);
+    assertThat(publishing.getRepositories().findByName("gh")).isNotNull();
+    assertThat(publishing.getRepositories().findByName("central")).isNotNull();
+    assertThat(publishing.getRepositories().findByName("staging")).isNotNull();
+  }
+
+  @Test
+  void stagingPathTask() {
+    var task = (StagingPathTask) project.getTasks().getByName("stagingPath");
+    assertThat(task.getProjectGroup().get()).isEqualTo(project.getGroup().toString());
+    assertThat(task.getProjectName().get()).isEqualTo(project.getName());
+    assertThat(task.getProjectVersion().get()).isEqualTo(project.getVersion().toString());
   }
 
   @Test
