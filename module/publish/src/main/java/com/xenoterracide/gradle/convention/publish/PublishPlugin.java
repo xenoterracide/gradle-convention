@@ -4,6 +4,8 @@
 
 package com.xenoterracide.gradle.convention.publish;
 
+import java.net.URI;
+import java.nio.file.Path;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.credentials.PasswordCredentials;
@@ -16,13 +18,16 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
  */
 public class PublishPlugin implements Plugin<Project> {
 
+  private static final String REPO = "repo";
+  private static final String STAGING_REPO = REPO;
+
   /**
    * default constructor.
    */
   public PublishPlugin() {}
 
   @Override
-  @SuppressWarnings("checkstyle:MethodLength")
+  @SuppressWarnings({ "checkstyle:MethodLength", "checkstyle:LambdaBodyLength" })
   public void apply(Project project) {
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
@@ -37,12 +42,17 @@ public class PublishPlugin implements Plugin<Project> {
     var publications = publishing.getPublications();
 
     var log = project.getLogger();
-    // CHECKSTYLE:OFF: LambdaBodyLength
     publications
       .withType(MavenPublication.class)
       .configureEach(pub -> {
         pub.suppressAllPomMetadataWarnings();
-        log.quiet("publication {} {}:{}:{}", pub.getName(), pub.getGroupId(), pub.getArtifactId(), pub.getVersion());
+        log.lifecycle(
+          "publication {} {}:{}:{}",
+          pub.getName(),
+          pub.getGroupId(),
+          pub.getArtifactId(),
+          pub.getVersion()
+        );
 
         pub.pom(pom -> {
           pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
@@ -55,7 +65,7 @@ public class PublishPlugin implements Plugin<Project> {
                   pl.getName().set(license);
                   pl.getUrl().set("https://spdx.org/licenses/" + license + ".html");
                   pl.getComments().set("See git repo README.md for more information.");
-                  pl.getDistribution().set("repo");
+                  pl.getDistribution().set(REPO);
                 })
               );
           });
@@ -73,13 +83,46 @@ public class PublishPlugin implements Plugin<Project> {
           });
         });
       });
-    // CHECKSTYLE:ON: LambdaBodyLength
     publishing.repositories(pubRepo -> {
       pubRepo.maven(maven -> {
         maven.setName("gh");
         maven.setUrl(repo.getPackageUrl());
         maven.credentials(PasswordCredentials.class);
       });
+      pubRepo.maven(maven -> {
+        maven.setName("central");
+        maven.setUrl(URI.create("https://central.sonatype.com/api/v1/publisher/deployments/maven2/"));
+        maven.credentials(PasswordCredentials.class);
+      });
+      pubRepo.maven(maven -> {
+        maven.setName("staging");
+        maven.setUrl(project.getLayout().getBuildDirectory().dir(STAGING_REPO));
+      });
     });
+
+    project
+      .getTasks()
+      .register("stagingPath", task -> {
+        task.setGroup("Publishing");
+        task.setDescription("Print path to the primary publication location in the staging repository");
+        var stagingPath = project.getLayout().getBuildDirectory().dir(STAGING_REPO);
+        var groupPath = project.getGroup().toString().replace(".", "/");
+        var artifactId = project.getName();
+        var version = project.getVersion();
+        task
+          .getActions()
+          .add(actionTask -> {
+            var artifactPath = stagingPath
+              .map(dir -> dir.getAsFile().toPath())
+              .map(path -> path.resolve(groupPath))
+              .map(path -> path.resolve(artifactId))
+              .map(path -> path.resolve(version.toString()))
+              .map(Path::toAbsolutePath)
+              .map(path -> path.toAbsolutePath().toString())
+              .get();
+
+            System.out.println(artifactPath);
+          });
+      });
   }
 }
