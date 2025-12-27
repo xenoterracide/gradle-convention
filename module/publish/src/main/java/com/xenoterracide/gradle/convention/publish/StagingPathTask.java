@@ -73,7 +73,6 @@ public abstract class StagingPathTask extends DefaultTask {
       .map(path -> path.resolve(artifactId))
       .map(path -> path.resolve(version))
       .map(Path::toAbsolutePath)
-      .map(path -> path.toAbsolutePath().toString())
       .get();
 
     System.out.println(artifactPath);
