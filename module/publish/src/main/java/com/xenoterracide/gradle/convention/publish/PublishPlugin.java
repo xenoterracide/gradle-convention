@@ -113,7 +113,7 @@ public class PublishPlugin implements Plugin<Project> {
 
       task.getDirectory().set(project.getLayout().dir(repository));
       task.getProjectName().set(project.getName());
-      task.getProjectVersion().set(project.provider(project.getVersion()::toString));
+      task.getProjectGroup().set(project.getGroup().toString());
       task.getProjectVersion().set(project.provider(project.getVersion()::toString));
     });
   }
