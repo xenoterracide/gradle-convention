@@ -14,7 +14,7 @@ import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class StagingPathTaskTest {
+class ArtifactPathTaskTest {
 
   private Project project;
 
@@ -25,11 +25,11 @@ class StagingPathTaskTest {
 
   @Test
   void testRun() {
-    var task = project.getTasks().register("stagingPath", StagingPathTask.class).get();
+    var task = project.getTasks().register("stagingPath", ArtifactPathTask.class).get();
     task.getProjectGroup().set("com.example");
     task.getProjectName().set("test-artifact");
     task.getProjectVersion().set("1.0.0");
-    task.getStagingDirectory().set(project.getLayout().getBuildDirectory().dir("repo"));
+    task.getDirectory().set(project.getLayout().getBuildDirectory().dir("repo"));
 
     var outContent = new ByteArrayOutputStream();
     var originalOut = System.out;

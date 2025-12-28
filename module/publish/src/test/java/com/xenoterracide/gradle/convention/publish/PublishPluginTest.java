@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
 //
 // SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.publish;
 
@@ -56,7 +57,7 @@ class PublishPluginTest {
 
   @Test
   void stagingPathTask() {
-    var task = (StagingPathTask) project.getTasks().getByName("stagingPath");
+    var task = (ArtifactPathTask) project.getTasks().getByName("stagingPath");
     assertThat(task.getProjectGroup().get()).isEqualTo(project.getGroup().toString());
     assertThat(task.getProjectName().get()).isEqualTo(project.getName());
     assertThat(task.getProjectVersion().get()).isEqualTo(project.getVersion().toString());
