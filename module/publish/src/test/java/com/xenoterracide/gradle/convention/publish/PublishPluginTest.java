@@ -33,7 +33,7 @@ class PublishPluginTest {
       .getExtensions()
       .getByType(PublishingExtension.class)
       .publications(publications -> {
-        publications.register("mavenJava", MavenPublication.class, mavenPublication -> {
+        publications.register("maven", MavenPublication.class, mavenPublication -> {
           mavenPublication.from(project.getComponents().getByName("java"));
         });
       });
