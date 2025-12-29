@@ -11,6 +11,7 @@ import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
+import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,10 @@ class PublishPluginTest {
   @BeforeEach
   void setup() {
     project = ProjectBuilder.builder().withName("that").build();
-    project.getPluginManager().apply(JavaLibraryPlugin.class);
-    project.getPluginManager().apply(PublishPlugin.class);
+    var plugins = project.getPluginManager();
+    plugins.apply(JavaLibraryPlugin.class);
+    plugins.apply(MavenPublishPlugin.class);
+    plugins.apply(PublishPlugin.class);
     repositoryHost = project.getExtensions().getByType(RepositoryHostExtension.class);
     publicationLegal = project.getExtensions().getByType(PublicationLegalExtension.class);
     project
@@ -55,7 +58,7 @@ class PublishPluginTest {
 
   @Test
   void stagingPathTask() {
-    var task = (ArtifactPathTask) project.getTasks().getByName("stagingPath");
+    var task = project.getTasks().named("stagingArtifactPath", ArtifactPathTask.class).get();
     assertThat(task.getProjectGroup().get()).isEqualTo(project.getGroup().toString());
     assertThat(task.getProjectName().get()).isEqualTo(project.getName());
     assertThat(task.getProjectVersion().get()).isEqualTo(project.getVersion().toString());

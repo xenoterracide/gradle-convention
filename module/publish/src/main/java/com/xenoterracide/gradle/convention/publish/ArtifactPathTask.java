@@ -13,7 +13,7 @@ import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.TaskAction;
 
 /**
- * Task for printing the path to the primary publication location in the staging repository.
+ * Task for printing the path of the maven publication location in the repository.
  */
 public abstract class ArtifactPathTask extends DefaultTask {
 
@@ -23,7 +23,7 @@ public abstract class ArtifactPathTask extends DefaultTask {
   @SuppressWarnings("this-escape")
   public ArtifactPathTask() {
     this.setGroup("Publishing");
-    this.setDescription("Print path to the primary publication location in the staging repository");
+    this.setDescription("Print path to the maven publication location of the repository");
   }
 
   /**

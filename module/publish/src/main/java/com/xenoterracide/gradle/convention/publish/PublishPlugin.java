@@ -12,10 +12,9 @@ import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
-import org.gradle.api.publish.maven.tasks.PublishToMavenRepository;
 
 /**
- * Plugin for configuring publishinga java to a repository host.
+ * Plugin for configuring publishing a java to a repository host.
  */
 public class PublishPlugin implements Plugin<Project> {
 
@@ -97,18 +96,19 @@ public class PublishPlugin implements Plugin<Project> {
     });
 
     var tasks = project.getTasks();
-
-    tasks.register("stagingPath", ArtifactPathTask.class, task -> {
-      var repository = tasks
-        .named("publishMavenPublicationToStagingRepository", PublishToMavenRepository.class)
-        .map(PublishToMavenRepository::getRepository)
-        .map(MavenArtifactRepository::getUrl)
-        .map(File::new);
-
-      task.getDirectory().set(project.getLayout().dir(repository));
-      task.getProjectName().set(project.getName());
-      task.getProjectGroup().set(project.getGroup().toString());
-      task.getProjectVersion().set(project.provider(project.getVersion()::toString));
-    });
+    var publishExtension = project.getExtensions().getByType(PublishingExtension.class);
+    publishExtension
+      .getRepositories()
+      .withType(MavenArtifactRepository.class)
+      .configureEach(repository -> {
+        if (!repository.getUrl().getScheme().startsWith("http")) {
+          tasks.register(repository.getName() + "ArtifactPath", ArtifactPathTask.class, t -> {
+            t.getDirectory().set(project.getLayout().dir(project.provider(() -> new File(repository.getUrl()))));
+            t.getProjectName().set(project.getName());
+            t.getProjectGroup().set(project.getGroup().toString());
+            t.getProjectVersion().set(project.provider(project.getVersion()::toString));
+          });
+        }
+      });
   }
 }
