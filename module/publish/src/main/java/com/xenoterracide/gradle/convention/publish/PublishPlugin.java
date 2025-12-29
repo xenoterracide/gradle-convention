@@ -7,11 +7,11 @@ package com.xenoterracide.gradle.convention.publish;
 import java.io.File;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
-import org.gradle.api.publish.maven.tasks.PublishToMavenRepository;
 
 /**
  * Plugin for configuring publishinga java to a repository host.
@@ -96,13 +96,11 @@ public class PublishPlugin implements Plugin<Project> {
     });
 
     var tasks = project.getTasks();
-    tasks
-      .withType(PublishToMavenRepository.class)
-      .stream()
-      .filter(task -> task.getName().startsWith("publishMavenPublicationTo"))
-      .toList()
-      .forEach(task -> {
-        var repository = task.getRepository();
+    var publishExtension = project.getExtensions().getByType(PublishingExtension.class);
+    publishExtension
+      .getRepositories()
+      .withType(MavenArtifactRepository.class)
+      .configureEach(repository -> {
         tasks.register(repository.getName() + "ArtifactPath", ArtifactPathTask.class, t -> {
           t.getDirectory().set(project.getLayout().dir(project.provider(() -> new File(repository.getUrl()))));
           t.getProjectName().set(project.getName());
