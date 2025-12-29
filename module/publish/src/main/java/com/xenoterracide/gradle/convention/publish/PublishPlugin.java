@@ -5,7 +5,6 @@
 package com.xenoterracide.gradle.convention.publish;
 
 import java.io.File;
-import java.net.URI;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
@@ -89,11 +88,6 @@ public class PublishPlugin implements Plugin<Project> {
       pubRepo.maven(maven -> {
         maven.setName("gh");
         maven.setUrl(repo.getPackageUrl());
-        maven.credentials(PasswordCredentials.class);
-      });
-      pubRepo.maven(maven -> {
-        maven.setName("central");
-        maven.setUrl(URI.create("https://central.sonatype.com/api/v1/publisher/deployments/maven2/"));
         maven.credentials(PasswordCredentials.class);
       });
       pubRepo.maven(maven -> {
