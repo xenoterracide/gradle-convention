@@ -7,7 +7,6 @@ package com.xenoterracide.gradle.convention.publish;
 import java.io.File;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
@@ -97,18 +96,19 @@ public class PublishPlugin implements Plugin<Project> {
     });
 
     var tasks = project.getTasks();
-
-    tasks.register("stagingPath", ArtifactPathTask.class, task -> {
-      var repository = tasks
-        .named("publishMavenPublicationToStagingRepository", PublishToMavenRepository.class)
-        .map(PublishToMavenRepository::getRepository)
-        .map(MavenArtifactRepository::getUrl)
-        .map(File::new);
-
-      task.getDirectory().set(project.getLayout().dir(repository));
-      task.getProjectName().set(project.getName());
-      task.getProjectGroup().set(project.getGroup().toString());
-      task.getProjectVersion().set(project.provider(project.getVersion()::toString));
-    });
+    tasks
+      .withType(PublishToMavenRepository.class)
+      .stream()
+      .filter(task -> task.getName().startsWith("publishMavenPublicationTo"))
+      .toList()
+      .forEach(task -> {
+        var repository = task.getRepository();
+        tasks.register(repository.getName() + "ArtifactPath", ArtifactPathTask.class, t -> {
+          t.getDirectory().set(project.getLayout().dir(project.provider(() -> new File(repository.getUrl()))));
+          t.getProjectName().set(project.getName());
+          t.getProjectGroup().set(project.getGroup().toString());
+          t.getProjectVersion().set(project.provider(project.getVersion()::toString));
+        });
+      });
   }
 }

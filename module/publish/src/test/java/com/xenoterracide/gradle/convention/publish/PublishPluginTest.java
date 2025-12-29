@@ -55,7 +55,7 @@ class PublishPluginTest {
 
   @Test
   void stagingPathTask() {
-    var task = (ArtifactPathTask) project.getTasks().getByName("stagingPath");
+    var task = project.getTasks().named("stagingArtifactPath", ArtifactPathTask.class).get();
     assertThat(task.getProjectGroup().get()).isEqualTo(project.getGroup().toString());
     assertThat(task.getProjectName().get()).isEqualTo(project.getName());
     assertThat(task.getProjectVersion().get()).isEqualTo(project.getVersion().toString());
