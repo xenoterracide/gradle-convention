@@ -101,12 +101,14 @@ public class PublishPlugin implements Plugin<Project> {
       .getRepositories()
       .withType(MavenArtifactRepository.class)
       .configureEach(repository -> {
-        tasks.register(repository.getName() + "ArtifactPath", ArtifactPathTask.class, t -> {
-          t.getDirectory().set(project.getLayout().dir(project.provider(() -> new File(repository.getUrl()))));
-          t.getProjectName().set(project.getName());
-          t.getProjectGroup().set(project.getGroup().toString());
-          t.getProjectVersion().set(project.provider(project.getVersion()::toString));
-        });
+        if (!repository.getUrl().getScheme().startsWith("http")) {
+          tasks.register(repository.getName() + "ArtifactPath", ArtifactPathTask.class, t -> {
+            t.getDirectory().set(project.getLayout().dir(project.provider(() -> new File(repository.getUrl()))));
+            t.getProjectName().set(project.getName());
+            t.getProjectGroup().set(project.getGroup().toString());
+            t.getProjectVersion().set(project.provider(project.getVersion()::toString));
+          });
+        }
       });
   }
 }
