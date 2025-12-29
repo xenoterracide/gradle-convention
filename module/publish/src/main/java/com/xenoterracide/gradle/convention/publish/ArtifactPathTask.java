@@ -15,13 +15,13 @@ import org.gradle.api.tasks.TaskAction;
 /**
  * Task for printing the path to the primary publication location in the staging repository.
  */
-public abstract class StagingPathTask extends DefaultTask {
+public abstract class ArtifactPathTask extends DefaultTask {
 
   /**
    * default constructor.
    */
   @SuppressWarnings("this-escape")
-  public StagingPathTask() {
+  public ArtifactPathTask() {
     this.setGroup("Publishing");
     this.setDescription("Print path to the primary publication location in the staging repository");
   }
@@ -32,7 +32,7 @@ public abstract class StagingPathTask extends DefaultTask {
    * @return staging repository directory
    */
   @InputDirectory
-  public abstract DirectoryProperty getStagingDirectory();
+  public abstract DirectoryProperty getDirectory();
 
   /**
    * The group of the project.
@@ -67,7 +67,7 @@ public abstract class StagingPathTask extends DefaultTask {
     var artifactId = this.getProjectName().get();
     var version = this.getProjectVersion().get();
 
-    var artifactPath = this.getStagingDirectory()
+    var artifactPath = this.getDirectory()
       .map(dir -> dir.getAsFile().toPath())
       .map(path -> path.resolve(groupPath))
       .map(path -> path.resolve(artifactId))
