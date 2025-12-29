@@ -108,4 +108,4 @@ Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - Gradle Kotlin and Config Files: [MIT](https://choosealicense.com/licenses/mit/)
 - Documentation including Javadoc: [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 
-© Copyright 2024 Caleb Cushing.
+© Copyright 2024–2025 Caleb Cushing.
