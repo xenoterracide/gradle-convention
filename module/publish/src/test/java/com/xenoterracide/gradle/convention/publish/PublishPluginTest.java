@@ -25,8 +25,12 @@ class PublishPluginTest {
   @BeforeEach
   void setup() {
     project = ProjectBuilder.builder().withName("that").build();
-    project.getPluginManager().apply(JavaLibraryPlugin.class);
-    project.getPluginManager().apply(MavenPublishPlugin.class);
+    var plugins = project.getPluginManager();
+    plugins.apply(JavaLibraryPlugin.class);
+    plugins.apply(MavenPublishPlugin.class);
+    plugins.apply(PublishPlugin.class);
+    repositoryHost = project.getExtensions().getByType(RepositoryHostExtension.class);
+    publicationLegal = project.getExtensions().getByType(PublicationLegalExtension.class);
     project
       .getExtensions()
       .getByType(PublishingExtension.class)
@@ -35,9 +39,6 @@ class PublishPluginTest {
           mavenPublication.from(project.getComponents().getByName("java"));
         });
       });
-    project.getPluginManager().apply(PublishPlugin.class);
-    repositoryHost = project.getExtensions().getByType(RepositoryHostExtension.class);
-    publicationLegal = project.getExtensions().getByType(PublicationLegalExtension.class);
   }
 
   @Test
