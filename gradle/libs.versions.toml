@@ -4,6 +4,7 @@
 
 [versions]
 ep = "2.+"
+junit = "6.+"
 plugin-convention = "0.+"
 
 [libraries]
@@ -11,8 +12,9 @@ assertj = "org.assertj:assertj-core:3.+"
 commons-io = "commons-io:commons-io:2.+"
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "ep" }
 errorprone-nullaway = "com.uber.nullaway:nullaway:0.+"
-junit-bom = "org.junit:junit-bom:5.+"
+jspecify = "org.jspecify:jspecify:1.+"
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit-parameters = { module = "org.junit.jupiter:junit-jupiter-params" }
@@ -25,7 +27,6 @@ plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:4.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
 plugin-spotbugs = { module = "com.github.spotbugs.snom:spotbugs-gradle-plugin", version = "6.+" }
 spotbugs = "com.github.spotbugs:spotbugs:4.+"
-jspecify = "org.jspecify:jspecify:1.+"
 
 [bundles]
 compile = ["jspecify"]
