@@ -61,7 +61,7 @@ public class PublishPlugin implements Plugin<Project> {
               .forEach(license ->
                 licenses.license(pl -> {
                   pl.getName().set(license);
-                  pl.getUrl().set(repo.getWebsiteUrl().map(uri -> uri + "/LICENSES"));
+                  pl.getUrl().set(repo.getWebsiteUrl().map(uri -> uri + "/tree/develop/LICENSES"));
                   pl.getComments().set("See git repo README.md for more information.");
                   pl.getDistribution().set(REPO);
                 })
