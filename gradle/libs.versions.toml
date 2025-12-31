@@ -11,7 +11,7 @@ assertj = "org.assertj:assertj-core:3.+"
 commons-io = "commons-io:commons-io:2.+"
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "ep" }
 errorprone-nullaway = "com.uber.nullaway:nullaway:0.+"
-junit-bom = "org.junit:junit-bom:5.+"
+junit-bom = "org.junit:junit-bom:6.+"
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
