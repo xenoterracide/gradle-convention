@@ -22,8 +22,12 @@ java {
   withJavadocJar()
   withSourcesJar()
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(21))
+    languageVersion.set(JavaLanguageVersion.of(25))
   }
+}
+
+tasks.compileJava {
+  options.release = 17
 }
 
 tasks.withType<Javadoc>().configureEach {

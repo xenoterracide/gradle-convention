@@ -22,6 +22,13 @@ version =
     .orElse(Semver.ZERO)
     .get()
 
+tasks.register("version") {
+  description = "Print version"
+  group = "Help"
+  val myVersion = semver
+  actions.add { println(myVersion.toString()) }
+}
+
 tasks.dependencies {
   dependsOn(subprojects.map { it.tasks.dependencies })
 }
