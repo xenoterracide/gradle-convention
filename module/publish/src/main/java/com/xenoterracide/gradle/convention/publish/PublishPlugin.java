@@ -4,15 +4,12 @@
 
 package com.xenoterracide.gradle.convention.publish;
 
-import java.io.File;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
-import org.gradle.api.publish.maven.tasks.PublishToMavenRepository;
 
 /**
  * Plugin for configuring publishinga java to a repository host.
@@ -94,21 +91,6 @@ public class PublishPlugin implements Plugin<Project> {
         maven.setName("staging");
         maven.setUrl(project.getLayout().getBuildDirectory().dir(STAGING_REPO));
       });
-    });
-
-    var tasks = project.getTasks();
-
-    tasks.register("stagingPath", ArtifactPathTask.class, task -> {
-      var repository = tasks
-        .named("publishMavenPublicationToStagingRepository", PublishToMavenRepository.class)
-        .map(PublishToMavenRepository::getRepository)
-        .map(MavenArtifactRepository::getUrl)
-        .map(File::new);
-
-      task.getDirectory().set(project.getLayout().dir(repository));
-      task.getProjectName().set(project.getName());
-      task.getProjectGroup().set(project.getGroup().toString());
-      task.getProjectVersion().set(project.provider(project.getVersion()::toString));
     });
   }
 }

@@ -54,14 +54,6 @@ class PublishPluginTest {
   }
 
   @Test
-  void stagingPathTask() {
-    var task = (ArtifactPathTask) project.getTasks().getByName("stagingPath");
-    assertThat(task.getProjectGroup().get()).isEqualTo(project.getGroup().toString());
-    assertThat(task.getProjectName().get()).isEqualTo(project.getName());
-    assertThat(task.getProjectVersion().get()).isEqualTo(project.getVersion().toString());
-  }
-
-  @Test
   void explicitlySet() {
     var resolver = new RepositoryMetadata(repositoryHost, project);
     repositoryHost.getNamespace().set("user");
