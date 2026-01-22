@@ -22,7 +22,7 @@ jobs:
     env:
       IS_PUBLISHING: 1
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           filter: "blob:none"
