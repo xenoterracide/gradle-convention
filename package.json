@@ -12,6 +12,7 @@
     "prettier-plugin-toml": "^2.0.6"
   },
   "scripts": {
+    "test": "./gradlew check",
     "postinstall": "pip install -r requirements.txt && git config core.hooksPath .config/git/hooks"
   }
 }
