@@ -466,13 +466,13 @@ __metadata:
   linkType: hard
 
 "prettier-plugin-java@npm:^2.7.5":
-  version: 2.7.7
-  resolution: "prettier-plugin-java@npm:2.7.7"
+  version: 2.8.1
+  resolution: "prettier-plugin-java@npm:2.8.1"
   dependencies:
     java-parser: "npm:3.0.1"
   peerDependencies:
     prettier: ^3.0.0
-  checksum: 10c0/0acf9ab0dcb39739f9dd80c880cc9d703d73abf62b807d213258d2424ffc7d6617be4d95dfed25e0af5856a13fc3e0b16c694e150e202d2a180d9c6c5d7f5bd8
+  checksum: 10c0/85c8ded14a0aaf1df1d5367ebe0f18c9d7d7284780a13bd1e037ca0190ebc4d42e69a849ddd3a2440c4c14cc19fbeb3b57acec1a3cd61076e917a1432dd72c75
   languageName: node
   linkType: hard
 
@@ -511,11 +511,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^3.6.2":
-  version: 3.7.4
-  resolution: "prettier@npm:3.7.4"
+  version: 3.8.1
+  resolution: "prettier@npm:3.8.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/9675d2cd08eacb1faf1d1a2dbfe24bfab6a912b059fc9defdb380a408893d88213e794a40a2700bd29b140eb3172e0b07c852853f6e22f16f3374659a1a13389
+  checksum: 10c0/33169b594009e48f570471271be7eac7cdcf88a209eed39ac3b8d6d78984039bfa9132f82b7e6ba3b06711f3bfe0222a62a1bfb87c43f50c25a83df1b78a2c42
   languageName: node
   linkType: hard
 
