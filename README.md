@@ -1,12 +1,12 @@
 <!--
-SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+SPDX-FileCopyrightText: Copyright © 2025 - 2026 Caleb Cushing
 
 SPDX-License-Identifier: CC-BY-NC-4.0
 -->
 
 # My Conventions
 
-Firstly these are my personal conventions; if you find them useful feel free to let me know and I can migrate them to a
+Firstly, these are my personal conventions; if you find them useful feel free to let me know and I can migrate them to a
 stable API. You're welcome to use them either way.
 
 ## Coverage
