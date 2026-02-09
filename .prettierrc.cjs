@@ -2,15 +2,16 @@
 //
 // SPDX-License-Identifier: CC0-1.0
 
-/** @type {import('prettier').Config} */
+/** @type {import('prettier').Options} */
 module.exports = {
   printWidth: 120,
   xmlWhitespaceSensitivity: "ignore",
+  keySeparator: "=",
   plugins: [
     require.resolve("@prettier/plugin-xml"),
     require.resolve("prettier-plugin-properties"),
     require.resolve("prettier-plugin-java"),
     require.resolve("prettier-plugin-toml"),
-    require.resolve("prettier-plugin-sh"),
+    // require.resolve("prettier-plugin-sh"),
   ],
 };

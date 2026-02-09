@@ -47,6 +47,105 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@github/copilot-darwin-arm64@npm:0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot-darwin-arm64@npm:0.0.400"
+  bin:
+    copilot-darwin-arm64: copilot
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@github/copilot-darwin-x64@npm:0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot-darwin-x64@npm:0.0.400"
+  bin:
+    copilot-darwin-x64: copilot
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@github/copilot-linux-arm64@npm:0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot-linux-arm64@npm:0.0.400"
+  bin:
+    copilot-linux-arm64: copilot
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@github/copilot-linux-x64@npm:0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot-linux-x64@npm:0.0.400"
+  bin:
+    copilot-linux-x64: copilot
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@github/copilot-win32-arm64@npm:0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot-win32-arm64@npm:0.0.400"
+  bin:
+    copilot-win32-arm64: copilot.exe
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@github/copilot-win32-x64@npm:0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot-win32-x64@npm:0.0.400"
+  bin:
+    copilot-win32-x64: copilot.exe
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@github/copilot@npm:^0.0.400":
+  version: 0.0.400
+  resolution: "@github/copilot@npm:0.0.400"
+  dependencies:
+    "@github/copilot-darwin-arm64": "npm:0.0.400"
+    "@github/copilot-darwin-x64": "npm:0.0.400"
+    "@github/copilot-linux-arm64": "npm:0.0.400"
+    "@github/copilot-linux-x64": "npm:0.0.400"
+    "@github/copilot-win32-arm64": "npm:0.0.400"
+    "@github/copilot-win32-x64": "npm:0.0.400"
+  dependenciesMeta:
+    "@github/copilot-darwin-arm64":
+      optional: true
+    "@github/copilot-darwin-x64":
+      optional: true
+    "@github/copilot-linux-arm64":
+      optional: true
+    "@github/copilot-linux-x64":
+      optional: true
+    "@github/copilot-win32-arm64":
+      optional: true
+    "@github/copilot-win32-x64":
+      optional: true
+  bin:
+    copilot: npm-loader.js
+  checksum: 10c0/2f9fe0b65564b43b053e1f157666fdfff0c9c4f21a2fa1127c5d729eef4a164344d1ff26bd0ca8c463d00806b9dbddd453d9bbebdda94ed9561fda3a092d5ace
+  languageName: node
+  linkType: hard
+
+"@isaacs/balanced-match@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@isaacs/balanced-match@npm:4.0.1"
+  checksum: 10c0/7da011805b259ec5c955f01cee903da72ad97c5e6f01ca96197267d3f33103d5b2f8a1af192140f3aa64526c593c8d098ae366c2b11f7f17645d12387c2fd420
+  languageName: node
+  linkType: hard
+
+"@isaacs/brace-expansion@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "@isaacs/brace-expansion@npm:5.0.1"
+  dependencies:
+    "@isaacs/balanced-match": "npm:^4.0.1"
+  checksum: 10c0/e5d67c7bbf1f17b88132a35bc638af306d48acbb72810d48fa6e6edd8ab375854773108e8bf70f021f7ef6a8273455a6d1f0c3b5aa2aff06ce7894049ab77fb8
+  languageName: node
+  linkType: hard
+
 "@prettier/plugin-xml@npm:^3.4.2":
   version: 3.4.2
   resolution: "@prettier/plugin-xml@npm:3.4.2"
@@ -55,13 +154,6 @@ __metadata:
   peerDependencies:
     prettier: ^3.0.0
   checksum: 10c0/e5343e71b3c2850d879bb4390d9918dab1238eb79adefb1357a4e4c7207a19a1ac8192a967112325e1280f0d6bda397014fd83df6f8844e0afac5e2d747a814b
-  languageName: node
-  linkType: hard
-
-"@reteps/dockerfmt@npm:^0.3.6":
-  version: 0.3.6
-  resolution: "@reteps/dockerfmt@npm:0.3.6"
-  checksum: 10c0/b6ca467ba97ea49071c44d0fbecf131fc8045165e950d0d01372c1834000c58d53f62bff42f09b851f7a9d91899047f071cd8fe57e1fc88fc27e2a3d2bdb214d
   languageName: node
   linkType: hard
 
@@ -309,18 +401,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"glob@npm:^13.0.0":
+  version: 13.0.1
+  resolution: "glob@npm:13.0.1"
+  dependencies:
+    minimatch: "npm:^10.1.2"
+    minipass: "npm:^7.1.2"
+    path-scurry: "npm:^2.0.0"
+  checksum: 10c0/af7b863dec8dff74f61d7d6e53104e1f6bbdd482157a196cade8ed857481e876ec35181b38a059b2a7b93ea3b08248f4ff0792fef6dc91814fd5097a716f48e4
+  languageName: node
+  linkType: hard
+
 "gradle-convention@workspace:.":
   version: 0.0.0-use.local
   resolution: "gradle-convention@workspace:."
   dependencies:
+    "@github/copilot": "npm:^0.0.400"
     "@prettier/plugin-xml": "npm:^3.4.2"
     git-conventional-commits: "npm:^2.8.0"
     lint-staged: "npm:^16.2.1"
     prettier: "npm:^3.6.2"
     prettier-plugin-java: "npm:^2.7.5"
     prettier-plugin-properties: "npm:^0.3.0"
-    prettier-plugin-sh: "npm:^0.18.0"
     prettier-plugin-toml: "npm:^2.0.6"
+    rimraf: "npm:^6.1.2"
   languageName: unknown
   linkType: soft
 
@@ -416,6 +520,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:^11.0.0":
+  version: 11.2.5
+  resolution: "lru-cache@npm:11.2.5"
+  checksum: 10c0/cc98958d25dddf1c8a8cbdc49588bd3b24450e8dfa78f32168fd188a20d4a0331c7406d0f3250c86a46619ee288056fd7a1195e8df56dc8a9592397f4fbd8e1d
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^4.0.8":
   version: 4.0.8
   resolution: "micromatch@npm:4.0.8"
@@ -433,6 +544,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.1.2":
+  version: 10.1.2
+  resolution: "minimatch@npm:10.1.2"
+  dependencies:
+    "@isaacs/brace-expansion": "npm:^5.0.1"
+  checksum: 10c0/0cccef3622201703de6ecf9d772c0be1d5513dcc038ed9feb866c20cf798243e678ac35605dac3f1a054650c28037486713fe9e9a34b184b9097959114daf086
+  languageName: node
+  linkType: hard
+
+"minipass@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "minipass@npm:7.1.2"
+  checksum: 10c0/b0fd20bb9fb56e5fa9a8bfac539e8915ae07430a619e4b86ff71f5fc757ef3924b23b2c4230393af1eda647ed3d75739e4e0acb250a6b1eb277cf7f8fe449557
+  languageName: node
+  linkType: hard
+
 "nano-spawn@npm:^2.0.0":
   version: 2.0.0
   resolution: "nano-spawn@npm:2.0.0"
@@ -446,6 +573,23 @@ __metadata:
   dependencies:
     mimic-function: "npm:^5.0.0"
   checksum: 10c0/5cb9179d74b63f52a196a2e7037ba2b9a893245a5532d3f44360012005c9cadb60851d56716ebff18a6f47129dab7168022445df47c2aff3b276d92585ed1221
+  languageName: node
+  linkType: hard
+
+"package-json-from-dist@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "package-json-from-dist@npm:1.0.1"
+  checksum: 10c0/62ba2785eb655fec084a257af34dbe24292ab74516d6aecef97ef72d4897310bc6898f6c85b5cd22770eaa1ce60d55a0230e150fb6a966e3ecd6c511e23d164b
+  languageName: node
+  linkType: hard
+
+"path-scurry@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "path-scurry@npm:2.0.1"
+  dependencies:
+    lru-cache: "npm:^11.0.0"
+    minipass: "npm:^7.1.2"
+  checksum: 10c0/2a16ed0e81fbc43513e245aa5763354e25e787dab0d539581a6c3f0f967461a159ed6236b2559de23aa5b88e7dc32b469b6c47568833dd142a4b24b4f5cd2620
   languageName: node
   linkType: hard
 
@@ -466,13 +610,13 @@ __metadata:
   linkType: hard
 
 "prettier-plugin-java@npm:^2.7.5":
-  version: 2.7.7
-  resolution: "prettier-plugin-java@npm:2.7.7"
+  version: 2.8.1
+  resolution: "prettier-plugin-java@npm:2.8.1"
   dependencies:
     java-parser: "npm:3.0.1"
   peerDependencies:
     prettier: ^3.0.0
-  checksum: 10c0/0acf9ab0dcb39739f9dd80c880cc9d703d73abf62b807d213258d2424ffc7d6617be4d95dfed25e0af5856a13fc3e0b16c694e150e202d2a180d9c6c5d7f5bd8
+  checksum: 10c0/85c8ded14a0aaf1df1d5367ebe0f18c9d7d7284780a13bd1e037ca0190ebc4d42e69a849ddd3a2440c4c14cc19fbeb3b57acec1a3cd61076e917a1432dd72c75
   languageName: node
   linkType: hard
 
@@ -484,18 +628,6 @@ __metadata:
   peerDependencies:
     prettier: ">= 2.3.0"
   checksum: 10c0/ae769939aba21ba16ad4ea414035c49608e5f76ce0ea56bef2de7d3ad073c49315b048a8f9401ac4638b3dbc8d841b7b51f15a9f0946c7cf4df2872ca59e1f37
-  languageName: node
-  linkType: hard
-
-"prettier-plugin-sh@npm:^0.18.0":
-  version: 0.18.0
-  resolution: "prettier-plugin-sh@npm:0.18.0"
-  dependencies:
-    "@reteps/dockerfmt": "npm:^0.3.6"
-    sh-syntax: "npm:^0.5.8"
-  peerDependencies:
-    prettier: ^3.6.0
-  checksum: 10c0/d8946440abaab1c0f32cee270e0ad285e1f4bba0008aff7c55a9a1c8639032aa8b397aef8f8387a5b88c3f4fb657f1d4d1ab7ae6a1f5c4599875080fb951b9b1
   languageName: node
   linkType: hard
 
@@ -511,11 +643,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^3.6.2":
-  version: 3.7.4
-  resolution: "prettier@npm:3.7.4"
+  version: 3.8.1
+  resolution: "prettier@npm:3.8.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/9675d2cd08eacb1faf1d1a2dbfe24bfab6a912b059fc9defdb380a408893d88213e794a40a2700bd29b140eb3172e0b07c852853f6e22f16f3374659a1a13389
+  checksum: 10c0/33169b594009e48f570471271be7eac7cdcf88a209eed39ac3b8d6d78984039bfa9132f82b7e6ba3b06711f3bfe0222a62a1bfb87c43f50c25a83df1b78a2c42
   languageName: node
   linkType: hard
 
@@ -550,12 +682,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sh-syntax@npm:^0.5.8":
-  version: 0.5.8
-  resolution: "sh-syntax@npm:0.5.8"
+"rimraf@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "rimraf@npm:6.1.2"
   dependencies:
-    tslib: "npm:^2.8.1"
-  checksum: 10c0/2d2609fc8760ef97175c852be26ee3eeb196078c5aec282c8b96a59ee362be4f470d3e0df4e372da6c7a7b44ccc42910cbdcb0915271b3cb6a6212d00dde116f
+    glob: "npm:^13.0.0"
+    package-json-from-dist: "npm:^1.0.1"
+  bin:
+    rimraf: dist/esm/bin.mjs
+  checksum: 10c0/c11a6a6fad937ada03c12fe688860690df8296d7cd08dbe59e3cc087f44e43573ae26ecbe48e54cb7a6db745b8c81fe5a15b9359233cc21d52d9b5b3330fcc74
   languageName: node
   linkType: hard
 
@@ -639,13 +774,6 @@ __metadata:
   dependencies:
     is-number: "npm:^7.0.0"
   checksum: 10c0/487988b0a19c654ff3e1961b87f471702e708fa8a8dd02a298ef16da7206692e8552a0250e8b3e8759270f62e9d8314616f6da274734d3b558b1fc7b7724e892
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.8.1":
-  version: 2.8.1
-  resolution: "tslib@npm:2.8.1"
-  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
   languageName: node
   linkType: hard
 

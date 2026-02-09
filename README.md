@@ -1,12 +1,12 @@
 <!--
-SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+SPDX-FileCopyrightText: Copyright © 2025 - 2026 Caleb Cushing
 
 SPDX-License-Identifier: CC-BY-NC-4.0
 -->
 
 # My Conventions
 
-Firstly these are my personal conventions; if you find them useful feel free to let me know and I can migrate them to a
+Firstly, these are my personal conventions; if you find them useful feel free to let me know and I can migrate them to a
 stable API. You're welcome to use them either way.
 
 ## Coverage
@@ -60,47 +60,51 @@ add a way to export these to your `PATH` in your `~/.profile`
 - [Gradle](https://docs.gradle.org/current/userguide/command_line_interface.html)
 - [Yarn 4](https://yarnpkg.com/getting-started/install) (via Corepack)
 
-#### Fetching Dependencies
+### Scripts
 
-In order to get snapshots of dependencies, you must have a GitHub token in your `~/.gradle/gradle.properties` file. This
-file should look like:
-
-```properties
-ghUsername = <your username>
-ghPassword = <your token>
-```
-
-You should generate your PAT
-as [Github Documents here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages).
-
-> a personal access token (classic) with at least read:packages scope to install packages associated with other private
-> repositories (which GITHUB_TOKEN can't access).
-
-Then run.
-
-Yarn setup and manual postinstall:
+#### Setup
 
 ```sh
 # Enable Corepack, install Node dev tools, run postinstall, then verify Gradle deps
 corepack enable
 yarn install --immutable --inline-builds --check-resolutions
-yarn run -T postinstall
-./gradlew dependencies
+yarn run contributor
 ```
 
-If you need to run the postinstall step directly, you can recreate and use the Python lock file via pip-compile (PEP 621):
+#### Update Dependencies
 
 ```sh
-# Regenerate requirements.txt from PEP 621 dependencies in pyproject.toml
-pip-compile -o requirements.txt pyproject.toml
-
-# Then install and set up commit hooks
-pip install -r requirements.txt && git config core.hooksPath .config/git/hooks
+# update locks and check for failures
+yarn run ug
+# update locks and check for failures with a build scan
+yarn run ug:scan
 ```
+
+#### Other Scripts
+
+- `yarn run cleaner`: remove all build directories and `.gradle`
+- `yarn run merge`: run `make merge`
+- `yarn run test`: run `./gradlew check`
 
 ### Committing
 
 Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+### Fetching Dependencies
+
+In order to get snapshots of dependencies, you must have a GitHub token in your `~/.gradle/gradle.properties` file. This
+file should look like:
+
+```properties
+ghUsername=<your username>
+ghPassword=<your token>
+```
+
+You should generate your PAT
+as [GitHub Documents here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages).
+
+> a personal access token (classic) with at least read:packages scope to install packages associated with other private
+> repositories (which GITHUB_TOKEN can't access).
 
 ## Licenses
 
@@ -108,4 +112,4 @@ Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 - Gradle Kotlin and Config Files: [MIT](https://choosealicense.com/licenses/mit/)
 - Documentation including Javadoc: [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 
-© Copyright 2024–2025 Caleb Cushing.
+© Copyright 2024–2026 Caleb Cushing.

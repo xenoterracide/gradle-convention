@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+# SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 #
 # SPDX-License-Identifier: CC0-1.0
 
@@ -19,10 +19,10 @@ jobs:
       contents: read
       packages: read
     env:
-      ORG_GRADLE_PROJECT_ghUsername: ${{ secrets.GITHUB_ACTOR }}
-      ORG_GRADLE_PROJECT_ghPassword: ${{ secrets.GITHUB_TOKEN }}
+      ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+      ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.ref }}
           filter: "blob:none"
@@ -31,12 +31,17 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v5.0.0
+      - uses: gradle/actions/setup-gradle@v5.0.1
         with:
           gradle-version: current
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+        # update the version of gradlew
       - run: gradle wrapper --write-locks
-      - run: make ci-update-java
+      - run: find . -name '*gradle.lockfile' -delete
+        # fetch the actual wrapper and then update the gradlew scripts
+      - run: ./gradlew wrapper --write-locks && ./gradlew wrapper
+      - run: ./gradlew dependencies --write-locks | grep -e FAILED -e https
+      - run: ./gradlew build --write-locks
       - run: |
           echo "stdout<<EOF" >> $GITHUB_OUTPUT
           git status --porcelain=1 | tee --append $GITHUB_OUTPUT

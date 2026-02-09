@@ -1,17 +1,26 @@
 {
   "name": "gradle-convention",
   "packageManager": "yarn@4.12.0",
+  "private": true,
+  "license": "GPL-3.0-or-later WITH Classpath-exception-2.0",
   "devDependencies": {
+    "@github/copilot": "^0.0.400",
     "@prettier/plugin-xml": "^3.4.2",
     "git-conventional-commits": "^2.8.0",
     "lint-staged": "^16.2.1",
     "prettier": "^3.6.2",
     "prettier-plugin-java": "^2.7.5",
     "prettier-plugin-properties": "^0.3.0",
-    "prettier-plugin-sh": "^0.18.0",
-    "prettier-plugin-toml": "^2.0.6"
+    "prettier-plugin-toml": "^2.0.6",
+    "rimraf": "^6.1.2"
   },
   "scripts": {
-    "postinstall": "pip install -r requirements.txt && git config core.hooksPath .config/git/hooks"
+    "contributor": "pip install -r requirements.txt && git config core.hooksPath .config/git/hooks",
+    "dependencies:for": "./gradlew dependencies --configuration",
+    "merge": "make merge",
+    "test": "./gradlew check",
+    "ug": "./gradlew dependencies --write-locks --console=plain | grep -e FAILED || exit 0",
+    "ug:scan": "./gradlew dependencies --write-locks --console=plain --scan | grep -e FAILED -e https || exit 0",
+    "cleaner": "rimraf ./build */build ./module/*/build ./.gradle"
   }
 }
