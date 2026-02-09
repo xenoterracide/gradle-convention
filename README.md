@@ -66,8 +66,8 @@ In order to get snapshots of dependencies, you must have a GitHub token in your 
 file should look like:
 
 ```properties
-ghUsername = <your username>
-ghPassword = <your token>
+ghUsername=<your username>
+ghPassword=<your token>
 ```
 
 You should generate your PAT
