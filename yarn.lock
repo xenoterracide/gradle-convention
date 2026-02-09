@@ -412,9 +412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gradle-conention@workspace:.":
+"gradle-convention@workspace:.":
   version: 0.0.0-use.local
-  resolution: "gradle-conention@workspace:."
+  resolution: "gradle-convention@workspace:."
   dependencies:
     "@github/copilot": "npm:^0.0.400"
     "@prettier/plugin-xml": "npm:^3.4.2"
