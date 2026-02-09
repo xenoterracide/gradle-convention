@@ -36,7 +36,6 @@ public class CompilePlugin implements Plugin<Project> {
   private static final String JAVA_TIME_DEFAULT_TIME_ZONE = "JavaTimeDefaultTimeZone";
   private static final String NULL_AWAY = "NullAway";
   private static final String COMMA = ",";
-  private static final String TRUE = "true";
 
   private static final List<String> ANNOTATED_PACKAGES = List.of("com", "org", "net", "io", "dev", "graphql");
 
@@ -217,24 +216,16 @@ public class CompilePlugin implements Plugin<Project> {
    */
   public CompilePlugin() {}
 
-  @Override
-  public void apply(Project project) {
-    project.getPluginManager().apply(JavaPlugin.class);
-    project.getPluginManager().apply(ErrorPronePlugin.class);
+  private static void configureNullAway(ErrorProneOptions epOptions) {
+    var annotatedPackages = String.join(COMMA, ANNOTATED_PACKAGES);
+    var unannotatedSubPackages = String.join(COMMA, UNANNOTATED_SUBPACKAGES);
 
-    var inIdea = project
-      .getProviders()
-      .systemProperty("idea.active")
-      .map(Boolean::parseBoolean)
-      .getOrElse(false);
-
-    project
-      .getTasks()
-      .withType(JavaCompile.class)
-      .configureEach(task -> {
-        configureCompilerArgs(task);
-        configureErrorProne(task, inIdea);
-      });
+    epOptions.option("NullAway:AnnotatedPackages", annotatedPackages);
+    epOptions.option("NullAway:CheckOptionalEmptiness", true);
+    epOptions.option("NullAway:HandleTestAssertionLibraries", true);
+    epOptions.option("NullAway:CheckContracts", true);
+    epOptions.option("NullAway:ExcludedFieldAnnotations", "org.junit.jupiter.api.io.TempDir");
+    epOptions.option("NullAway:UnannotatedSubPackages", unannotatedSubPackages);
   }
 
   private static void configureCompilerArgs(JavaCompile task) {
@@ -294,17 +285,28 @@ public class CompilePlugin implements Plugin<Project> {
     epOptions.error(errors.toArray(String[]::new));
   }
 
-  private static void configureNullAway(ErrorProneOptions epOptions) {
-    var annotatedPackages = String.join(COMMA, ANNOTATED_PACKAGES);
-    var unannotatedSubPackages = String.join(COMMA, UNANNOTATED_SUBPACKAGES);
+  @Override
+  public void apply(Project project) {
+    project.getPluginManager().apply(JavaPlugin.class);
+    project.getPluginManager().apply(ErrorPronePlugin.class);
 
-    epOptions.option("NullAway:AnnotatedPackages", annotatedPackages);
-    epOptions.option("NullAway:CheckOptionalEmptiness", TRUE);
-    epOptions.option("NullAway:AcknowledgeRestrictiveAnnotations", TRUE);
-    epOptions.option("NullAway:HandleTestAssertionLibraries", TRUE);
-    epOptions.option("NullAway:CheckContracts", TRUE);
-    epOptions.option("NullAway:ExcludedFieldAnnotations", "org.junit.jupiter.api.io.TempDir");
-    epOptions.option("NullAway:UnannotatedSubPackages", unannotatedSubPackages);
+    var inIdea = project
+      .getProviders()
+      .systemProperty("idea.active")
+      .map(Boolean::parseBoolean)
+      .getOrElse(false);
+
+    var tasks = project.getTasks();
+    tasks
+      .withType(JavaCompile.class)
+      .configureEach(task -> {
+        configureCompilerArgs(task);
+        configureErrorProne(task, inIdea);
+      });
+
+    tasks.register("compile", task -> {
+      task.dependsOn(tasks.withType(JavaCompile.class));
+    });
   }
 
   /**
