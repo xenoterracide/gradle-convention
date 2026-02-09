@@ -412,6 +412,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gradle-conention@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "gradle-conention@workspace:."
+  dependencies:
+    "@github/copilot": "npm:^0.0.400"
+    "@prettier/plugin-xml": "npm:^3.4.2"
+    git-conventional-commits: "npm:^2.8.0"
+    lint-staged: "npm:^16.2.1"
+    prettier: "npm:^3.6.2"
+    prettier-plugin-java: "npm:^2.7.5"
+    prettier-plugin-properties: "npm:^0.3.0"
+    prettier-plugin-toml: "npm:^2.0.6"
+    rimraf: "npm:^6.1.2"
+  languageName: unknown
+  linkType: soft
+
 "is-fullwidth-code-point@npm:^3.0.0":
   version: 3.0.0
   resolution: "is-fullwidth-code-point@npm:3.0.0"
@@ -694,22 +710,6 @@ __metadata:
   checksum: 10c0/36742f2eb0c03e2e81a38ed14d13a64f7b732fe38c3faf96cce0599788a345011e840db35f1430ca606ea3f8db2abeb92a8d25c2753a819e3babaa10c2e289a2
   languageName: node
   linkType: hard
-
-"spring-app-commons@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "spring-app-commons@workspace:."
-  dependencies:
-    "@github/copilot": "npm:^0.0.400"
-    "@prettier/plugin-xml": "npm:^3.4.2"
-    git-conventional-commits: "npm:^2.8.0"
-    lint-staged: "npm:^16.2.1"
-    prettier: "npm:^3.6.2"
-    prettier-plugin-java: "npm:^2.7.5"
-    prettier-plugin-properties: "npm:^0.3.0"
-    prettier-plugin-toml: "npm:^2.0.6"
-    rimraf: "npm:^6.1.2"
-  languageName: unknown
-  linkType: soft
 
 "string-argv@npm:^0.3.2":
   version: 0.3.2
