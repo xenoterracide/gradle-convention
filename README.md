@@ -101,7 +101,7 @@ ghPassword=<your token>
 ```
 
 You should generate your PAT
-as [Github Documents here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages).
+as [GitHub Documents here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages).
 
 > a personal access token (classic) with at least read:packages scope to install packages associated with other private
 > repositories (which GITHUB_TOKEN can't access).
