@@ -6,4 +6,4 @@ name: build
 on: [push, workflow_call]
 jobs:
   build:
-    uses: https://github.com/xenoterracide/github-workflows/.github/workflows/build.yml@develop
+    uses: xenoterracide/github-workflows/.github/workflows/build.yml@develop
