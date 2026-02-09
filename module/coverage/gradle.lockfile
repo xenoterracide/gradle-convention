@@ -17,7 +17,6 @@ com.google.errorprone:error_prone_annotations:2.41.0=spotbugs
 com.google.errorprone:error_prone_annotations:2.47.0=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor
 com.google.errorprone:error_prone_check_api:2.47.0=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor
 com.google.errorprone:error_prone_core:2.47.0=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor
-com.google.errorprone:javac:9+181-r4173-1=errorproneJavac
 com.google.googlejavaformat:google-java-format:1.27.0=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor
 com.google.guava:failureaccess:1.0.3=annotationProcessor,checkstyle,testAnnotationProcessor,testIntegrationAnnotationProcessor
 com.google.guava:guava:33.4.8-jre=checkstyle
