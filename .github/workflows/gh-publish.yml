@@ -36,6 +36,7 @@ jobs:
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - run: ./gradlew publishAllPublicationsToGhRepository --scan --no-configuration-cache
+        if: steps.git_num_file_changes.outputs.stdout > 0
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ secrets.GITHUB_ACTOR }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ secrets.GITHUB_TOKEN }}

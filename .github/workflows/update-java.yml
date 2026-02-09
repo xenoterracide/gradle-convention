@@ -19,8 +19,8 @@ jobs:
       contents: read
       packages: read
     env:
-      ORG_GRADLE_PROJECT_ghUsername: ${{ secrets.GITHUB_ACTOR }}
-      ORG_GRADLE_PROJECT_ghPassword: ${{ secrets.GITHUB_TOKEN }}
+      ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+      ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
     steps:
       - uses: actions/checkout@v6.0.2
         with:
@@ -35,8 +35,13 @@ jobs:
         with:
           gradle-version: current
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+        # update the version of gradlew
       - run: gradle wrapper --write-locks
-      - run: make ci-update-java
+      - run: find . -name '*gradle.lockfile' -delete
+        # fetch the actual wrapper and then update the gradlew scripts
+      - run: ./gradlew wrapper --write-locks && ./gradlew wrapper
+      - run: ./gradlew dependencies --write-locks | grep -e FAILED -e https
+      - run: ./gradlew build --write-locks
       - run: |
           echo "stdout<<EOF" >> $GITHUB_OUTPUT
           git status --porcelain=1 | tee --append $GITHUB_OUTPUT
