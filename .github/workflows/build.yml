@@ -29,3 +29,7 @@ jobs:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
       - uses: gradle/actions/dependency-submission@v5.0.0
+        if: ${{ github.ref_name == 'develop' }}
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
