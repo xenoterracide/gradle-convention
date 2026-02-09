@@ -231,18 +231,22 @@ public class CompilePlugin implements Plugin<Project> {
   private static void configureCompilerArgs(JavaCompile task) {
     var options = task.getOptions();
     options.setEncoding("UTF-8");
-    options.getCompilerArgs().addAll(List.of(
-      "-parameters",
-      "-implicit:class",
-      "-g",
-      "-Xdiags:verbose",
-      "-Xlint:all",
-      "-Xlint:-processing",
-      "-Xlint:-exports",
-      "-Xlint:-requires-transitive-automatic",
-      "-Xlint:-requires-automatic",
-      "-Xlint:-fallthrough" // handled by error-prone in a smarter way
-    ));
+    options
+      .getCompilerArgs()
+      .addAll(
+        List.of(
+          "-parameters",
+          "-implicit:class",
+          "-g",
+          "-Xdiags:verbose",
+          "-Xlint:all",
+          "-Xlint:-processing",
+          "-Xlint:-exports",
+          "-Xlint:-requires-transitive-automatic",
+          "-Xlint:-requires-automatic",
+          "-Xlint:-fallthrough" // handled by error-prone in a smarter way
+        )
+      );
   }
 
   private static void configureErrorProne(JavaCompile task, boolean inIdea) {
@@ -290,11 +294,7 @@ public class CompilePlugin implements Plugin<Project> {
     project.getPluginManager().apply(JavaPlugin.class);
     project.getPluginManager().apply(ErrorPronePlugin.class);
 
-    var inIdea = project
-      .getProviders()
-      .systemProperty("idea.active")
-      .map(Boolean::parseBoolean)
-      .getOrElse(false);
+    var inIdea = project.getProviders().systemProperty("idea.active").map(Boolean::parseBoolean).getOrElse(false);
 
     var tasks = project.getTasks();
     tasks
