@@ -7,3 +7,5 @@ on: [push, workflow_call]
 jobs:
   build:
     uses: xenoterracide/github-workflows/.github/workflows/build.yml@develop
+    permissions:
+      contents: write
