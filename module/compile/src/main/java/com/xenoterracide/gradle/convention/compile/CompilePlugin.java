@@ -10,6 +10,7 @@ import net.ltgt.gradle.errorprone.ErrorProneOptions;
 import net.ltgt.gradle.errorprone.ErrorPronePlugin;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.compile.JavaCompile;
 
@@ -250,7 +251,7 @@ public class CompilePlugin implements Plugin<Project> {
   }
 
   private static void configureErrorProne(JavaCompile task, boolean inIdea) {
-    var optionsExtensions = ((org.gradle.api.plugins.ExtensionAware) task.getOptions()).getExtensions();
+    var optionsExtensions = ((ExtensionAware) task.getOptions()).getExtensions();
     var epOptions = optionsExtensions.findByType(ErrorProneOptions.class);
     if (epOptions == null) {
       return;

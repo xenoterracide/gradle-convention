@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright © 2023 - 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2023 - 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: MIT
 
@@ -54,12 +54,7 @@ val available =
 tasks.withType<Test>().configureEach {
   jvmArgs("-XX:+EnableDynamicAgentLoading")
   useJUnitPlatform()
-  maxParallelForks =
-    Runtime
-      .getRuntime()
-      .availableProcessors()
-      .div(2)
-      .coerceAtLeast(1)
+  maxParallelForks = 2
 
   testLogging {
     lifecycle {

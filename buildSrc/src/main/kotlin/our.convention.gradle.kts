@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: MIT
 
@@ -32,4 +32,14 @@ gradlePlugin {
 publicationLegal {
   inceptionYear.set(2024)
   spdxLicenseIdentifiers.addAll("GPL-3.0-or-later WITH Classpath-exception-2.0")
+}
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(25))
+  }
+}
+
+tasks.compileJava {
+  options.release.set(17)
 }

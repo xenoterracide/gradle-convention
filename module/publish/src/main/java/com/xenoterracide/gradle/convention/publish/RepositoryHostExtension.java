@@ -1,6 +1,7 @@
-// SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.publish;
 
@@ -11,7 +12,7 @@ import org.gradle.api.provider.Property;
 /**
  * Extension for configuring information regarding where your repository lives.
  *
- * @implNote this convention concatenates these properties into final urls such as a clone url
+ * <p>Implementation note: this convention concatenates these properties into final urls such as a clone url
  *   {@code $host/$namespace/$name.$extension} and the website url {@code $host/$namespace/$name}.
  */
 public abstract class RepositoryHostExtension {

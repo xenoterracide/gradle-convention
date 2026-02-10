@@ -18,7 +18,6 @@ dependencies {
   implementation(libs.plugin.dependency.analysis)
 
   runtimeOnly(libs.plugin.convention.checkstyle)
-  runtimeOnly(libs.plugin.convention.compile)
   runtimeOnly(libs.plugin.convention.coverage)
   runtimeOnly(libs.plugin.convention.spotbugs)
 }
