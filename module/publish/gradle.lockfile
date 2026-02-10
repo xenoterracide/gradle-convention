@@ -36,7 +36,6 @@ com.squareup.retrofit2:converter-moshi:3.0.0=runtimeClasspath,testIntegrationRun
 com.squareup.retrofit2:converter-scalars:3.0.0=runtimeClasspath,testIntegrationRuntimeClasspath,testRuntimeClasspath
 com.squareup.retrofit2:retrofit:3.0.0=runtimeClasspath,testIntegrationRuntimeClasspath,testRuntimeClasspath
 com.uber.nullaway:nullaway:0.13.1=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor
-com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.36.0=compileClasspath,runtimeClasspath,testCompileClasspath,testIntegrationRuntimeClasspath,testRuntimeClasspath
 com.vanniktech:central-portal:0.36.0=runtimeClasspath,testIntegrationRuntimeClasspath,testRuntimeClasspath
 com.vanniktech:gradle-maven-publish-plugin:0.36.0=compileClasspath,runtimeClasspath,testCompileClasspath,testIntegrationRuntimeClasspath,testRuntimeClasspath
 commons-beanutils:commons-beanutils:1.10.1=checkstyle

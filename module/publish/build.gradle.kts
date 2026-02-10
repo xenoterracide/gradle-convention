@@ -11,8 +11,8 @@ plugins {
 }
 
 dependencies {
-  api(libs.plugin.gradle.maven.publish)
   implementation(libs.commons.lang3)
+  implementation(libs.plugin.gradle.maven.publish)
 }
 
 gradlePlugin {

@@ -46,10 +46,10 @@ public class PublishPlugin implements Plugin<Project> {
 
     var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
     var repo = rhe.getRepository();
+    var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
+
 
     mavenPublish.pom(pom -> {
-      var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
-
       pom.getName().set(project.getName());
       pom.getDescription().set(project.getDescription());
       pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
