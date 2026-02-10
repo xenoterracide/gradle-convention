@@ -49,8 +49,8 @@ public class PublishPlugin implements Plugin<Project> {
     var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
 
     mavenPublish.pom(pom -> {
-      pom.getName().set(project.getName());
-      pom.getDescription().set(project.getDescription());
+      pom.getName().set(project.provider(project::getName));
+      pom.getDescription().set(project.provider(project::getDescription));
       pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
       pom.licenses(licenses -> {
         legal
