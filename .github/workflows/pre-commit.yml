@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+# SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 #
 # SPDX-License-Identifier: CC0-1.0
 
@@ -43,7 +43,7 @@ jobs:
       - uses: actions/setup-java@v5.2.0
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 25
       - uses: asdf-vm/actions/plugins-add@v4.0.1
       - run: asdf install ktlint
       - run: ktlint '*.gradle.kts' '**/*.gradle.kts'
