@@ -40,11 +40,46 @@ public class PublishPlugin implements Plugin<Project> {
       .map(val -> BooleanUtils.toBoolean(val, "1", "0") || BooleanUtils.toBoolean(val))
       .getOrElse(false);
     var mavenPublish = project.getExtensions().getByType(MavenPublishBaseExtension.class);
-    if (isPublishing) mavenPublish.signAllPublications();
+    if (isPublishing) {
+      mavenPublish.signAllPublications();
+    }
 
     var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
-    var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
     var repo = rhe.getRepository();
+
+    mavenPublish.pom(pom -> {
+      var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
+
+      pom.getName().set(project.getName());
+      pom.getDescription().set(project.getDescription());
+      pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
+      pom.licenses(licenses -> {
+        legal
+          .getSpdxLicenseIdentifiers()
+          .get()
+          .forEach(license ->
+            licenses.license(pl -> {
+              pl.getName().set(license);
+              pl.getUrl().set(repo.getWebsiteUrl().map(uri -> uri + "/tree/develop/LICENSES"));
+              pl.getComments().set("See git repo README.md for more information.");
+              pl.getDistribution().set(REPO);
+            })
+          );
+      });
+      pom.developers(developers -> {
+        developers.developer(developer -> {
+          developer.getName().set("Caleb Cushing");
+          developer.getEmail().set("caleb.cushing@gmail.com");
+          developer.getId().set(rhe.getNamespace());
+        });
+      });
+      pom.scm(scm -> {
+        scm.getConnection().set(repo.getCloneUrl().map(Object::toString));
+        scm.getUrl().set(repo.getWebsiteUrl().map(Object::toString));
+        scm.getDeveloperConnection().set(repo.getDeveloperConnection());
+      });
+    });
+
     var publishing = project.getExtensions().getByType(PublishingExtension.class);
     var publications = publishing.getPublications();
 
@@ -60,37 +95,6 @@ public class PublishPlugin implements Plugin<Project> {
           pub.getArtifactId(),
           pub.getVersion()
         );
-
-        pub.pom(pom -> {
-          pom.getName().set(project.getName());
-          pom.getDescription().set(project.getDescription());
-          pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
-          pom.licenses(licenses -> {
-            legal
-              .getSpdxLicenseIdentifiers()
-              .get()
-              .forEach(license ->
-                licenses.license(pl -> {
-                  pl.getName().set(license);
-                  pl.getUrl().set(repo.getWebsiteUrl().map(uri -> uri + "/tree/develop/LICENSES"));
-                  pl.getComments().set("See git repo README.md for more information.");
-                  pl.getDistribution().set(REPO);
-                })
-              );
-          });
-          pom.developers(developers -> {
-            developers.developer(developer -> {
-              developer.getName().set("Caleb Cushing");
-              developer.getEmail().set("caleb.cushing@gmail.com");
-              developer.getId().set(rhe.getNamespace());
-            });
-          });
-          pom.scm(scm -> {
-            scm.getConnection().set(repo.getCloneUrl().map(Object::toString));
-            scm.getUrl().set(repo.getWebsiteUrl().map(Object::toString));
-            scm.getDeveloperConnection().set(repo.getDeveloperConnection());
-          });
-        });
       });
     publishing.repositories(pubRepo -> {
       pubRepo.maven(maven -> {
