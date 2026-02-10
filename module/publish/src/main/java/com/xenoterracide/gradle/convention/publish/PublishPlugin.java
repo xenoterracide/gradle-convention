@@ -48,7 +48,6 @@ public class PublishPlugin implements Plugin<Project> {
     var repo = rhe.getRepository();
     var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
 
-
     mavenPublish.pom(pom -> {
       pom.getName().set(project.getName());
       pom.getDescription().set(project.getDescription());
