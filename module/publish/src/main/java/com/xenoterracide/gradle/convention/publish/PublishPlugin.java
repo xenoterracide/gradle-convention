@@ -37,7 +37,7 @@ public class PublishPlugin implements Plugin<Project> {
     var isPublishing = project
       .getProviders()
       .environmentVariable("IS_PUBLISHING")
-      .map(val -> BooleanUtils.toBoolean(val, "1", "0") | BooleanUtils.toBoolean(val))
+      .map(val -> BooleanUtils.toBoolean(val, "1", "0") || BooleanUtils.toBoolean(val))
       .getOrElse(false);
     var mavenPublish = project.getExtensions().getByType(MavenPublishBaseExtension.class);
     if (isPublishing) mavenPublish.signAllPublications();
