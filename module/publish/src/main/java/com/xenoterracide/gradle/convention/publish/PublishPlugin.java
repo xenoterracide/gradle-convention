@@ -112,7 +112,7 @@ public class PublishPlugin implements Plugin<Project> {
     tasks
       .withType(Jar.class)
       .configureEach(jar -> {
-        // ensure output jar is essentially projectroot-module.jar when published to avoid doing this all the time
+        // ensure the output jar is essentially projectroot-module.jar when published to avoid doing this all the time
         jar.getArchiveBaseName().set(project.getPath().substring(1).replace(":", "-"));
       });
   }
