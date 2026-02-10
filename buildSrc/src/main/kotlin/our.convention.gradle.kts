@@ -10,6 +10,7 @@ plugins {
   id("com.autonomousapps.dependency-analysis")
   id("com.gradle.plugin-publish")
   id("com.xenoterracide.gradle.convention.checkstyle")
+  id("com.xenoterracide.gradle.convention.compile")
   id("com.xenoterracide.gradle.convention.coverage")
   id("com.xenoterracide.gradle.convention.publish")
   id("com.xenoterracide.gradle.convention.spotbugs")
@@ -21,6 +22,8 @@ repositoryHost.namespace.set("xenoterracide")
 val libs = the<LibrariesForLibs>()
 
 dependencies {
+  errorprone(libs.errorprone.core)
+  errorprone(libs.errorprone.nullaway)
   spotbugs(libs.spotbugs)
 }
 
