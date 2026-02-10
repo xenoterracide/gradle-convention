@@ -1,15 +1,17 @@
-// SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.publish;
 
+import com.vanniktech.maven.publish.MavenPublishBaseExtension;
+import com.vanniktech.maven.publish.MavenPublishPlugin;
+import org.apache.commons.lang3.BooleanUtils;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 
 /**
  * Plugin for configuring publishinga java to a repository host.
@@ -27,11 +29,18 @@ public class PublishPlugin implements Plugin<Project> {
   @Override
   @SuppressWarnings({ "checkstyle:MethodLength", "checkstyle:LambdaBodyLength" })
   public void apply(Project project) {
+    project.getPluginManager().apply(MavenPublishPlugin.class);
     var rootProject = project.getRootProject();
     project.setGroup(rootProject.getGroup());
     project.setVersion(rootProject.getVersion());
 
-    project.getPlugins().apply(MavenPublishPlugin.class);
+    var isPublishing = project
+      .getProviders()
+      .environmentVariable("IS_PUBLISHING")
+      .map(val -> BooleanUtils.toBoolean(val, "1", "0") | BooleanUtils.toBoolean(val))
+      .getOrElse(false);
+    var mavenPublish = project.getExtensions().getByType(MavenPublishBaseExtension.class);
+    if (isPublishing) mavenPublish.signAllPublications();
 
     var rhe = project.getExtensions().create("repositoryHost", RepositoryHostExtension.class);
     var legal = project.getExtensions().create("publicationLegal", PublicationLegalExtension.class);
@@ -53,6 +62,8 @@ public class PublishPlugin implements Plugin<Project> {
         );
 
         pub.pom(pom -> {
+          pom.getName().set(project.getName());
+          pom.getDescription().set(project.getDescription());
           pom.getInceptionYear().set(legal.getInceptionYear().map(Number::toString));
           pom.licenses(licenses -> {
             legal

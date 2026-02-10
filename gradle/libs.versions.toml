@@ -10,6 +10,7 @@ plugin-convention = "0.+"
 [libraries]
 assertj = "org.assertj:assertj-core:3.+"
 commons-io = "commons-io:commons-io:2.+"
+commons-lang3 = "org.apache.commons:commons-lang3:3.+"
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "ep" }
 errorprone-nullaway = "com.uber.nullaway:nullaway:0.+"
 jspecify = "org.jspecify:jspecify:1.+"
@@ -27,11 +28,10 @@ plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plug
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:5.+"
 plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
 plugin-spotbugs = { module = "com.github.spotbugs.snom:spotbugs-gradle-plugin", version = "6.+" }
+plugin-gradle-maven-publish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version = "0.+" }
 spotbugs = "com.github.spotbugs:spotbugs:4.+"
 
 [bundles]
-compile = ["jspecify"]
-ep = ["errorprone-core", "errorprone-nullaway"]
 test-impl = ["junit-api", "assertj", "junit-parameters"]
 test-runtime = ["junit-engine", "junit-launcher"]
 
