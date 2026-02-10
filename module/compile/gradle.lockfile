@@ -31,6 +31,7 @@ commons-beanutils:commons-beanutils:1.10.1=checkstyle
 commons-codec:commons-codec:1.15=checkstyle
 commons-collections:commons-collections:3.2.2=checkstyle
 commons-io:commons-io:2.20.0=spotbugs
+commons-io:commons-io:2.21.0=testCompileClasspath,testRuntimeClasspath
 info.picocli:picocli:4.7.7=checkstyle
 io.github.eisop:dataflow-errorprone:3.41.0-eisop1=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor
 io.github.java-diff-utils:java-diff-utils:4.12=annotationProcessor,testAnnotationProcessor,testIntegrationAnnotationProcessor

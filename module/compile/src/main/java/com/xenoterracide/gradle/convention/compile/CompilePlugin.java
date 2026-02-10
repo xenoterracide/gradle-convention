@@ -250,7 +250,11 @@ public class CompilePlugin implements Plugin<Project> {
   }
 
   private static void configureErrorProne(JavaCompile task, boolean inIdea) {
-    var epOptions = task.getExtensions().getByType(ErrorProneOptions.class);
+    var optionsExtensions = ((org.gradle.api.plugins.ExtensionAware) task.getOptions()).getExtensions();
+    var epOptions = optionsExtensions.findByType(ErrorProneOptions.class);
+    if (epOptions == null) {
+      return;
+    }
 
     configureDisabledChecks(epOptions);
     configureNullAway(epOptions);

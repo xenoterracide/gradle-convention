@@ -5,7 +5,7 @@
 name: publish-to-github-packages
 on:
   workflow_run:
-    workflows: [build]
+    workflows: [full]
     types: [completed]
     branches:
       - "**"
@@ -31,11 +31,11 @@ jobs:
       - uses: actions/setup-java@v5.2.0
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 25
       - uses: gradle/actions/setup-gradle@v5.0.1
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-      - run: ./gradlew publishAllPublicationsToGhRepository --scan --no-configuration-cache
+      - run: ./gradlew publishAllPublicationsToGhRepository --no-configuration-cache
         env:
-          ORG_GRADLE_PROJECT_ghUsername: ${{ secrets.GITHUB_ACTOR }}
-          ORG_GRADLE_PROJECT_ghPassword: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
