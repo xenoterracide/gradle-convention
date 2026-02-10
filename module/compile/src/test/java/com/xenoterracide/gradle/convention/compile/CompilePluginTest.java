@@ -42,8 +42,7 @@ class CompilePluginTest {
   @Test
   void configuresCompilerArgs() {
     var compileJava = (JavaCompile) project.getTasks().getByName("compileJava");
-    assertThat(compileJava.getOptions().getCompilerArgs())
-      .contains("-parameters", "-Xlint:all", "-Xdiags:verbose");
+    assertThat(compileJava.getOptions().getCompilerArgs()).contains("-parameters", "-Xlint:all", "-Xdiags:verbose");
   }
 
   @Test
