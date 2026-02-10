@@ -13,6 +13,7 @@ plugins {
 
 dependencies {
   implementation(libs.plugin.errorprone)
+  testImplementation(libs.commons.io)
 }
 
 gradlePlugin {
