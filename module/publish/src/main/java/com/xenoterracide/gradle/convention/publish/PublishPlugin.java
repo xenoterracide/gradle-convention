@@ -15,7 +15,7 @@ import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.jvm.tasks.Jar;
 
 /**
- * Plugin for configuring publishinga java to a repository host.
+ * Plugin for configuring publishing Java to a repository host.
  */
 public class PublishPlugin implements Plugin<Project> {
 
