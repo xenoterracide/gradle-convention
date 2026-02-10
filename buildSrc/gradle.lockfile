@@ -26,6 +26,7 @@ com.squareup.okio:okio:3.7.0=compileClasspath
 com.squareup:kotlinpoet-jvm:2.1.0=buildScriptClasspath,precompiledScriptPluginAccessorsGenerationClasspath
 com.squareup:kotlinpoet:2.1.0=buildScriptClasspath,precompiledScriptPluginAccessorsGenerationClasspath
 com.xenoterracide.gradle.convention:checkstyle:0.5.1-alpha.0.43+git.43.7df0237=buildScriptClasspath,precompiledScriptPluginAccessorsGenerationClasspath
+com.xenoterracide.gradle.convention:compile:0.5.1-alpha.0.43+git.43.7df0237=buildScriptClasspath,precompiledScriptPluginAccessorsGenerationClasspath
 com.xenoterracide.gradle.convention:coverage:0.5.1-alpha.0.43+git.43.7df0237=buildScriptClasspath,precompiledScriptPluginAccessorsGenerationClasspath
 com.xenoterracide.gradle.convention:publish:0.5.1-alpha.0.43+git.43.7df0237=buildScriptClasspath,compileClasspath,precompiledScriptPluginAccessorsGenerationClasspath
 com.xenoterracide.gradle.convention:spotbugs:0.5.1-alpha.0.43+git.43.7df0237=buildScriptClasspath,precompiledScriptPluginAccessorsGenerationClasspath
