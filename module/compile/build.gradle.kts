@@ -6,7 +6,6 @@ buildscript { dependencyLocking { lockAllConfigurations() } }
 
 plugins {
   our.bom
-  our.javacompile
   our.javatest
   our.convention
 }
