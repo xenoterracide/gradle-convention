@@ -87,7 +87,6 @@ public class PublishPlugin implements Plugin<Project> {
     publications
       .withType(MavenPublication.class)
       .configureEach(pub -> {
-        pub.suppressAllPomMetadataWarnings();
         log.lifecycle(
           "publication {} {}:{}:{}",
           pub.getName(),
@@ -96,6 +95,7 @@ public class PublishPlugin implements Plugin<Project> {
           pub.getVersion()
         );
       });
+
     publishing.repositories(pubRepo -> {
       pubRepo.maven(maven -> {
         maven.setName("gh");
