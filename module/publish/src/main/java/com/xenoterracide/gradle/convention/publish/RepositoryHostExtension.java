@@ -11,7 +11,7 @@ import org.gradle.api.provider.Property;
 /**
  * Extension for configuring information regarding where your repository lives.
  *
- * <p>Implementation note: this convention concatenates these properties into final urls such as a clone url
+ * @implNote this convention concatenates these properties into final urls such as a clone url
  *   {@code $host/$namespace/$name.$extension} and the website url {@code $host/$namespace/$name}.
  */
 public abstract class RepositoryHostExtension {
