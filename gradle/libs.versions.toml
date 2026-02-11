@@ -25,6 +25,7 @@ plugin-convention-coverage = { module = "com.xenoterracide.gradle.convention:cov
 plugin-convention-javadoc = { module = "com.xenoterracide.gradle.convention:javadoc", version.ref = "plugin-convention" }
 plugin-convention-publish = { module = "com.xenoterracide.gradle.convention:publish", version.ref = "plugin-convention" }
 plugin-convention-spotbugs = { module = "com.xenoterracide.gradle.convention:spotbugs", version.ref = "plugin-convention" }
+plugin-convention-test = { module = "com.xenoterracide.gradle.convention:test", version.ref = "plugin-convention" }
 plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:3.+"
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:5.+"
 plugin-gradle-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.+" }
