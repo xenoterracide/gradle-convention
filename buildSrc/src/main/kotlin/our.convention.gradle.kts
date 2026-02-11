@@ -53,3 +53,8 @@ tasks.compileJava {
 mavenPublishing {
   configure(GradlePublishPlugin())
 }
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
