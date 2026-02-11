@@ -5,7 +5,7 @@
 name: publish-to-gradle-plugin-portal
 on:
   workflow_run:
-    workflows: [full]
+    workflows: [build]
     types: [completed]
 jobs:
   release-to-gh:
