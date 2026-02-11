@@ -36,11 +36,14 @@ jobs:
         with:
           cache-read-only: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-      - run: ./gradlew build --console=plain
-        name: build
+      - name: anchor github-creds # workaround garbage yaml parser
+        run: echo ok
         env: &github-creds
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
+      - run: ./gradlew build --console=plain
+        name: build
+        env: *github-creds
       - uses: gradle/actions/dependency-submission@v5.0.1
         if: ${{ github.ref_name == 'develop' }}
         env: *github-creds
