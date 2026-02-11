@@ -2,62 +2,13 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-name: publish-to-github-packages
+name: legacy-publish-manual
 on:
-  workflow_run:
-    workflows: [full]
-    types: [completed]
-    branches:
-      - "**"
-      - "!renovate/**"
-      - "!deps/**"
+  # This workflow has been superseded by the consolidated jobs in full.yml.
+  # Keep it for manual runs only, to aid troubleshooting if ever needed.
+  workflow_dispatch:
 jobs:
-  publish:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  noop:
     runs-on: ubuntu-22.04
-    timeout-minutes: 5
-    permissions:
-      contents: write
-      packages: write
-    env:
-      IS_PUBLISHING: true
     steps:
-      - uses: actions/checkout@v6.0.0
-        with:
-          # head sha is always the latest commit but head branch has the name we need for publishing
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
-          filter: "blob:none"
-          fetch-depth: 0
-      # Ensure the remote default branch is set so tools relying on origin/HEAD behave consistently.
-      - run: git remote set-head --auto origin
-      - uses: actions/setup-java@v5.2.0
-        with:
-          distribution: temurin
-          java-version: 25
-      - uses: gradle/actions/setup-gradle@v5.0.1
-        with:
-          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-      - run: ./gradlew publishAllPublicationsToGhRepository --info
-        env:
-          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
-          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
-      - id: detect-tag
-        run: |
-          TAGS=$(git tag --points-at HEAD | head -n1)
-          if [ -n "$TAGS" ]; then
-            echo "is_tag=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_tag=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Release on GitHub
-        run: |
-          ./gradlew publishAllPublicationsToStagingRepository
-          export STAGING=$(printf "%s" $(./gradlew stagingPath --quiet))
-          gh release create ${{ github.event.workflow_run.head_branch }} --generate-notes $STAGING/* --verify-tag
-        if: ${{ steps.detect-tag.outputs.is_tag == 'true' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
+      - run: echo "Publishing is now handled by the 'publish' job inside the 'full' workflow."
