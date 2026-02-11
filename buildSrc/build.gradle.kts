@@ -16,6 +16,7 @@ dependencies {
   implementation(libs.plugin.gradle.plugin.publish)
   implementation(libs.plugin.errorprone)
   implementation(libs.plugin.dependency.analysis)
+  implementation(libs.plugin.gradle.maven.publish)
 
   runtimeOnly(libs.plugin.convention.checkstyle)
   runtimeOnly(libs.plugin.convention.compile)
