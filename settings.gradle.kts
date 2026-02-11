@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright © 2024 - 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: MIT
 
@@ -11,7 +11,7 @@ pluginManagement {
 }
 
 plugins {
-  id("com.gradle.develocity") version "4.3"
+  id("com.gradle.develocity") version "4.3.2"
 }
 
 develocity {
