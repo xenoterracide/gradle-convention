@@ -5,14 +5,9 @@
 name: full
 on:
   push:
-    branches: &publish_branches
-      - "**"
-      - "!renovate/**"
-      - "!deps/**"
     tags:
       - v*
   pull_request:
-    # Only require PRs targeting develop to run the build checks
     branches: [develop]
   workflow_call:
 jobs:
@@ -48,8 +43,7 @@ jobs:
   publish:
     name: publish-to-github-packages
     needs: full
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: write
