@@ -36,17 +36,16 @@ jobs:
         with:
           cache-read-only: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-      - name: anchor github-creds # workaround garbage yaml parser
-        run: echo ok
-        env: &github-creds
-          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
-          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
       - run: ./gradlew build --console=plain
         name: build
-        env: *github-creds
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
       - uses: gradle/actions/dependency-submission@v5.0.1
         if: ${{ github.ref_name == 'develop' }}
-        env: *github-creds
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
 
   full:
     runs-on: ubuntu-24.04
@@ -60,7 +59,9 @@ jobs:
       - *java
       - *gradle
       - run: ./gradlew build --console=plain --no-build-cache --no-configuration-cache --rerun-tasks
-        env: *github-creds
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
 
   publish:
     name: publish-to-github-packages
@@ -79,7 +80,8 @@ jobs:
       - *gradle
       - run: ./gradlew publishAllPublicationsToGhRepository --info
         env:
-          <<: *github-creds
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
       - id: detect-tag
