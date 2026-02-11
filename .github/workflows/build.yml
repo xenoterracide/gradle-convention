@@ -2,6 +2,9 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
+.env: &creds
+  ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+  ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
 name: build
 on:
   push:
@@ -37,13 +40,10 @@ jobs:
           cache-read-only: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - run: ./gradlew build --console=plain
-        env: &creds
-          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
-          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
+        env: *creds
       - uses: gradle/actions/dependency-submission@v5.0.1
         if: ${{ github.ref_name == 'develop' }}
-        env:
-          <<: *creds
+        env: *creds
 
   full:
     runs-on: ubuntu-24.04
@@ -57,8 +57,7 @@ jobs:
       - *java
       - *gradle
       - run: ./gradlew build --console=plain --no-build-cache --no-configuration-cache --rerun-tasks
-        env:
-          <<: *creds
+        env: *creds
 
   publish:
     name: publish-to-github-packages
