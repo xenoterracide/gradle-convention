@@ -14,7 +14,6 @@ plugins {
   id("com.xenoterracide.gradle.convention.checkstyle")
   id("com.xenoterracide.gradle.convention.compile")
   id("com.xenoterracide.gradle.convention.coverage")
-  // id("com.xenoterracide.gradle.convention.javadoc")
   id("com.xenoterracide.gradle.convention.publish")
   id("com.xenoterracide.gradle.convention.spotbugs")
 }
@@ -57,4 +56,17 @@ mavenPublishing {
 java {
   withJavadocJar()
   withSourcesJar()
+}
+tasks.withType<Javadoc>().configureEach {
+  dependsOn(tasks.classes)
+  source(sourceSets.main.map { it.output.generatedSourcesDirs })
+  (options as StandardJavadocDocletOptions).apply {
+    addMultilineStringsOption("tag").value =
+      listOf(
+        "apiSpec:a:API Spec:",
+        "apiNote:a:API Note:",
+        "implSpec:a:Implementation Spec:",
+        "implNote:a:Implementation Note:",
+      )
+  }
 }
