@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+import com.vanniktech.maven.publish.GradlePlugin
+import com.vanniktech.maven.publish.GradlePublishPlugin
 import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfiguration
 import org.gradle.accessors.dm.LibrariesForLibs
 
@@ -47,6 +49,10 @@ tasks.compileJava {
   options.release.set(17)
 }
 
+mavenPublishing {
+  configure(GradlePublishPlugin())
+}
+
 java {
   withJavadocJar()
   withSourcesJar()
@@ -63,8 +69,4 @@ tasks.withType<Javadoc>().configureEach {
         "implNote:a:Implementation Note:",
       )
   }
-}
-
-tasks.withType<Jar>().configureEach {
-  archiveBaseName.set(project.path.substring(1).replace(":", "-"))
 }
