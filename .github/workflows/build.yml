@@ -25,11 +25,9 @@ jobs:
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - run: ./gradlew build --console=plain
-        env:
+        env: &creds
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
       - uses: gradle/actions/dependency-submission@v5.0.1
         if: ${{ github.ref_name == 'develop' }}
-        env:
-          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
-          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
+        env: *creds
