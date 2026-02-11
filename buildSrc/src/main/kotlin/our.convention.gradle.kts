@@ -61,12 +61,11 @@ tasks.withType<Javadoc>().configureEach {
   dependsOn(tasks.classes)
   source(sourceSets.main.map { it.output.generatedSourcesDirs })
   (options as StandardJavadocDocletOptions).apply {
-    addMultilineStringsOption("tag").value =
-      listOf(
-        "apiSpec:a:API Spec:",
-        "apiNote:a:API Note:",
-        "implSpec:a:Implementation Spec:",
-        "implNote:a:Implementation Note:",
-      )
+    tags(
+      "apiSpec:a:API Spec:",
+      "apiNote:a:API Note:",
+      "implSpec:a:Implementation Spec:",
+      "implNote:a:Implementation Note:",
+    )
   }
 }
