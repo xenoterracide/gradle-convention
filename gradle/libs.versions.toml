@@ -22,6 +22,7 @@ junit-parameters = { module = "org.junit.jupiter:junit-jupiter-params" }
 plugin-convention-checkstyle = { module = "com.xenoterracide.gradle.convention:checkstyle", version.ref = "plugin-convention" }
 plugin-convention-compile = { module = "com.xenoterracide.gradle.convention:compile", version.ref = "plugin-convention" }
 plugin-convention-coverage = { module = "com.xenoterracide.gradle.convention:coverage", version.ref = "plugin-convention" }
+plugin-convention-javadoc = { module = "com.xenoterracide.gradle.convention:javadoc", version.ref = "plugin-convention" }
 plugin-convention-publish = { module = "com.xenoterracide.gradle.convention:publish", version.ref = "plugin-convention" }
 plugin-convention-spotbugs = { module = "com.xenoterracide.gradle.convention:spotbugs", version.ref = "plugin-convention" }
 plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:3.+"
