@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
 //
-// SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.javadoc;
@@ -22,12 +21,15 @@ public class JavadocConventionPluginIntegrationTest {
   @Test
   void canApplyPlugin() throws IOException {
     var buildFile = testProjectDir.resolve("build.gradle");
-    Files.writeString(buildFile, """
+    Files.writeString(
+      buildFile,
+      """
       plugins {
         id 'java'
         id 'com.xenoterracide.gradle.convention.javadoc'
       }
-      """);
+      """
+    );
 
     var settingsFile = testProjectDir.resolve("settings.gradle");
     Files.writeString(settingsFile, "rootProject.name = 'test'");
