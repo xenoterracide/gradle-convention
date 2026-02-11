@@ -3,7 +3,13 @@
 # SPDX-License-Identifier: CC0-1.0
 
 name: build
-on: [push, workflow_call]
+on:
+  push:
+    tags:
+      - v*
+  pull_request:
+    branches: [develop]
+  workflow_call:
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -12,17 +18,23 @@ jobs:
       contents: write
       packages: read
     steps:
-      - uses: actions/checkout@v6.0.2
+      - &checkout
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.ref }}
           filter: "blob:none"
           fetch-depth: 0
-      - uses: actions/setup-java@v5.2.0
+      - &set-head # Ensure the remote default branch is set so tools relying on origin/HEAD behave consistently.
+        run: git remote set-head --auto origin
+      - &java
+        uses: actions/setup-java@v5.2.0
         with:
           distribution: temurin
           java-version: 25
-      - uses: gradle/actions/setup-gradle@v5.0.1
+      - &gradle
+        uses: gradle/actions/setup-gradle@v5.0.1
         with:
+          cache-read-only: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - run: ./gradlew build --console=plain
         env: &creds
@@ -31,3 +43,56 @@ jobs:
       - uses: gradle/actions/dependency-submission@v5.0.1
         if: ${{ github.ref_name == 'develop' }}
         env: *creds
+
+  full:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - *checkout
+      - *set-head
+      - *java
+      - *gradle
+      - run: ./gradlew build --console=plain --no-build-cache --no-configuration-cache --rerun-tasks
+        env: *creds
+
+  publish:
+    name: publish-to-github-packages
+    needs: full
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      packages: write
+    env:
+      IS_PUBLISHING: true
+    steps:
+      - *checkout
+      - *set-head
+      - *java
+      - *gradle
+      - run: ./gradlew publishAllPublicationsToGhRepository --info
+        env:
+          <<: *creds
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
+      - id: detect-tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "is_tag=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_tag=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Release on GitHub
+        if: ${{ steps.detect-tag.outputs.is_tag == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          ./gradlew publishAllPublicationsToStagingRepository
+          export STAGING=$(printf "%s" $(./gradlew stagingPath --quiet))
+          # Use the current tag name for the release
+          gh release create "${GITHUB_REF_NAME}" --generate-notes $STAGING/* --verify-tag
