@@ -23,7 +23,6 @@ dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
 
   repositories {
-    mavenLocal()
     maven("https://maven.pkg.github.com/xenoterracide/gradle-convention") {
       name = "gh"
       mavenContent {
