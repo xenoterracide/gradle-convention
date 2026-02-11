@@ -15,12 +15,13 @@
     "rimraf": "^6.1.2"
   },
   "scripts": {
+    "cleaner": "rimraf ./build */build ./module/*/build ./.gradle",
     "contributor": "pip install -r requirements.txt && git config core.hooksPath .config/git/hooks",
     "dependencies:for": "./gradlew dependencies --configuration",
     "merge": "make merge",
     "test": "./gradlew check",
     "ug": "./gradlew dependencies --write-locks --console=plain | grep -e FAILED || exit 0",
-    "ug:scan": "./gradlew dependencies --write-locks --console=plain --scan | grep -e FAILED -e https || exit 0",
-    "cleaner": "rimraf ./build */build ./module/*/build ./.gradle"
+    "ug:dogfood": "./gradlew dependencies --refresh-dependencies --write-locks --console=plain | grep -e FAILED || exit 0",
+    "ug:scan": "./gradlew dependencies --write-locks --console=plain --scan | grep -e FAILED -e https || exit 0"
   }
 }
