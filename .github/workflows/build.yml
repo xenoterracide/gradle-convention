@@ -2,10 +2,12 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-.env: &creds
+name: build
+
+x-github-creds: &github-creds
   ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
   ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
-name: build
+
 on:
   push:
     tags:
@@ -40,10 +42,10 @@ jobs:
           cache-read-only: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - run: ./gradlew build --console=plain
-        env: *creds
+        env: *github-creds
       - uses: gradle/actions/dependency-submission@v5.0.1
         if: ${{ github.ref_name == 'develop' }}
-        env: *creds
+        env: *github-creds
 
   full:
     runs-on: ubuntu-24.04
@@ -57,7 +59,7 @@ jobs:
       - *java
       - *gradle
       - run: ./gradlew build --console=plain --no-build-cache --no-configuration-cache --rerun-tasks
-        env: *creds
+        env: *github-creds
 
   publish:
     name: publish-to-github-packages
@@ -76,7 +78,7 @@ jobs:
       - *gradle
       - run: ./gradlew publishAllPublicationsToGhRepository --info
         env:
-          <<: *creds
+          <<: *github-creds
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
       - id: detect-tag
