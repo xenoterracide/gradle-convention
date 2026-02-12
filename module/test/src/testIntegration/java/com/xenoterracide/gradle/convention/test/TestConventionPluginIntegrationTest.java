@@ -120,6 +120,10 @@ class TestConventionPluginIntegrationTest {
     assertThat(result.task(":test")).isNotNull();
     assertThat(result.task(":test").getOutcome()).isIn(TaskOutcome.SUCCESS, TaskOutcome.FROM_CACHE);
 
+    // And the testsAvailable task should run as part of check
+    assertThat(result.task(":testsAvailable")).isNotNull();
+    assertThat(result.task(":testsAvailable").getOutcome()).isIn(TaskOutcome.SUCCESS, TaskOutcome.UP_TO_DATE);
+
     // And configuration cache should be stored (no errors)
     assertThat(result.getOutput()).contains("Configuration cache entry stored");
 
@@ -187,6 +191,7 @@ class TestConventionPluginIntegrationTest {
       .build();
 
     assertThat(firstRun.getOutput()).contains("Configuration cache entry stored");
+    assertThat(firstRun.task(":testsAvailable")).isNotNull();
 
     // Second run - reuse configuration cache
     var secondRun = GradleRunner.create()
