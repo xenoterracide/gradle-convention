@@ -77,6 +77,8 @@ public class TestConventionPlugin implements Plugin<Project> {
     var testsAvailable = project
       .getTasks()
       .register(TESTS_AVAILABLE, TestsAvailableTask.class, task -> {
+        task.setDescription("Verifies there is at least one test");
+        task.setGroup("Verification");
         // Configure the input files using a provider that extracts just the source directories
         // This avoids capturing the SourceSet itself which is not serializable
         var sourceDirsProvider = testSourceSet
