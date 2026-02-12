@@ -74,6 +74,9 @@ jobs:
       - *java
       - *gradle
       - run: ./gradlew version
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
       - run: ./gradlew publishAllPublicationsToGhRepository --info
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
