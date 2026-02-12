@@ -18,12 +18,7 @@ jobs:
       contents: write
       packages: read
     steps:
-      - &checkout
-        uses: actions/checkout@v6.0.2
-        with:
-          filter: "blob:none"
-          fetch-depth: 0
-          fetch-tags: true
+      - uses: actions/checkout@v6.0.2
       - &set-head # Ensure the remote default branch is set so tools relying on origin/HEAD behave consistently.
         run: git remote set-head --auto origin
       - &java
@@ -53,7 +48,7 @@ jobs:
       contents: read
       packages: read
     steps:
-      - *checkout
+      - uses: actions/checkout@v6.0.2
       - *set-head
       - *java
       - *gradle
@@ -72,7 +67,12 @@ jobs:
     env:
       IS_PUBLISHING: true
     steps:
-      - *checkout
+      - uses: actions/checkout@v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          filter: "blob:none"
+          fetch-depth: 0
+          fetch-tags: true
       - *set-head
       - *java
       - *gradle
