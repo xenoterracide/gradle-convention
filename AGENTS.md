@@ -6,3 +6,4 @@ SPDX-License-Identifier: CC-BY-NC-4.0
 
 - `./gradlew build --rerun-tasks --console=plain` must pass
 - `yarn ug` updates gradle dependencies
+- use "java skill" to write java code

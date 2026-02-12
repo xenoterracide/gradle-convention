@@ -21,6 +21,8 @@ public class JavadocConventionPlugin implements Plugin<Project> {
 
   private static void configureJavadoc(Javadoc javadoc, TaskContainer tasks, SourceSetContainer sourceSets) {
     javadoc.dependsOn(tasks.named("classes"));
+    // if cache invalidation is important enable this and see if it works
+    // javadoc.doNotTrackState("depends on classes makes cache not work anyways, I guess");
 
     var mainSourceSet = sourceSets.named("main");
     javadoc.source(mainSourceSet.map(ss -> ss.getOutput().getGeneratedSourcesDirs()));
