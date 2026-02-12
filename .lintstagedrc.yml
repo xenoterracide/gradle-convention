@@ -32,3 +32,4 @@
 # unique
 "*.java":
   - "reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights"
+  - *prettier

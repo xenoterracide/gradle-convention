@@ -50,9 +50,12 @@ class TestConventionPluginTest {
 
   @org.junit.jupiter.api.Test
   void testTasksAreConfigured() {
-    project.getTasks().withType(org.gradle.api.tasks.testing.Test.class).configureEach(test -> {
-      assertThat(test.getTestFramework()).isNotNull();
-    });
+    project
+      .getTasks()
+      .withType(org.gradle.api.tasks.testing.Test.class)
+      .configureEach(test -> {
+        assertThat(test.getTestFramework()).isNotNull();
+      });
   }
 
   @org.junit.jupiter.api.Test
