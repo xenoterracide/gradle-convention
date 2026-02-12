@@ -4,14 +4,12 @@
 
 package com.xenoterracide.gradle.convention.test;
 
-import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.plugins.JavaTestFixturesPlugin;
 import org.gradle.api.plugins.jvm.JvmTestSuite;
-import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat;
@@ -33,17 +31,19 @@ import org.gradle.testing.base.TestingExtension;
  */
 public class TestConventionPlugin implements Plugin<Project> {
 
+  // CHECKSTYLE:OFF: MultipleStringLiterals - "test" is a standard Gradle source set name
   private static final String TEST = "test";
+  // CHECKSTYLE:ON: MultipleStringLiterals
   private static final String TESTS_AVAILABLE = "testsAvailable";
 
-  private static void configureTestSuites(Project project) {
+  static void configureTestSuites(Project project) {
     var testing = project.getExtensions().getByType(TestingExtension.class);
 
     testing.getSuites().withType(JvmTestSuite.class).configureEach(JvmTestSuite::useJUnitJupiter);
   }
 
   // CHECKSTYLE:OFF: LambdaBodyLength
-  private static void configureTestTasks(Project project) {
+  static void configureTestTasks(Project project) {
     var tests = project.getTasks().withType(Test.class);
 
     tests.configureEach(test -> {
@@ -65,33 +65,27 @@ public class TestConventionPlugin implements Plugin<Project> {
     });
     // CHECKSTYLE:ON: LambdaBodyLength
 
-    // Register a task to verify tests exist
+    // Register the testsAvailable task
     registerTestsAvailableTask(project);
   }
 
-  private static void registerTestsAvailableTask(Project project) {
-    var testSourceSet = project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets().named(TEST);
+  static void registerTestsAvailableTask(Project project) {
+    var javaExtension = project.getExtensions().getByType(JavaPluginExtension.class);
+    var testSourceSet = javaExtension.getSourceSets().named(TEST);
 
+    // Register the testsAvailable task with proper inputs for configuration cache compatibility
     project
       .getTasks()
-      .register(TESTS_AVAILABLE, task -> {
-        task.doLast(t -> checkTestsExist(testSourceSet));
+      .register(TESTS_AVAILABLE, TestsAvailableTask.class, task -> {
+        // Configure the input files using a provider that extracts just the source directories
+        // This avoids capturing the SourceSet itself which is not serializable
+        var sourceDirsProvider = testSourceSet
+          .map(SourceSet::getJava)
+          .map(javaSourceSet -> javaSourceSet.getSourceDirectories());
+        task.getTestSources().from(sourceDirsProvider);
+        // testsAvailable should run after any Test task - using string notation for config cache safety
+        task.mustRunAfter("test", "testIntegration");
       });
-
-    // Finalize test tasks with the availability check
-    project
-      .getTasks()
-      .withType(Test.class)
-      .configureEach(test -> {
-        test.finalizedBy(TESTS_AVAILABLE);
-      });
-  }
-
-  private static void checkTestsExist(Provider<SourceSet> testSourceSet) {
-    var javaFiles = testSourceSet.get().getJava().getFiles();
-    if (javaFiles.isEmpty()) {
-      throw new GradleException("no tests found");
-    }
   }
 
   @Override
