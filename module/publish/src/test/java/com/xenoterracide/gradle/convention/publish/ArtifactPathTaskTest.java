@@ -32,7 +32,7 @@ class ArtifactPathTaskTest {
     task.getDirectory().set(project.getLayout().getBuildDirectory().dir("repo"));
 
     var outContent = new ByteArrayOutputStream();
-    PrintStream originalOut = System.out;
+    var originalOut = System.out;
     System.setOut(new PrintStream(outContent, true, StandardCharsets.UTF_8));
     try {
       task.run();

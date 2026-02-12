@@ -73,7 +73,7 @@ class PublishPluginTest {
   void jarArchiveBaseNameDerivedFromProjectPath() {
     var root = ProjectBuilder.builder().withName("root").build();
     var parent = ProjectBuilder.builder().withParent(root).withName("a").build();
-    Project child = ProjectBuilder.builder().withParent(parent).withName("b").build();
+    var child = ProjectBuilder.builder().withParent(parent).withName("b").build();
 
     child.getPluginManager().apply(JavaLibraryPlugin.class);
     child.getPluginManager().apply(PublishPlugin.class);
@@ -112,7 +112,7 @@ class PublishPluginTest {
     root.setGroup("com.example");
     root.setVersion("1.2.3");
 
-    Project sub = ProjectBuilder.builder().withParent(root).withName("lib").build();
+    var sub = ProjectBuilder.builder().withParent(root).withName("lib").build();
     sub.getPluginManager().apply(JavaLibraryPlugin.class);
     sub.getPluginManager().apply(PublishPlugin.class);
 
