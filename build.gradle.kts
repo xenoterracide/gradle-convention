@@ -22,12 +22,6 @@ version =
     .orElse(Semver.ZERO)
     .get()
 
-tasks.register("version") {
-  description = "Print version"
-  group = "Help"
-  doLast { println(version.toString()) }
-}
-
 tasks.dependencies {
   dependsOn(subprojects.map { it.tasks.dependencies })
 }

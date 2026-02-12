@@ -13,7 +13,6 @@ commons-io = "commons-io:commons-io:2.+"
 commons-lang3 = "org.apache.commons:commons-lang3:3.+"
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "ep" }
 errorprone-nullaway = "com.uber.nullaway:nullaway:0.+"
-jspecify = "org.jspecify:jspecify:1.+"
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
@@ -39,4 +38,4 @@ test-runtime = ["junit-engine", "junit-launcher"]
 
 [plugins]
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis" }
-semver = { id = "com.xenoterracide.gradle.semver", version = "0.14.+" }
+semver = { id = "com.xenoterracide.gradle.semver", version = "0.15.+" }
