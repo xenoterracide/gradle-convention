@@ -64,7 +64,7 @@ merge-squash:
 		printf '%s\n' "WARNING: Uncommitted changes detected. Review before merge." 1>&2; \
 	fi; \
 	printf '%s' "Proceed with squash merge? [Y/n] "; \
-	read -r reply; \
+	read -r reply < /dev/tty; \
 	case "$$reply" in \
 		""|y|Y|yes|YES) ;; \
 		*) printf '%s\n' "Merge cancelled."; exit 1 ;; \
