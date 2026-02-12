@@ -63,7 +63,6 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
 
   publish:
-    name: publish-to-github-packages
     needs: [build, full]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
