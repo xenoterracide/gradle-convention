@@ -44,26 +44,25 @@ public class TestConventionPlugin implements Plugin<Project> {
 
   // CHECKSTYLE:OFF: LambdaBodyLength
   private static void configureTestTasks(Project project) {
-    project
-      .getTasks()
-      .withType(Test.class)
-      .configureEach(test -> {
-        // Enable dynamic agent loading for Mockito, ByteBuddy, etc.
-        test.jvmArgs("-XX:+EnableDynamicAgentLoading");
-        test.useJUnitPlatform();
+    var tests = project.getTasks().withType(Test.class);
 
-        // keep low because gradle is already running in parallel, and we might want to parallel using junit itself
-        test.setMaxParallelForks(2);
+    tests.configureEach(test -> {
+      // Enable dynamic agent loading for Mockito, ByteBuddy, etc.
+      test.jvmArgs("-XX:+EnableDynamicAgentLoading");
+      test.useJUnitPlatform();
 
-        test
-          .getTestLogging()
-          .lifecycle(lifecycle -> {
-            lifecycle.setShowStandardStreams(true);
-            lifecycle.setDisplayGranularity(2);
-            lifecycle.setExceptionFormat(TestExceptionFormat.FULL);
-            lifecycle.events(TestLogEvent.SKIPPED, TestLogEvent.FAILED);
-          });
-      });
+      // keep low because gradle is already running in parallel, and we might want to parallel using junit itself
+      test.setMaxParallelForks(2);
+
+      test
+        .getTestLogging()
+        .lifecycle(lifecycle -> {
+          lifecycle.setShowStandardStreams(true);
+          lifecycle.setDisplayGranularity(2);
+          lifecycle.setExceptionFormat(TestExceptionFormat.FULL);
+          lifecycle.events(TestLogEvent.SKIPPED, TestLogEvent.FAILED);
+        });
+    });
     // CHECKSTYLE:ON: LambdaBodyLength
 
     // Register a task to verify tests exist
