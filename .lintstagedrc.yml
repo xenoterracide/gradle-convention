@@ -8,7 +8,7 @@
 "{.config/git/hooks/*,*.sh}":
   - "reuse annotate --license 'MIT' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights --style python"
   - &prettier "prettier --cache --ignore-unknown --write"
-"*.{md,adoc}":
+"!(SKILL).{md,adoc}":
   - "reuse annotate --license 'CC-BY-NC-4.0' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights"
   - *prettier
 "*.{xml,yml,yaml,properties,toml,json5,js}":
