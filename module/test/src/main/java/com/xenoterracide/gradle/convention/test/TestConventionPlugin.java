@@ -14,7 +14,6 @@ import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat;
 import org.gradle.api.tasks.testing.logging.TestLogEvent;
-import org.gradle.language.base.plugins.LifecycleBasePlugin;
 import org.gradle.testing.base.TestingExtension;
 
 /**
@@ -73,22 +72,24 @@ public class TestConventionPlugin implements Plugin<Project> {
   static void registerTestsAvailableTask(Project project) {
     var javaExtension = project.getExtensions().getByType(JavaPluginExtension.class);
     var testSourceSet = javaExtension.getSourceSets().named(TEST);
-    var tasks = project.getTasks();
 
     // Register the testsAvailable task with proper inputs for configuration cache compatibility
-    tasks.register(TESTS_AVAILABLE, TestsAvailableTask.class, task -> {
-      // Configure the input files using a provider that extracts just the source directories
-      // This avoids capturing the SourceSet itself which is not serializable
-      var sourceDirsProvider = testSourceSet
-        .map(SourceSet::getJava)
-        .map(javaSourceSet -> javaSourceSet.getSourceDirectories());
-      task.getTestSources().from(sourceDirsProvider);
-      // testsAvailable should run after any Test task
-      task.mustRunAfter(project.getTasks().withType(Test.class));
-    });
+    var testsAvailable = project
+      .getTasks()
+      .register(TESTS_AVAILABLE, TestsAvailableTask.class, task -> {
+        // Configure the input files using a provider that extracts just the source directories
+        // This avoids capturing the SourceSet itself which is not serializable
+        var sourceDirsProvider = testSourceSet
+          .map(SourceSet::getJava)
+          .map(javaSourceSet -> javaSourceSet.getSourceDirectories());
+        task.getTestSources().from(sourceDirsProvider);
+      });
 
-    // Wire testsAvailable into the check lifecycle
-    tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME, task -> task.dependsOn(TESTS_AVAILABLE));
+    // Only finalize the 'test' task (not testIntegration or other suites) since we only check the test source set
+    project
+      .getTasks()
+      .named(TEST, Test.class)
+      .configure(test -> test.finalizedBy(testsAvailable));
   }
 
   @Override
