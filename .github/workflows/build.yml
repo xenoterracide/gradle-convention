@@ -21,7 +21,6 @@ jobs:
       - &checkout
         uses: actions/checkout@v6.0.2
         with:
-          ref: ${{ github.ref }}
           filter: "blob:none"
           fetch-depth: 0
       - &set-head # Ensure the remote default branch is set so tools relying on origin/HEAD behave consistently.
