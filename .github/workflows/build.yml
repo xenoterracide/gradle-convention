@@ -19,8 +19,6 @@ jobs:
       packages: read
     steps:
       - uses: actions/checkout@v6.0.2
-      - &set-head # Ensure the remote default branch is set so tools relying on origin/HEAD behave consistently.
-        run: git remote set-head --auto origin
       - &java
         uses: actions/setup-java@v5.2.0
         with:
@@ -49,7 +47,6 @@ jobs:
       packages: read
     steps:
       - uses: actions/checkout@v6.0.2
-      - *set-head
       - *java
       - *gradle
       - run: ./gradlew build --console=plain --no-build-cache --no-configuration-cache --rerun-tasks
@@ -73,7 +70,7 @@ jobs:
           filter: "blob:none"
           fetch-depth: 0
           fetch-tags: true
-      - *set-head
+      - run: git remote set-head --auto origin
       - *java
       - *gradle
       - run: ./gradlew version
