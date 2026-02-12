@@ -23,4 +23,5 @@ dependencies {
   runtimeOnly(libs.plugin.convention.coverage)
   runtimeOnly(libs.plugin.convention.javadoc)
   runtimeOnly(libs.plugin.convention.spotbugs)
+  runtimeOnly(libs.plugin.convention.test)
 }

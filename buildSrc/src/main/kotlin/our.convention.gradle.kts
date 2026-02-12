@@ -17,6 +17,7 @@ plugins {
   id("com.xenoterracide.gradle.convention.javadoc")
   id("com.xenoterracide.gradle.convention.publish")
   id("com.xenoterracide.gradle.convention.spotbugs")
+  id("com.xenoterracide.gradle.convention.test")
 }
 
 repositoryHost(GithubPublicRepositoryConfiguration())
@@ -52,4 +53,22 @@ tasks.compileJava {
 
 mavenPublishing {
   configure(GradlePublishPlugin())
+}
+
+testing {
+  suites {
+    withType<JvmTestSuite>().configureEach {
+      dependencies {
+        implementation(platform(libs.junit.bom))
+        implementation.bundle(libs.bundles.test.impl)
+        runtimeOnly.bundle(libs.bundles.test.runtime)
+      }
+    }
+    val testIntegration by registering(JvmTestSuite::class) {
+      gradlePlugin.testSourceSet(sources)
+      dependencies {
+        runtimeOnly(project())
+      }
+    }
+  }
 }
