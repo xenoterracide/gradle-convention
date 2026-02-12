@@ -76,6 +76,7 @@ jobs:
       - *set-head
       - *java
       - *gradle
+      - run: ./gradlew version
       - run: ./gradlew publishAllPublicationsToGhRepository --info
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
