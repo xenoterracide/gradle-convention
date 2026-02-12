@@ -5,4 +5,7 @@
 /**
  * Test convention plugin.
  */
+@NullMarked
 package com.xenoterracide.gradle.convention.test;
+
+import org.jspecify.annotations.NullMarked;
