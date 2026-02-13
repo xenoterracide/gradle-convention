@@ -18,13 +18,7 @@ jobs:
       contents: write
       packages: read
     steps:
-      - &checkout
-        uses: actions/checkout@v6.0.2
-        with:
-          filter: "blob:none"
-          fetch-depth: 0
-      - &set-head # Ensure the remote default branch is set so tools relying on origin/HEAD behave consistently.
-        run: git remote set-head --auto origin
+      - uses: actions/checkout@v6.0.2
       - &java
         uses: actions/setup-java@v5.2.0
         with:
@@ -52,8 +46,7 @@ jobs:
       contents: read
       packages: read
     steps:
-      - *checkout
-      - *set-head
+      - uses: actions/checkout@v6.0.2
       - *java
       - *gradle
       - run: ./gradlew build --console=plain --no-build-cache --no-configuration-cache --rerun-tasks
@@ -71,10 +64,19 @@ jobs:
     env:
       IS_PUBLISHING: true
     steps:
-      - *checkout
-      - *set-head
+      - uses: actions/checkout@v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          filter: "blob:none"
+          fetch-depth: 0
+          fetch-tags: true
+      - run: git remote set-head --auto origin
       - *java
       - *gradle
+      - run: ./gradlew version --quiet
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
       - run: ./gradlew publishAllPublicationsToGhRepository --info
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
