@@ -67,8 +67,8 @@ merge-squash:
 	printf '%s' "Proceed with squash merge? [Y/n] "; \
 	read -r reply < /dev/tty; \
 	case "$$reply" in \
-		""|y|Y|yes|YES) ;; \
-		*) printf '%s\n' "Merge cancelled."; exit 1 ;; \
+		[Nn]|[Nn][Oo]) printf '%s\n' "Merge cancelled."; exit 1 ;; \
+		*) ;; \
 	esac; \
 	gh pr merge --squash --delete-branch --auto
 
