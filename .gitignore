@@ -4,6 +4,7 @@
 
 # AI
 *output.txt
+.junie/
 
 # direnv
 !.envrc
