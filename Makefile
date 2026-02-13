@@ -6,6 +6,13 @@ HEAD = $(shell git rev-parse --verify HEAD)
 ENGINE ?= junie
 SKILL_FILE := .ai/skills/commit-or-pr-message/SKILL.md
 
+# kimi uses --skills-dir for auto-discovery; other engines need --skill-file
+ifeq ($(ENGINE),kimi)
+  SKILL_ARG :=
+else
+  SKILL_ARG := --skill-file "$(SKILL_FILE)"
+endif
+
 define gh_head_run_id
 	gh run list --workflow $(1) --commit $(HEAD) --json databaseId --jq '.[0].databaseId // ""'
 endef
@@ -29,22 +36,22 @@ create-pr: build
 	if gh pr view --json number > /dev/null 2>&1; then \
 		printf '%s\n' "Updating PR message..."; \
 		./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-		  --skill-file "$(SKILL_FILE)" || exit 0; \
+		  $(SKILL_ARG) || exit 0; \
 		head_after=$$(git rev-parse HEAD); \
 		if [ "$$head_before" != "$$head_after" ]; then \
 			./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-			  --skill-file "$(SKILL_FILE)" || exit 0; \
+			  $(SKILL_ARG) || exit 0; \
 		fi; \
 		title=$$(cat "$$tmp_dir/title.txt"); \
 		gh pr edit --title "$$title" --body-file "$$tmp_dir/body.txt" || exit 0; \
 		GH_PAGER=cat gh pr view; \
 	else \
 		./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-		  --skill-file "$(SKILL_FILE)" || exit 0; \
+		  $(SKILL_ARG) || exit 0; \
 		head_after=$$(git rev-parse HEAD); \
 		if [ "$$head_before" != "$$head_after" ]; then \
 			./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-			  --skill-file "$(SKILL_FILE)" || exit 0; \
+			  $(SKILL_ARG) || exit 0; \
 		fi; \
 		title=$$(cat "$$tmp_dir/title.txt"); \
 		gh pr create --title "$$title" --body-file "$$tmp_dir/body.txt" || exit 0; \

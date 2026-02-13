@@ -234,22 +234,21 @@ $CHANGED_DIFF" 2>&1 | jq -r ".result" || echo "")
     AI_OUT=""
   fi
 elif [ "$ENGINE" = "kimi" ]; then
-  SKILL_PROMPT=""
-  [ -n "$SKILL_SNIPPET" ] && SKILL_PROMPT=" using this skill guidance: $SKILL_SNIPPET"
-
   # Use .ai/skills as base skills dir if it exists
+  # Kimi auto-discovers skills from this directory and injects them into the
+  # system prompt. The AI decides when to use the commit-or-pr-message skill.
+  # No need to manually embed SKILL_SNIPPET - it would duplicate the content.
   SKILLS_DIR_ARG=""
   if [ -d ".ai/skills" ]; then
     SKILLS_DIR_ARG="--skills-dir .ai/skills"
   fi
 
   # Kimi invocation
-  # --no-thinking as requested
-  # --quiet for final message only (minimal output)
-  # -y/--yolo is implied by --print but we add it for clarity if needed,
-  # though --quiet says it's an alias for --print --output-format text --final-message-only
+  # --no-thinking: faster, more direct output
+  # --quiet: alias for --print --output-format text --final-message-only
+  # --skills-dir: enables auto-discovery of commit-or-pr-message skill
   kimi $SKILLS_DIR_ARG --no-thinking --quiet --prompt \
-    "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.$SKILL_PROMPT
+    "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.
 
 Diff:
 $CHANGED_DIFF" || true
