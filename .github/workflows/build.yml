@@ -86,7 +86,7 @@ jobs:
       - name: output files
         id: files
         run: |
-          echo "files=$(find ./module/*/build/repo -type f)" >> "$GITHUB_OUTPUT"
+          echo "files=$(find ./module/*/build/repo -type f | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
       - name: detect tag
         id: detect-tag
         run: |

@@ -4,6 +4,7 @@
 
 # AI
 *.txt
+*.patch
 .junie/
 
 # direnv

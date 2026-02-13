@@ -8,7 +8,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: pr-message.sh --title-file PATH --body-file PATH [--base-ref REF] [--skill-file PATH] [--dry-run]
+Usage: pr-message.sh --title-file PATH --body-file PATH [--engine ENGINE] [--base-ref REF] [--skill-file PATH] [--dry-run]
 
 Generates a Conventional Commit subject and body for PR title/body.
 EOF
@@ -29,33 +29,19 @@ if ! command -v "$YARN_CMD" > /dev/null 2>&1; then
   fi
 fi
 
-if [ ! -f "yarn.lock" ] || ! grep -q "@github/copilot@" yarn.lock; then
-  printf '%s\n' "pr-message: ERROR: @github/copilot is not installed (add it to devDependencies)" 1>&2
-  exit 1
-fi
-
-if ! $YARN_CMD exec copilot --help > /dev/null 2>&1; then
-  printf '%s\n' "pr-message: ERROR: copilot CLI not available via yarn exec" 1>&2
-  exit 1
-fi
-
+ENGINE="${PRMSG_ENGINE:-junie}"
 TITLE_FILE=""
 BODY_FILE=""
 BASE_REF="${PRMSG_BASE_REF:-}"
 SKILL_FILE="${PRMSG_SKILL_FILE:-}"
 DRY_RUN=0
 
-if [ -z "$BASE_REF" ]; then
-  ORIGIN_HEAD_BRANCH=$(git remote show origin 2> /dev/null | awk '/HEAD branch/ {print $NF}')
-  if [ -n "$ORIGIN_HEAD_BRANCH" ]; then
-    BASE_REF="origin/$ORIGIN_HEAD_BRANCH"
-  else
-    BASE_REF="origin/HEAD"
-  fi
-fi
-
 while [ $# -gt 0 ]; do
   case "$1" in
+    --engine)
+      ENGINE="$2"
+      shift 2
+      ;;
     --title-file)
       TITLE_FILE="$2"
       shift 2
@@ -88,9 +74,37 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+if [ "$ENGINE" = "copilot" ]; then
+  if ! command -v copilot > /dev/null 2>&1; then
+    printf '%s\n' "pr-message: ERROR: copilot CLI not found" 1>&2
+    exit 1
+  fi
+elif [ "$ENGINE" = "junie" ]; then
+  if ! command -v junie > /dev/null 2>&1; then
+    printf '%s\n' "pr-message: ERROR: junie CLI not found" 1>&2
+    exit 1
+  fi
+  if ! command -v jq > /dev/null 2>&1; then
+    printf '%s\n' "pr-message: ERROR: jq not found" 1>&2
+    exit 1
+  fi
+else
+  printf '%s\n' "pr-message: ERROR: unknown engine '$ENGINE'" 1>&2
+  exit 1
+fi
+
 if [ -z "$TITLE_FILE" ] || [ -z "$BODY_FILE" ]; then
   usage
   exit 2
+fi
+
+if [ -z "$BASE_REF" ]; then
+  ORIGIN_HEAD_BRANCH=$(git remote show origin 2> /dev/null | awk '/HEAD branch/ {print $NF}')
+  if [ -n "$ORIGIN_HEAD_BRANCH" ]; then
+    BASE_REF="origin/$ORIGIN_HEAD_BRANCH"
+  else
+    BASE_REF="origin/HEAD"
+  fi
 fi
 
 if ! git rev-parse --verify "$BASE_REF" > /dev/null 2>&1; then
@@ -184,51 +198,98 @@ PR diff (truncated):
 ${CHANGED_DIFF}
 "
 
-COPILOT_MODEL="${COPILOT_PRMSG_MODEL:-${COPILOT_COMMITMSG_MODEL:-gpt-5.1-codex-mini}}"
-COPILOT_FALLBACK_MODEL="${COPILOT_PRMSG_FALLBACK_MODEL:-${COPILOT_COMMITMSG_FALLBACK_MODEL:-gpt-5.1-codex}}"
+log "pr-message: invoking $ENGINE (files: $(printf '%s\n' "$CHANGED_FILES" | wc -l | tr -d ' '))"
 
-log "pr-message: invoking copilot (files: $(printf '%s\n' "$CHANGED_FILES" | wc -l | tr -d ' '))"
-log "pr-message: copilot model=$COPILOT_MODEL (fallback=$COPILOT_FALLBACK_MODEL)"
+if [ "$ENGINE" = "junie" ]; then
+  # Use provided skill or default to the one in the project
+  SKILL_PROMPT=""
+  [ -n "$SKILL_SNIPPET" ] && SKILL_PROMPT=" using this skill guidance: $SKILL_SNIPPET"
 
-run_copilot() {
-  _model="$1"
-  _out_file="$2"
-  _err_file="$3"
+  # We ask Junie to write directly to the files to be faster and avoid manual parsing if possible.
+  # We also include the diff to avoid Junie having to discover it.
+  # Note: --cache-dir is set to .junie/cache as requested.
+  junie --skip-update-check --cache-dir=.junie/cache --output-format=json \
+    "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.$SKILL_PROMPT
 
-  $YARN_CMD exec copilot --model "$_model" -s -p "$PROMPT" > "$_out_file" 2> "$_err_file" || return $?
-}
+Diff:
+$CHANGED_DIFF" > /dev/null 2>&1 || true
 
-TMP_OUT=$(mktemp)
-TMP_ERR=$(mktemp)
+  # Fallback: if files are empty, try the old way or check if Junie wrote something to stdout (not likely with > /dev/null)
+  # Actually, if Junie failed to write the files, we might want to try one more time or just fail.
+  if [ ! -s "$TITLE_FILE" ]; then
+    log "pr-message: junie didn't write to $TITLE_FILE, trying to capture output"
+    AI_OUT=$(junie --skip-update-check --cache-dir=.junie/cache --output-format=json \
+      "Generate a conventional commit message for the following diff and output it as plain text.$SKILL_PROMPT
 
-run_copilot "$COPILOT_MODEL" "$TMP_OUT" "$TMP_ERR" || true
-COPILOT_OUT=$(cat "$TMP_OUT")
-COPILOT_ERR=$(cat "$TMP_ERR")
+Diff:
+$CHANGED_DIFF" 2>&1 | jq -r ".result" || echo "")
+  else
+    # If files were written, we are done for Junie
+    AI_OUT=""
+  fi
+else
+  COPILOT_MODEL="${COPILOT_PRMSG_MODEL:-${COPILOT_COMMITMSG_MODEL:-gpt-5.1-codex-mini}}"
+  COPILOT_FALLBACK_MODEL="${COPILOT_PRMSG_FALLBACK_MODEL:-${COPILOT_COMMITMSG_FALLBACK_MODEL:-gpt-5.1-codex}}"
 
-if printf '%s\n%s' "$COPILOT_OUT" "$COPILOT_ERR" | grep -qi 'enable this model'; then
-  log "pr-message: model '$COPILOT_MODEL' not enabled; falling back to '$COPILOT_FALLBACK_MODEL'"
-  run_copilot "$COPILOT_FALLBACK_MODEL" "$TMP_OUT" "$TMP_ERR" || true
-  COPILOT_OUT=$(cat "$TMP_OUT")
+  log "pr-message: copilot model=$COPILOT_MODEL (fallback=$COPILOT_FALLBACK_MODEL)"
+
+  run_copilot() {
+    _model="$1"
+    _out_file="$2"
+    _err_file="$3"
+
+    copilot --model "$_model" -s -p "$PROMPT" > "$_out_file" 2> "$_err_file" || return $?
+  }
+
+  TMP_OUT=$(mktemp)
+  TMP_ERR=$(mktemp)
+
+  run_copilot "$COPILOT_MODEL" "$TMP_OUT" "$TMP_ERR" || true
+  AI_OUT=$(cat "$TMP_OUT")
   COPILOT_ERR=$(cat "$TMP_ERR")
-fi
 
-if [ -z "${COPILOT_OUT:-}" ]; then
-  if [ -n "${COPILOT_ERR:-}" ] && [ -n "${COPILOT_PRMSG_DEBUG:-${COPILOT_COMMITMSG_DEBUG:-}}" ]; then
-    printf '%s\n' "copilot(pr-message): stderr: $COPILOT_ERR" 1>&2
+  if printf '%s\n%s' "$AI_OUT" "$COPILOT_ERR" | grep -qi 'enable this model'; then
+    log "pr-message: model '$COPILOT_MODEL' not enabled; falling back to '$COPILOT_FALLBACK_MODEL'"
+    run_copilot "$COPILOT_FALLBACK_MODEL" "$TMP_OUT" "$TMP_ERR" || true
+    AI_OUT=$(cat "$TMP_OUT")
+    COPILOT_ERR=$(cat "$TMP_ERR")
   fi
 
-  log "pr-message: empty output; retrying with fallback model '$COPILOT_FALLBACK_MODEL'"
-  run_copilot "$COPILOT_FALLBACK_MODEL" "$TMP_OUT" "$TMP_ERR" || true
-  COPILOT_OUT=$(cat "$TMP_OUT")
-  COPILOT_ERR=$(cat "$TMP_ERR")
+  if [ -z "${AI_OUT:-}" ]; then
+    if [ -n "${COPILOT_ERR:-}" ] && [ -n "${COPILOT_PRMSG_DEBUG:-${COPILOT_COMMITMSG_DEBUG:-}}" ]; then
+      printf '%s\n' "copilot(pr-message): stderr: $COPILOT_ERR" 1>&2
+    fi
+
+    log "pr-message: empty output; retrying with fallback model '$COPILOT_FALLBACK_MODEL'"
+    run_copilot "$COPILOT_FALLBACK_MODEL" "$TMP_OUT" "$TMP_ERR" || true
+    AI_OUT=$(cat "$TMP_OUT")
+    COPILOT_ERR=$(cat "$TMP_ERR")
+  fi
+
+  rm -f "$TMP_OUT" "$TMP_ERR"
 fi
 
-rm -f "$TMP_OUT" "$TMP_ERR"
+AI_OUT=$(printf '%s' "$AI_OUT" | sed -e 's/\r$//')
 
-COPILOT_OUT=$(printf '%s' "$COPILOT_OUT" | sed -e 's/\r$//')
+# If AI_OUT is empty but files exist, it means Junie wrote them directly
+if [ -z "$AI_OUT" ] && [ -s "$TITLE_FILE" ]; then
+  SUBJECT=$(cat "$TITLE_FILE")
+  # We still want to ensure it's trimmed and fits constraints
+  SUBJECT=$(printf '%s' "$SUBJECT" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//' | cut -c1-72)
+  printf '%s\n' "$SUBJECT" > "$TITLE_FILE"
+  log "pr-message: junie wrote title/body directly"
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf '%s\n' "Title:"
+    cat "$TITLE_FILE"
+    printf '\n%s\n' "Body:"
+    [ -s "$BODY_FILE" ] && cat "$BODY_FILE"
+  fi
+  exit 0
+fi
 
 SUBJECT_CANDIDATE=$(
-  printf '%s\n' "$COPILOT_OUT" \
+  printf '%s\n' "$AI_OUT" \
     | sed -E 's/^Subject:[[:space:]]*//I' \
     | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//' \
     | awk -v types="$ALLOWED_TYPES_ALT" '
@@ -240,7 +301,7 @@ SUBJECT_CANDIDATE=$(
         if (line ~ /^$/) next
         if (line ~ re) { print line; exit }
         if (ENVIRON["PRMSG_ECHO_IGNORED"] != "") {
-          printf("%s\n", "copilot(pr-message): ignored: " line) > "/dev/stderr"
+          printf("%s\n", "ai(pr-message): ignored: " line) > "/dev/stderr"
         }
       }
     ' \
@@ -251,20 +312,20 @@ SUBJECT_CANDIDATE=$(printf '%s' "$SUBJECT_CANDIDATE" | sed -E "s/^(I'll|I will|S
 
 if [ -z "${SUBJECT_CANDIDATE:-}" ]; then
   if [ "${FAIL_ON_INVALID:-1}" = "1" ]; then
-    log "pr-message: copilot failed to yield a valid subject; using error fallback"
-    SUBJECT="error(copilot): failed to generate message"
+    log "pr-message: $ENGINE failed to yield a valid subject; using error fallback"
+    SUBJECT="error($ENGINE): failed to generate message"
 
     {
-      printf 'Copilot failed to generate a conventional commit message.\n\n'
-      if [ -n "${COPILOT_OUT:-}" ]; then
-        printf 'Output:\n%s\n\n' "$COPILOT_OUT"
+      printf '%s failed to generate a conventional commit message.\n\n' "$ENGINE"
+      if [ -n "${AI_OUT:-}" ]; then
+        printf 'Output:\n%s\n\n' "$AI_OUT"
       fi
-      if [ -n "${COPILOT_ERR:-}" ]; then
+      if [ "$ENGINE" = "copilot" ] && [ -n "${COPILOT_ERR:-}" ]; then
         printf 'Errors:\n%s\n' "$COPILOT_ERR"
       fi
     } > "$BODY_FILE"
   else
-    log "pr-message: copilot did not yield a conventional subject; using heuristic fallback"
+    log "pr-message: $ENGINE did not yield a conventional subject; using heuristic fallback"
     if printf '%s\n' "$CHANGED_FILES" | grep -Eq '(^|/)(README\.md|.*\.md)$'; then
       SUBJECT_CANDIDATE="docs: update documentation"
     elif printf '%s\n' "$CHANGED_FILES" | grep -Eq '(^|/)\.github/'; then
@@ -280,10 +341,10 @@ if [ -z "${SUBJECT_CANDIDATE:-}" ]; then
 else
   SUBJECT=$(printf '%s' "$SUBJECT_CANDIDATE" | cut -c1-72)
 
-  BODY=$(printf '%s\n' "$COPILOT_OUT" | awk 'BEGIN{blank=0} NR==1{next} /^$/{blank=1; next} blank{print}')
+  BODY=$(printf '%s\n' "$AI_OUT" | awk 'BEGIN{blank=0} NR==1{next} /^$/{blank=1; next} blank{print}')
 
   if [ -z "${BODY:-}" ]; then
-    BODY=$(printf '%s\n' "$COPILOT_OUT" | sed -e '1d' | awk 'NF')
+    BODY=$(printf '%s\n' "$AI_OUT" | sed -e '1d' | awk 'NF')
   fi
 
   BODY=$(printf '%s\n' "$BODY" | grep -viE "^(i'll|i will|sure|here's|proposed|suggested|i inspected|let's)\\b" || true)
