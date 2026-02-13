@@ -83,6 +83,7 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
+      - run: find . -type f
       - name: detect tag
         id: detect-tag
         run: |
