@@ -28,7 +28,7 @@ plugin-convention-test = { module = "com.xenoterracide.gradle.convention:test", 
 plugin-dependency-analysis = "com.autonomousapps:dependency-analysis-gradle-plugin:3.+"
 plugin-errorprone = "net.ltgt.gradle:gradle-errorprone-plugin:5.+"
 plugin-gradle-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.+" }
-plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:1.+"
+plugin-gradle-plugin-publish = "com.gradle.publish:plugin-publish-plugin:2.+"
 plugin-spotbugs = { module = "com.github.spotbugs.snom:spotbugs-gradle-plugin", version = "6.+" }
 spotbugs = "com.github.spotbugs:spotbugs:4.+"
 
