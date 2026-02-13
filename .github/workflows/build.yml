@@ -5,8 +5,8 @@
 name: build
 on:
   push:
-    tags:
-      - v*
+    branches: ["**"]
+    tags: ["v*"]
   pull_request:
     branches: [develop]
   workflow_call:
@@ -40,6 +40,7 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
 
   full:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
