@@ -77,6 +77,12 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
+      - run: ./gradlew publishAllPublicationsToStagingRepository
+        env:
+          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
+          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
       - id: detect-tag
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
@@ -84,12 +90,6 @@ jobs:
           else
             echo "is_tag=false" >> "$GITHUB_OUTPUT"
           fi
-      - run: ./gradlew publishAllPublicationsToStagingRepository
-        env:
-          ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
-          ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
       - run: ./gradlew publishPlugins --validate-only --no-configuration-cache --info
         if: ${{ steps.detect-tag.outputs.is_tag == 'true' }}
         env:
