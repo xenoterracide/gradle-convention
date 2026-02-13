@@ -88,6 +88,11 @@ elif [ "$ENGINE" = "junie" ]; then
     printf '%s\n' "pr-message: ERROR: jq not found" 1>&2
     exit 1
   fi
+elif [ "$ENGINE" = "kimi" ]; then
+  if ! command -v kimi > /dev/null 2>&1; then
+    printf '%s\n' "pr-message: ERROR: kimi CLI not found" 1>&2
+    exit 1
+  fi
 else
   printf '%s\n' "pr-message: ERROR: unknown engine '$ENGINE'" 1>&2
   exit 1
@@ -228,6 +233,31 @@ $CHANGED_DIFF" 2>&1 | jq -r ".result" || echo "")
     # If files were written, we are done for Junie
     AI_OUT=""
   fi
+elif [ "$ENGINE" = "kimi" ]; then
+  SKILL_PROMPT=""
+  [ -n "$SKILL_SNIPPET" ] && SKILL_PROMPT=" using this skill guidance: $SKILL_SNIPPET"
+
+  # Use .ai/skills as base skills dir if it exists
+  SKILLS_DIR_ARG=""
+  if [ -d ".ai/skills" ]; then
+    SKILLS_DIR_ARG="--skills-dir .ai/skills"
+  fi
+
+  # Kimi invocation
+  # --no-thinking as requested
+  # --quiet for final message only (minimal output)
+  # -y/--yolo is implied by --print but we add it for clarity if needed,
+  # though --quiet says it's an alias for --print --output-format text --final-message-only
+  kimi $SKILLS_DIR_ARG --no-thinking --quiet --prompt \
+    "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.$SKILL_PROMPT
+
+Diff:
+$CHANGED_DIFF" || true
+
+  AI_OUT=""
+  if [ ! -s "$TITLE_FILE" ]; then
+    log "pr-message: kimi didn't write to $TITLE_FILE"
+  fi
 else
   COPILOT_MODEL="${COPILOT_PRMSG_MODEL:-${COPILOT_COMMITMSG_MODEL:-gpt-5.1-codex-mini}}"
   COPILOT_FALLBACK_MODEL="${COPILOT_PRMSG_FALLBACK_MODEL:-${COPILOT_COMMITMSG_FALLBACK_MODEL:-gpt-5.1-codex}}"
@@ -272,13 +302,13 @@ fi
 
 AI_OUT=$(printf '%s' "$AI_OUT" | sed -e 's/\r$//')
 
-# If AI_OUT is empty but files exist, it means Junie wrote them directly
+# If AI_OUT is empty but files exist, it means Junie/Kimi wrote them directly
 if [ -z "$AI_OUT" ] && [ -s "$TITLE_FILE" ]; then
   SUBJECT=$(cat "$TITLE_FILE")
   # We still want to ensure it's trimmed and fits constraints
   SUBJECT=$(printf '%s' "$SUBJECT" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//' | cut -c1-72)
   printf '%s\n' "$SUBJECT" > "$TITLE_FILE"
-  log "pr-message: junie wrote title/body directly"
+  log "pr-message: $ENGINE wrote title/body directly"
 
   if [ "$DRY_RUN" -eq 1 ]; then
     printf '%s\n' "Title:"

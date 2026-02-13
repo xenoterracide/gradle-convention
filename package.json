@@ -20,6 +20,7 @@
     "merge": "yarn merge:junie",
     "merge:copilot": "make merge ENGINE=copilot",
     "merge:junie": "make merge ENGINE=junie",
+    "merge:kimi": "make merge ENGINE=kimi",
     "test": "./gradlew check",
     "ug": "./gradlew dependencies --write-locks --console=plain | grep -e FAILED || exit 0",
     "ug:dogfood": "./gradlew dependencies --refresh-dependencies --write-locks --console=plain | grep -e FAILED || exit 0",
