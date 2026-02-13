@@ -73,7 +73,7 @@ jobs:
       - run: git remote set-head --auto origin
       - *java
       - *gradle
-      - run: ./gradlew version
+      - run: ./gradlew version --quiet
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
