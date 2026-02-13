@@ -7,15 +7,14 @@ on:
   push:
     branches: ["**"]
     tags: ["v*"]
-  pull_request:
-    branches: [develop]
   workflow_call:
 jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
-      contents: write
+      actions: write
+      contents: read
       packages: read
     steps:
       - uses: actions/checkout@v6.0.2
@@ -40,10 +39,10 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
 
   full:
-    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
+      actions: read
       contents: read
       packages: read
     steps:
@@ -60,6 +59,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
+      actions: read
       contents: write
       packages: write
     env:
@@ -67,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
         with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           filter: "blob:none"
           fetch-depth: 0
           fetch-tags: true
@@ -84,7 +84,8 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
-      - id: detect-tag
+      - name: detect tag
+        id: detect-tag
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             echo "is_tag=true" >> "$GITHUB_OUTPUT"
