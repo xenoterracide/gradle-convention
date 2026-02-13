@@ -208,11 +208,12 @@ if [ "$ENGINE" = "junie" ]; then
   # We ask Junie to write directly to the files to be faster and avoid manual parsing if possible.
   # We also include the diff to avoid Junie having to discover it.
   # Note: --cache-dir is set to .junie/cache as requested.
-  junie --skip-update-check --cache-dir=.junie/cache --output-format=json \
+  # We don't use --output-format=json here so the user can see progress in the terminal.
+  junie --skip-update-check --cache-dir=.junie/cache \
     "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.$SKILL_PROMPT
 
 Diff:
-$CHANGED_DIFF" > /dev/null 2>&1 || true
+$CHANGED_DIFF" || true
 
   # Fallback: if files are empty, try the old way or check if Junie wrote something to stdout (not likely with > /dev/null)
   # Actually, if Junie failed to write the files, we might want to try one more time or just fail.
