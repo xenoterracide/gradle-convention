@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
-      contents: write
+      actions: write
+      contents: read
       packages: read
     steps:
       - uses: actions/checkout@v6.0.2
@@ -43,6 +44,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
+      actions: read
       contents: read
       packages: read
     steps:
@@ -59,6 +61,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
+      actions: read
       contents: write
       packages: write
     env:
