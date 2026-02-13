@@ -7,8 +7,6 @@ on:
   push:
     branches: ["**"]
     tags: ["v*"]
-  pull_request:
-    branches: [develop]
   workflow_call:
 jobs:
   build:
@@ -69,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
         with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           filter: "blob:none"
           fetch-depth: 0
           fetch-tags: true
