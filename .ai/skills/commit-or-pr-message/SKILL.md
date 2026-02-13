@@ -1,15 +1,6 @@
-<!--
-SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-
-SPDX-License-Identifier: CC-BY-NC-4.0
--->
-
 ---
-
 # SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-
 #
-
 # SPDX-License-Identifier: CC-BY-NC-4.0
 
 name: commit-or-pr-message
@@ -18,7 +9,6 @@ license: CC-BY-NC-4.0
 metadata:
 author: Caleb Cushing
 allowed-tools: bash(git:_) bash(make:_)
-
 ---
 
 ## Instructions

@@ -22,12 +22,6 @@ version =
     .orElse(Semver.ZERO)
     .get()
 
-tasks.register("version") {
-  description = "Print version"
-  group = "Help"
-  doLast { println(version.toString()) }
-}
-
 tasks.dependencies {
   dependsOn(subprojects.map { it.tasks.dependencies })
 }
@@ -44,7 +38,7 @@ dependencyAnalysis {
       // Convention modules don't have integration tests; ignore that source set for analysis
       ignoreSourceSet("testIntegration")
       onUnusedDependencies {
-        // our.javatest convention wires common test libs that may be unused by these modules
+        // convention wires common test libs that may be unused by these modules
         exclude(libs.junit.parameters)
         exclude(libs.assertj)
         exclude(libs.junit.api)

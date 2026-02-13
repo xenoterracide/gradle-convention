@@ -44,11 +44,11 @@ public class CompilePlugin implements Plugin<Project> {
     "io.vavr",
     "org.apache.commons.lang3",
     "org.assertj",
-    "org.eclipse.jgit",
-    "org.junit"
+    "org.eclipse.jgit"
   );
 
   private static final List<String> BASE_ERROR_PRONE_CHECKS = List.of(
+    "AddNullMarkedToPackageInfo",
     "AmbiguousMethodReference",
     "ArgumentSelectionDefectChecker",
     "ArrayAsKeyOfSetOrMap",
@@ -220,12 +220,13 @@ public class CompilePlugin implements Plugin<Project> {
   private static void configureNullAway(ErrorProneOptions epOptions) {
     var annotatedPackages = String.join(COMMA, ANNOTATED_PACKAGES);
     var unannotatedSubPackages = String.join(COMMA, UNANNOTATED_SUBPACKAGES);
-
+    epOptions.option("NullAway:AcknowledgeRestrictiveAnnotations", true);
     epOptions.option("NullAway:AnnotatedPackages", annotatedPackages);
-    epOptions.option("NullAway:CheckOptionalEmptiness", true);
-    epOptions.option("NullAway:HandleTestAssertionLibraries", true);
     epOptions.option("NullAway:CheckContracts", true);
+    epOptions.option("NullAway:CheckOptionalEmptiness", true);
     epOptions.option("NullAway:ExcludedFieldAnnotations", "org.junit.jupiter.api.io.TempDir");
+    epOptions.option("NullAway:HandleTestAssertionLibraries", true);
+    epOptions.option("NullAway:JSpecifyMode", true);
     epOptions.option("NullAway:UnannotatedSubPackages", unannotatedSubPackages);
   }
 

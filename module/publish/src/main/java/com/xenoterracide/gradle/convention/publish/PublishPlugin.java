@@ -12,9 +12,10 @@ import org.gradle.api.Project;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
+import org.gradle.jvm.tasks.Jar;
 
 /**
- * Plugin for configuring publishinga java to a repository host.
+ * Plugin for configuring publishing Java to a repository host.
  */
 public class PublishPlugin implements Plugin<Project> {
 
@@ -106,5 +107,13 @@ public class PublishPlugin implements Plugin<Project> {
         maven.setUrl(project.getLayout().getBuildDirectory().dir(STAGING_REPO));
       });
     });
+
+    var tasks = project.getTasks();
+    tasks
+      .withType(Jar.class)
+      .configureEach(jar -> {
+        // ensure the output jar is essentially projectroot-module.jar when published to avoid doing this all the time
+        jar.getArchiveBaseName().set(project.getPath().substring(1).replace(":", "-"));
+      });
   }
 }

@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+import com.vanniktech.maven.publish.GradlePlugin
+import com.vanniktech.maven.publish.GradlePublishPlugin
 import com.xenoterracide.gradle.convention.publish.GithubPublicRepositoryConfiguration
 import org.gradle.accessors.dm.LibrariesForLibs
 
@@ -12,8 +14,10 @@ plugins {
   id("com.xenoterracide.gradle.convention.checkstyle")
   id("com.xenoterracide.gradle.convention.compile")
   id("com.xenoterracide.gradle.convention.coverage")
+  id("com.xenoterracide.gradle.convention.javadoc")
   id("com.xenoterracide.gradle.convention.publish")
   id("com.xenoterracide.gradle.convention.spotbugs")
+  id("com.xenoterracide.gradle.convention.test")
 }
 
 repositoryHost(GithubPublicRepositoryConfiguration())
@@ -47,24 +51,24 @@ tasks.compileJava {
   options.release.set(17)
 }
 
-java {
-  withJavadocJar()
-  withSourcesJar()
-}
-tasks.withType<Javadoc>().configureEach {
-  dependsOn(tasks.classes)
-  source(sourceSets.main.map { it.output.generatedSourcesDirs })
-  (options as StandardJavadocDocletOptions).apply {
-    addMultilineStringsOption("tag").value =
-      listOf(
-        "apiSpec:a:API Spec:",
-        "apiNote:a:API Note:",
-        "implSpec:a:Implementation Spec:",
-        "implNote:a:Implementation Note:",
-      )
-  }
+mavenPublishing {
+  configure(GradlePublishPlugin())
 }
 
-tasks.withType<Jar>().configureEach {
-  archiveBaseName.set(project.path.substring(1).replace(":", "-"))
+testing {
+  suites {
+    withType<JvmTestSuite>().configureEach {
+      dependencies {
+        implementation(platform(libs.junit.bom))
+        implementation.bundle(libs.bundles.test.impl)
+        runtimeOnly.bundle(libs.bundles.test.runtime)
+      }
+    }
+    val testIntegration by registering(JvmTestSuite::class) {
+      gradlePlugin.testSourceSet(sources)
+      dependencies {
+        runtimeOnly(project())
+      }
+    }
+  }
 }
