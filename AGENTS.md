@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
 SPDX-License-Identifier: CC-BY-NC-4.0
 -->
 
-- use any relevant skills
+- use any relevant skills found in `.ai/skills`
 - `./gradlew build` must pass
 - appending `--console=plain` to `./gradlew` commands may make parsing and redirecting output cleaner.
 - `yarn ug` updates gradle dependencies
