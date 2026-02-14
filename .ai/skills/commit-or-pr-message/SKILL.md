@@ -7,8 +7,8 @@ name: commit-or-pr-message
 description: Generates a concise and descriptive commit or PR message based on the code changes.
 license: CC-BY-NC-4.0
 metadata:
-  author: Caleb Cushing
-allowed-tools: bash(git:*) bash(make:*)
+author: Caleb Cushing
+allowed-tools: bash(git:_) bash(make:_)
 ---
 
 ## Instructions
@@ -33,7 +33,6 @@ allowed-tools: bash(git:*) bash(make:*)
   - Do not split a single idea across multiple bullets
   - Explain WHAT and WHY
   - Wrap lines to <= 72 chars
-  -
 
 ## Template
 
