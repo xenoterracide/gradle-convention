@@ -29,12 +29,38 @@ if ! command -v "$YARN_CMD" > /dev/null 2>&1; then
   fi
 fi
 
-ENGINE="${PRMSG_ENGINE:-junie}"
+ENGINE="${PRMSG_ENGINE:-}"
 TITLE_FILE=""
 BODY_FILE=""
 BASE_REF="${PRMSG_BASE_REF:-}"
 SKILL_FILE="${PRMSG_SKILL_FILE:-}"
 DRY_RUN=0
+
+# Auto-detect available engines
+is_engine_available() {
+  case "$1" in
+    copilot) command -v copilot > /dev/null 2>&1 ;;
+    junie) command -v junie > /dev/null 2>&1 && command -v jq > /dev/null 2>&1 ;;
+    kimi) command -v kimi > /dev/null 2>&1 ;;
+    *) return 1 ;;
+  esac
+}
+
+# If engine not specified, auto-detect
+if [ -z "$ENGINE" ]; then
+  for try_engine in junie kimi copilot; do
+    if is_engine_available "$try_engine"; then
+      ENGINE="$try_engine"
+      break
+    fi
+  done
+fi
+
+# If still no engine found, error out
+if [ -z "$ENGINE" ]; then
+  printf '%s\n' "pr-message: ERROR: no AI engine found (tried: junie, kimi, copilot)" 1>&2
+  exit 1
+fi
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -74,29 +100,26 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-if [ "$ENGINE" = "copilot" ]; then
-  if ! command -v copilot > /dev/null 2>&1; then
-    printf '%s\n' "pr-message: ERROR: copilot CLI not found" 1>&2
+# Validate engine and fall back if not available
+if ! is_engine_available "$ENGINE"; then
+  log "pr-message: engine '$ENGINE' not available, trying fallback"
+  ORIG_ENGINE="$ENGINE"
+  FOUND=0
+  for try_engine in junie kimi copilot; do
+    if [ "$try_engine" != "$ORIG_ENGINE" ] && is_engine_available "$try_engine"; then
+      ENGINE="$try_engine"
+      FOUND=1
+      log "pr-message: fell back to '$ENGINE'"
+      break
+    fi
+  done
+  if [ "$FOUND" -eq 0 ]; then
+    printf '%s\n' "pr-message: ERROR: engine '$ORIG_ENGINE' not available and no fallback found" 1>&2
     exit 1
   fi
-elif [ "$ENGINE" = "junie" ]; then
-  if ! command -v junie > /dev/null 2>&1; then
-    printf '%s\n' "pr-message: ERROR: junie CLI not found" 1>&2
-    exit 1
-  fi
-  if ! command -v jq > /dev/null 2>&1; then
-    printf '%s\n' "pr-message: ERROR: jq not found" 1>&2
-    exit 1
-  fi
-elif [ "$ENGINE" = "kimi" ]; then
-  if ! command -v kimi > /dev/null 2>&1; then
-    printf '%s\n' "pr-message: ERROR: kimi CLI not found" 1>&2
-    exit 1
-  fi
-else
-  printf '%s\n' "pr-message: ERROR: unknown engine '$ENGINE'" 1>&2
-  exit 1
 fi
+
+log "pr-message: using engine '$ENGINE'"
 
 if [ -z "$TITLE_FILE" ] || [ -z "$BODY_FILE" ]; then
   usage
