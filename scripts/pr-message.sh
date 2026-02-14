@@ -263,18 +263,26 @@ elif [ "$ENGINE" = "kimi" ]; then
   # No need to manually embed SKILL_SNIPPET - it would duplicate the content.
   SKILLS_DIR_ARG=""
   if [ -d ".ai/skills" ]; then
-    SKILLS_DIR_ARG="--skills-dir .ai/skills"
+    SKILLS_DIR_ARG=".ai/skills"
   fi
 
   # Kimi invocation
   # --no-thinking: faster, more direct output
   # --quiet: alias for --print --output-format text --final-message-only
   # --skills-dir: enables auto-discovery of commit-or-pr-message skill
-  kimi $SKILLS_DIR_ARG --no-thinking --quiet --prompt \
-    "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.
+  if [ -n "$SKILLS_DIR_ARG" ]; then
+    kimi --skills-dir "$SKILLS_DIR_ARG" --no-thinking --quiet --prompt \
+      "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.
 
 Diff:
 $CHANGED_DIFF" || true
+  else
+    kimi --no-thinking --quiet --prompt \
+      "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.
+
+Diff:
+$CHANGED_DIFF" || true
+  fi
 
   AI_OUT=""
   if [ ! -s "$TITLE_FILE" ]; then
