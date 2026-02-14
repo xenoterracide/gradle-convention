@@ -83,10 +83,6 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
-      - name: output files
-        id: files
-        run: |
-          echo "files=$(find ./module/*/build/repo -type f | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
       - name: detect tag
         id: detect-tag
         run: |
@@ -110,7 +106,22 @@ jobs:
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
-      - run: gh release create "${GITHUB_REF_NAME}" --generate-notes --verify-tag ${{ steps.files.outputs.files }}
+      - name: create release archives
+        id: archives
+        if: ${{ steps.detect-tag.outputs.is_tag == 'true' }}
+        run: |
+          mkdir -p release-archives
+          for module_dir in ./module/*/build/repo; do
+            # Extract module name: ./module/<name>/build/repo -> <name>
+            module_name=$(basename "$(dirname "$(dirname "$module_dir")")")
+            # Create tar.gz with complete Maven repository structure
+            # Includes: artifacts, signatures (.asc), checksums, and maven-metadata.xml
+            tar -czf "release-archives/${module_name}-${GITHUB_REF_NAME}.tar.gz" \
+              -C "$(dirname "$module_dir")" \
+              "$(basename "$module_dir")"
+          done
+          ls -la release-archives/
+      - run: gh release create "${GITHUB_REF_NAME}" --generate-notes --verify-tag release-archives/*.tar.gz
         if: ${{ steps.detect-tag.outputs.is_tag == 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
