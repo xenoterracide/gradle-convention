@@ -44,7 +44,6 @@ public class JavadocConventionPlugin implements Plugin<Project> {
 
     // kind of sketch SRP wise, but maybe more accurately documentation plugin
     var java = extensions.getByType(JavaPluginExtension.class);
-    java.withJavadocJar();
     java.withSourcesJar();
 
     var tasks = project.getTasks();
