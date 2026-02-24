@@ -24,14 +24,14 @@ jobs:
           distribution: temurin
           java-version: 25
       - &gradle
-        uses: gradle/actions/setup-gradle@v5.0.1
+        uses: gradle/actions/setup-gradle@v5.0.2
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - run: ./gradlew version build --console=plain
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
           ORG_GRADLE_PROJECT_ghPassword: ${{ github.token }}
-      - uses: gradle/actions/dependency-submission@v5.0.1
+      - uses: gradle/actions/dependency-submission@v5.0.2
         if: ${{ github.ref_name == 'develop' }}
         env:
           ORG_GRADLE_PROJECT_ghUsername: ${{ github.actor }}
