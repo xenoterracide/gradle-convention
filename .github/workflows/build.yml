@@ -61,6 +61,8 @@ jobs:
       actions: read
       contents: write
       packages: write
+    concurrency:
+      group: publish
     env:
       IS_PUBLISHING: true
     steps:
