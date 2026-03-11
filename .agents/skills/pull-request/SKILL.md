@@ -1,10 +1,6 @@
 ---
-# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-#
-# SPDX-License-Identifier: CC-BY-NC-SA-4.0
-
 name: pull-request
-description: work on PR (pull request)
+description: Create, update, or manage GitHub Pull Requests (PR). Use when asked to create a PR, open a pull request, submit changes, or work with PRs.
 license: CC-BY-NC-SA-4.0
 metadata:
   author: Caleb Cushing
@@ -13,6 +9,10 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
 
 - use commit-or-pr-message
 - keep the pull request message up to date
+  - NOTE: The PR description becomes the commit message when the PR is squash-merged
+  - Follow the commit-or-pr-message format for PR descriptions since they become permanent commit history
+  - DO NOT use checkboxes (`- [x]`) in PR descriptions - they render poorly in commit messages
+  - Use plain bullet lists (`- item`) instead of GitHub task lists
 - files should be committed and pushed
   - ensure code compiles and tests pass before committing
     - run relevant, specific tests first for quick feedback
@@ -29,3 +29,24 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
   - it is easier to delete and regenerate lockfiles than merge them
 - respond to ALL pr comments.
   - fix and comment if valid, or explain why not if invalid, ask if uncertain. This helps humans understand current comment status.
+
+## AI Attribution
+
+When creating commits for a PR, include AI attribution in commit messages using a Co-authored-by trailer:
+
+```
+Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
+```
+
+Use your AI identity:
+
+- `AI_NAME`: Your AI name (e.g., "Kimi", "Copilot", "Claude")
+- `AI_NOREPLY_EMAIL`: A noreply-style email (e.g., `<number>+<username>@users.noreply.github.com` for GitHub, or `ai@localhost` for local)
+
+Place the Co-authored-by trailer at the end of the commit message body, after the description.
+
+---
+
+SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
