@@ -55,18 +55,16 @@ Instructions and guidance. Only loaded AFTER the skill triggers.
 
 ### SPDX License Trailer
 
-Place the SPDX license header at the end of the file as an HTML comment trailer:
+Place the SPDX license notice at the end of the file, after a horizontal rule:
 
 ```markdown
 ---
 
-<!--
 SPDX-FileCopyrightText: Copyright © 2026 Your Name
 SPDX-License-Identifier: CC0-1.0
--->
 ```
 
-This keeps the skill instructions prominent at the top while maintaining REUSE compliance. The horizontal rule (`---`) visually separates the content from the legal trailer.
+This mirrors how human writing places copyright notices at the end. The horizontal rule (`---`) visually separates the skill content from the legal trailer. REUSE will detect the SPDX identifiers in the rendered text.
 
 ## Bundled Resources
 
@@ -112,8 +110,6 @@ Skills are for AI agents, not humans. Only include what Claude needs to do the j
 
 ---
 
-<!--
 SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
 
 SPDX-License-Identifier: CC0-1.0
--->
