@@ -11,6 +11,8 @@
 "!(SKILL).{md,adoc}":
   - "uv run reuse annotate --license 'CC-BY-NC-4.0' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights"
   - *prettier
+"SKILL.md":
+  - *prettier
 "*.{xml,yml,yaml,properties,toml,json5,js}":
   - &cc0 "uv run reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol --merge-copyrights --fallback-dot-license"
   - *prettier
