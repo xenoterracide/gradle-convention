@@ -15,7 +15,7 @@
   },
   "scripts": {
     "cleaner": "rimraf ./build */build ./module/*/build ./.gradle",
-    "contributor": "pip install -r requirements.txt && git config core.hooksPath .config/git/hooks",
+    "contributor": "pip install -r requirements.txt && git config core.hooksPath .share/git/hooks",
     "dependencies:for": "./gradlew dependencies --configuration",
     "merge": "yarn merge:junie",
     "merge:copilot": "make merge ENGINE=copilot",
