@@ -39,3 +39,15 @@ allowed-tools: bash(git:_) bash(make:_)
 <type>(<scope>): <summary>
 
 <body>
+
+## AI Attribution
+
+Add a Co-authored-by trailer at the end of the commit message body (after the description, before any footer markers like `BREAKING CHANGE:`):
+
+```
+Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
+```
+
+Use your AI identity:
+- `AI_NAME`: Your AI name (e.g., "Kimi", "Copilot", "Claude")
+- `AI_NOREPLY_EMAIL`: A noreply-style email (e.g., `<number>+<username>@users.noreply.github.com` for GitHub, or `ai@localhost` for local)
