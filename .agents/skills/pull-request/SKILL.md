@@ -7,12 +7,6 @@ metadata:
 allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add_issue_comment add_reply_to_pull_request_comment update_pull_request list_pull_requests create_pull_request
 ---
 
-<!--
-SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-
-SPDX-License-Identifier: CC-BY-NC-SA-4.0
--->
-
 - use commit-or-pr-message
 - keep the pull request message up to date
   - NOTE: The PR description becomes the commit message when the PR is squash-merged
@@ -50,3 +44,9 @@ Use your AI identity:
 - `AI_NOREPLY_EMAIL`: A noreply-style email (e.g., `<number>+<username>@users.noreply.github.com` for GitHub, or `ai@localhost` for local)
 
 Place the Co-authored-by trailer at the end of the commit message body, after the description.
+
+---
+
+SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0

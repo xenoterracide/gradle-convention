@@ -1,8 +1,4 @@
 ---
-# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-#
-# SPDX-License-Identifier: CC-BY-NC-SA-4.0
-
 name: use-case-creator
 license: CC-BY-NC-SA-4.0
 metadata:
@@ -151,3 +147,9 @@ See `assets/uc-registration-example.adoc` for a complete example.
 5. **Link domain terms** - add `<<Term>>` references
 6. **Add metadata** - scope, level, trigger
 7. **Record open issues** - unresolved questions
+
+---
+
+SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
