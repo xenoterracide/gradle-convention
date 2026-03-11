@@ -46,7 +46,7 @@ public class CheckstyleConventionPlugin implements Plugin<Project> {
       .register(CHECKSTYLE, task -> {
         task.dependsOn(checkstyleTasks);
         task.setGroup("Verification");
-        task.setDescription("Runs Checkstyle on all Java source files.");
+        task.setDescription("Runs Checkstyle on all Java source files");
       });
   }
 }

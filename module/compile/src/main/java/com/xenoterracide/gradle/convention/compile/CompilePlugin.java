@@ -313,7 +313,7 @@ public class CompilePlugin implements Plugin<Project> {
     tasks.register("compile", task -> {
       task.dependsOn(tasks.withType(JavaCompile.class));
       task.setGroup("Build");
-      task.setDescription("Compiles all Java source files.");
+      task.setDescription("Compiles all Java source files");
     });
   }
 
