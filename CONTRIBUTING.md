@@ -16,7 +16,7 @@ Thank you for your interest in contributing! This document outlines the developm
 - **Node.js 24+** - For formatting tools and git hooks
 - **uv** - Python package manager for REUSE tool ([install uv](https://docs.astral.sh/uv/getting-started/installation/))
 
-We recommend using [asdf](https://asdf-vm.com) for version management. Tool versions are defined in `.tool-versions` (uv evolves quickly, so install the latest version separately).
+We recommend using [asdf](https://asdf-vm.com) for version management. Java, Node.js, and uv versions are defined in `.tool-versions`, while the Python version is pinned in `.python-version` (used by `uv python` and compatible with asdf). uv evolves quickly, so install the latest version separately.
 
 ### Build Tools
 
