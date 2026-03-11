@@ -31,7 +31,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
       - run: uv sync --frozen
       - uses: gradle/actions/setup-gradle@v5.0.2
         with:
@@ -50,7 +50,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
         name: git status
         id: git_status
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle/wrapper/') }}
       - run: uv sync --frozen
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle/wrapper/') }}
