@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright © 2024-2026 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: CC0-1.0
 
@@ -18,12 +18,12 @@
     {
       // Runs during the 03:00 UTC hour daily (scheduled after update-java at 03:00)
       schedule: ["* 3 * * *"],
-      // Use pip-compile with PEP 621 pyproject at repo root
-      matchManagers: ["pip-compile"],
+      // Use PEP 621 manager which supports uv (reads pyproject.toml and updates uv.lock)
+      matchManagers: ["pep621"],
       matchFileNames: ["^pyproject\\.toml$"],
     },
     {
-      // Disable legacy requirements manager; we use pip-compile with PEP 621
+      // Disable legacy requirements manager; we use uv with PEP 621
       matchManagers: ["pip_requirements"],
       enabled: false,
     },
