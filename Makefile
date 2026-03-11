@@ -1,10 +1,10 @@
-# SPDX-FileCopyrightText: Copyright © 2024 - 2026 Caleb Cushing
+# SPDX-FileCopyrightText: Copyright © 2024-2026 Caleb Cushing
 #
 # SPDX-License-Identifier: MIT
 
 HEAD = $(shell git rev-parse --verify HEAD)
 ENGINE ?= junie
-SKILL_FILE := .ai/skills/commit-or-pr-message/SKILL.md
+SKILL_FILE := .agents/skills/commit-or-pr-message/SKILL.md
 
 # kimi uses --skills-dir for auto-discovery; other engines need --skill-file
 ifeq ($(ENGINE),kimi)
@@ -17,10 +17,6 @@ define gh_head_run_id
 	gh run list --workflow $(1) --commit $(HEAD) --json databaseId --jq '.[0].databaseId // ""'
 endef
 
-.PHONY: build
-build:
-	./gradlew build --console=plain
-
 .PHONY: merge
 merge: merge-head push
 	@if gh pr view --json number > /dev/null 2>&1; then \
@@ -30,7 +26,7 @@ merge: merge-head push
 	fi
 	@$(MAKE) merge-squash
 
-create-pr: build
+create-pr:
 	@tmp_dir=$$(mktemp -d); \
 	head_before=$$(git rev-parse HEAD); \
 	if gh pr view --json number > /dev/null 2>&1; then \
