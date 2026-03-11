@@ -257,13 +257,13 @@ $CHANGED_DIFF" 2>&1 | jq -r ".result" || echo "")
     AI_OUT=""
   fi
 elif [ "$ENGINE" = "kimi" ]; then
-  # Use .ai/skills as base skills dir if it exists
+  # Use .agents/skills as base skills dir if it exists
   # Kimi auto-discovers skills from this directory and injects them into the
   # system prompt. The AI decides when to use the commit-or-pr-message skill.
   # No need to manually embed SKILL_SNIPPET - it would duplicate the content.
   SKILLS_DIR_ARG=""
-  if [ -d ".ai/skills" ]; then
-    SKILLS_DIR_ARG=".ai/skills"
+  if [ -d ".agents/skills" ]; then
+    SKILLS_DIR_ARG=".agents/skills"
   fi
 
   # Kimi invocation
