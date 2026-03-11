@@ -95,19 +95,19 @@ Every file MUST have an SPDX license header. The project uses the [REUSE](https:
 
 ```bash
 # Check license compliance
-reuse lint
+uv run reuse lint
 
 # Annotate Java files
-reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' \
+uv run reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' \
   --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol \
   --merge-copyrights <file>
 
 # Annotate Gradle/Kotlin files
-reuse annotate --license 'MIT' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'MIT' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights <file>
 
 # Annotate config files
-reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights <file>
 ```
 
