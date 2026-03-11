@@ -4,112 +4,67 @@ SPDX-FileCopyrightText: Copyright © 2025 - 2026 Caleb Cushing
 SPDX-License-Identifier: CC-BY-NC-4.0
 -->
 
-# My Conventions
+# Gradle Convention Plugins
 
-Firstly, these are my personal conventions; if you find them useful feel free to let me know and I can migrate them to a
-stable API. You're welcome to use them either way.
+Opinionated Gradle convention plugins for Java/Gradle projects. These plugins are published to both the **Gradle Plugin Portal** and **GitHub Packages**.
 
-## Coverage
+> **Note:** These are my personal conventions. If you find them useful, feel free to let me know and I can work toward a stable API.
 
-This plugin is designed to enforce a minimum coverage percentage per module, and also ensures that all `JvmTestSuite`s
-are combined so that coverage is calculated across all tests. Instead of providing a ridiculous `BigDecimal` to the
-plugin you can simply set a double to the minimum coverage percentage. The default percentage required is 90% or `0.9`.
+## Available Plugins
 
-```kts
+| Plugin ID                                        | Module                          | Description                                                      |
+| ------------------------------------------------ | ------------------------------- | ---------------------------------------------------------------- |
+| `com.xenoterracide.gradle.convention.checkstyle` | [checkstyle](module/checkstyle) | Configures Checkstyle for code style enforcement                 |
+| `com.xenoterracide.gradle.convention.compile`    | [compile](module/compile)       | Configures Java compilation with Error Prone and NullAway        |
+| `com.xenoterracide.gradle.convention.coverage`   | [coverage](module/coverage)     | Configures JaCoCo coverage with unified multi-test-suite support |
+| `com.xenoterracide.gradle.convention.javadoc`    | [javadoc](module/javadoc)       | Configures Javadoc generation conventions                        |
+| `com.xenoterracide.gradle.convention.publish`    | [publish](module/publish)       | Configures Maven publishing with SPDX license support            |
+| `com.xenoterracide.gradle.convention.spotbugs`   | [spotbugs](module/spotbugs)     | Configures SpotBugs static analysis                              |
+| `com.xenoterracide.gradle.convention.test`       | [test](module/test)             | Configures JUnit 5 testing with test fixtures support            |
+
+## Usage
+
+Add the plugin to your `build.gradle.kts`:
+
+```kotlin
 plugins {
-  id("com.xenoterracide.gradle.convention.coverage")
-}
-
-coverage {
-  minimum.set(0.3) // default 0.9
+  id("com.xenoterracide.gradle.convention.coverage") version "0.3.0"
 }
 ```
 
-## Publish
+## Plugin Details
 
-**WARNING:** this plugin sets up defaults for me, that will _not_ be suitable for your project.
+### Coverage
 
-See the [
-`package-info`](https://github.com/xenoterracide/gradle-convention/blob/main/module/publish/src/main/java/com/xenoterracide/gradle/convention/publish/package-info.java)
+Enforces a minimum coverage percentage per module and combines all `JvmTestSuite`s so coverage is calculated across all tests.
 
-## FAQ
+```kotlin
+coverage {
+  minimum.set(0.9) // default: 0.9 (90%)
+}
+```
 
-### Gradle Support
+### Publish
 
-Gradle and Java versions are tested as follows. Older versions may work but are unsupported. Version 1.x starts with
-Java 11 but may require 17 without notice.
+**WARNING:** This plugin sets up defaults for my projects that will _not_ be suitable for yours. See the [package-info.java](module/publish/src/main/java/com/xenoterracide/gradle/convention/publish/package-info.java) for details.
+
+## Compatibility
 
 | Version | Gradle | Java |
 | ------- | ------ | ---- |
 | v0.2.x  | 8.x    | 11.x |
 | v0.3.x  | 9.x    | 17.x |
 
+Older versions may work but are unsupported.
+
 ## Contributing
 
-### Languages
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
 
-[asdf](https://asdf-vm.com) is suggested, you can use whatever you'd like to get
+## License
 
-- Java 11+
-- NodeJs
-
-add a way to export these to your `PATH` in your `~/.profile`
-
-### Build Tools
-
-- [Gradle](https://docs.gradle.org/current/userguide/command_line_interface.html)
-- [Yarn 4](https://yarnpkg.com/getting-started/install) (via Corepack)
-
-### Scripts
-
-#### Setup
-
-```sh
-# Enable Corepack, install Node dev tools, run postinstall, then verify Gradle deps
-corepack enable
-yarn install --immutable --inline-builds --check-resolutions
-yarn run contributor
-```
-
-#### Update Dependencies
-
-```sh
-# update locks and check for failures
-yarn run ug
-# update locks and check for failures with a build scan
-yarn run ug:scan
-```
-
-#### Other Scripts
-
-- `yarn run cleaner`: remove all build directories and `.gradle`
-- `yarn run merge`: run `make merge`
-- `yarn run test`: run `./gradlew check`
-
-### Committing
-
-Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-
-### Fetching Dependencies
-
-In order to get snapshots of dependencies, you must have a GitHub token in your `~/.gradle/gradle.properties` file. This
-file should look like:
-
-```properties
-ghUsername=<your username>
-ghPassword=<your token>
-```
-
-You should generate your PAT
-as [GitHub Documents here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages).
-
-> a personal access token (classic) with at least read:packages scope to install packages associated with other private
-> repositories (which GITHUB_TOKEN can't access).
-
-## Licenses
-
-- Java and resulting Jars: [GPL-3.0-or-later](https://choosealicense.com/licenses/gpl-3.0/) WITH [Classpath-exception-2.0](https://spdx.org/licenses/Classpath-exception-2.0.html)
-- Gradle Kotlin and Config Files: [MIT](https://choosealicense.com/licenses/mit/)
-- Documentation including Javadoc: [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/)
+- **Java and resulting Jars:** [GPL-3.0-or-later](https://choosealicense.com/licenses/gpl-3.0/) WITH [Classpath-exception-2.0](https://spdx.org/licenses/Classpath-exception-2.0.html)
+- **Gradle Kotlin and Config Files:** [MIT](https://choosealicense.com/licenses/mit/)
+- **Documentation:** [CC-BY-NC-4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 
 © Copyright 2024–2026 Caleb Cushing.
