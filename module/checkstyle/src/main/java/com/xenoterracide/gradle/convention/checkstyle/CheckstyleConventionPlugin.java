@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2025, 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
@@ -41,6 +41,12 @@ public class CheckstyleConventionPlugin implements Plugin<Project> {
       checkstyle.setConfigFile(config);
     });
 
-    project.getTasks().register(CHECKSTYLE, task -> task.dependsOn(checkstyleTasks));
+    project
+      .getTasks()
+      .register(CHECKSTYLE, task -> {
+        task.dependsOn(checkstyleTasks);
+        task.setGroup("Verification");
+        task.setDescription("Runs Checkstyle on all Java source files");
+      });
   }
 }
