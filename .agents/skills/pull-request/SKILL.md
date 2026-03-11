@@ -15,6 +15,8 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
 - keep the pull request message up to date
   - NOTE: The PR description becomes the commit message when the PR is squash-merged
   - Follow the commit-or-pr-message format for PR descriptions since they become permanent commit history
+  - DO NOT use checkboxes (`- [x]`) in PR descriptions - they render poorly in commit messages
+  - Use plain bullet lists (`- item`) instead of GitHub task lists
 - files should be committed and pushed
   - ensure code compiles and tests pass before committing
     - run relevant, specific tests first for quick feedback
