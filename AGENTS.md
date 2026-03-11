@@ -8,6 +8,14 @@ SPDX-License-Identifier: CC-BY-NC-4.0
 
 This document provides essential information for AI coding agents working on this project.
 
+## Agent Workflow
+
+**When doing ANY work that modifies files in this repository, follow the [pull-request skill](.agents/skills/pull-request/SKILL.md) workflow.**
+
+This applies to all code changes including fixing bugs, adding features, refactoring, debugging, or cleaning up. The workflow ensures changes are properly committed, pushed, and submitted as pull requests with appropriate conventional commit messages.
+
+See the "Pull Request Workflow" section below for the `make merge` command.
+
 ## Project Overview
 
 This is a **Gradle plugin project** that provides opinionated convention plugins for Java/Gradle projects. The plugins are published to both the **Gradle Plugin Portal** and **GitHub Packages**.

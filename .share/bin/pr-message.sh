@@ -270,24 +270,30 @@ elif [ "$ENGINE" = "kimi" ]; then
   # --no-thinking: faster, more direct output
   # --quiet: alias for --print --output-format text --final-message-only
   # --skills-dir: enables auto-discovery of commit-or-pr-message skill
+  KIMI_TMP_OUT=$(mktemp)
   if [ -n "$SKILLS_DIR_ARG" ]; then
     kimi --skills-dir "$SKILLS_DIR_ARG" --no-thinking --quiet --prompt \
       "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.
 
 Diff:
-$CHANGED_DIFF" || true
+$CHANGED_DIFF" > "$KIMI_TMP_OUT" 2>&1 || true
   else
     kimi --no-thinking --quiet --prompt \
       "Generate a conventional commit message for the following diff and write the subject line to '$TITLE_FILE' and the body to '$BODY_FILE'. Do not run any tests or gradle commands.
 
 Diff:
-$CHANGED_DIFF" || true
+$CHANGED_DIFF" > "$KIMI_TMP_OUT" 2>&1 || true
   fi
 
-  AI_OUT=""
-  if [ ! -s "$TITLE_FILE" ]; then
-    log "pr-message: kimi didn't write to $TITLE_FILE"
+  # Check if kimi wrote directly to files; otherwise use captured output
+  if [ -s "$TITLE_FILE" ]; then
+    AI_OUT=""
+    log "pr-message: kimi wrote title/body directly"
+  else
+    AI_OUT=$(cat "$KIMI_TMP_OUT")
+    log "pr-message: kimi output captured ($(printf '%s' "$AI_OUT" | wc -c | tr -d ' ') chars)"
   fi
+  rm -f "$KIMI_TMP_OUT"
 else
   COPILOT_MODEL="${COPILOT_PRMSG_MODEL:-${COPILOT_COMMITMSG_MODEL:-gpt-5.1-codex-mini}}"
   COPILOT_FALLBACK_MODEL="${COPILOT_PRMSG_FALLBACK_MODEL:-${COPILOT_COMMITMSG_FALLBACK_MODEL:-gpt-5.1-codex}}"
@@ -372,19 +378,23 @@ SUBJECT_CANDIDATE=$(
 SUBJECT_CANDIDATE=$(printf '%s' "$SUBJECT_CANDIDATE" | sed -E "s/^(I'll|I will|Sure,?|Here's|Proposed|Suggested)[: -]+//I")
 
 if [ -z "${SUBJECT_CANDIDATE:-}" ]; then
-  if [ "${FAIL_ON_INVALID:-1}" = "1" ]; then
-    log "pr-message: $ENGINE failed to yield a valid subject; using error fallback"
-    SUBJECT="error($ENGINE): failed to generate message"
+  # Check if there's already a valid (non-error) PR message we should preserve
+  if [ -s "$TITLE_FILE" ]; then
+    EXISTING_SUBJECT=$(cat "$TITLE_FILE")
+    # If existing subject is not an error fallback, preserve it
+    if [ -n "$EXISTING_SUBJECT" ] && ! printf '%s' "$EXISTING_SUBJECT" | grep -qE '^error\([^)]+\):'; then
+      log "pr-message: $ENGINE failed to generate; preserving existing PR message"
+      exit 0
+    fi
+  fi
 
-    {
-      printf '%s failed to generate a conventional commit message.\n\n' "$ENGINE"
-      if [ -n "${AI_OUT:-}" ]; then
-        printf 'Output:\n%s\n\n' "$AI_OUT"
-      fi
-      if [ "$ENGINE" = "copilot" ] && [ -n "${COPILOT_ERR:-}" ]; then
-        printf 'Errors:\n%s\n' "$COPILOT_ERR"
-      fi
-    } > "$BODY_FILE"
+  if [ "${FAIL_ON_INVALID:-1}" = "1" ]; then
+    printf '%s\n' "pr-message: ERROR: $ENGINE failed to yield a valid conventional commit subject" 1>&2
+    if [ -n "${AI_OUT:-}" ]; then
+      printf '%s\n' "--- AI Output ---" 1>&2
+      printf '%s\n' "$AI_OUT" 1>&2
+    fi
+    exit 1
   else
     log "pr-message: $ENGINE did not yield a conventional subject; using heuristic fallback"
     if printf '%s\n' "$CHANGED_FILES" | grep -Eq '(^|/)(README\.md|.*\.md)$'; then
