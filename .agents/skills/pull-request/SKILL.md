@@ -1,8 +1,4 @@
 ---
-# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-#
-# SPDX-License-Identifier: CC-BY-NC-SA-4.0
-
 name: pull-request
 description: Create, update, or manage GitHub Pull Requests (PR). Use when asked to create a PR, open a pull request, submit changes, or work with PRs.
 license: CC-BY-NC-SA-4.0
@@ -10,6 +6,12 @@ metadata:
   author: Caleb Cushing
 allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add_issue_comment add_reply_to_pull_request_comment update_pull_request list_pull_requests create_pull_request
 ---
+
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
+-->
 
 - use commit-or-pr-message
 - keep the pull request message up to date
