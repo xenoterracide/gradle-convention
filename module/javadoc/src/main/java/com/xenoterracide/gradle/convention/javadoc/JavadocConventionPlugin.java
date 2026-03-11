@@ -4,6 +4,7 @@
 
 package com.xenoterracide.gradle.convention.javadoc;
 
+import java.util.List;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPluginExtension;
@@ -21,8 +22,11 @@ public class JavadocConventionPlugin implements Plugin<Project> {
 
   private static void configureJavadoc(Javadoc javadoc, TaskContainer tasks, SourceSetContainer sourceSets) {
     javadoc.dependsOn(tasks.named("classes"));
-    // if cache invalidation is important enable this and see if it works
+    // if cache invalidation is important, then enable this and see if it works
     // javadoc.doNotTrackState("depends on classes makes cache not work anyways, I guess");
+
+    // because jpamodelgen puts non java sources in java source dirs https://hibernate.atlassian.net/browse/HHH-18676
+    javadoc.setIncludes(List.of("**/*.java"));
 
     var mainSourceSet = sourceSets.named("main");
     javadoc.source(mainSourceSet.map(ss -> ss.getOutput().getGeneratedSourcesDirs()));
