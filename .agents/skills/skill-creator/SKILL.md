@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-
-SPDX-License-Identifier: CC0-1.0
--->
-
 # Skill Creator
 
 Guide for creating effective skills that extend Claude's capabilities.
@@ -59,6 +53,21 @@ The description is the primary triggering mechanism. Include both what the skill
 
 Instructions and guidance. Only loaded AFTER the skill triggers.
 
+### SPDX License Trailer
+
+Place the SPDX license header at the end of the file as an HTML comment trailer:
+
+```markdown
+---
+
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Your Name
+SPDX-License-Identifier: CC0-1.0
+-->
+```
+
+This keeps the skill instructions prominent at the top while maintaining REUSE compliance. The horizontal rule (`---`) visually separates the content from the legal trailer.
+
 ## Bundled Resources
 
 ### Scripts (`scripts/`)
@@ -100,3 +109,11 @@ Keep SKILL.md under 500 lines. Split content when approaching this limit.
 - User-facing documentation
 
 Skills are for AI agents, not humans. Only include what Claude needs to do the job.
+
+---
+
+<!--
+SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+
+SPDX-License-Identifier: CC0-1.0
+-->
