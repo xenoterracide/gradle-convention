@@ -1,6 +1,6 @@
 ---
 name: pull-request
-description: Create, update, or manage GitHub Pull Requests (PR). Use when asked to create a PR, open a pull request, submit changes, or work with PRs.
+description: When you've made code changes that need to be saved, shared, or merged. Use for any work that results in modified files - whether fixing a bug, adding a feature, refactoring, debugging, or cleaning up. Handles committing, pushing, and creating/updating pull requests through GitHub.
 license: CC-BY-NC-SA-4.0
 metadata:
   author: Caleb Cushing
