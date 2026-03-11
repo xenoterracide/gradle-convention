@@ -5,7 +5,7 @@
 [project]
 name = "gradle-convention"
 version = "0.1.0"
-description = "Add your description here"
+description = "Gradle convention plugins for consistent Java/Gradle project setup"
 readme = "README.md"
-requires-python = ">=3"
+requires-python = ">=3.12"
 dependencies = ["reuse>=0.13.0"]

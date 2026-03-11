@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: astral-sh/setup-uv@v5
-      - run: uv sync
+      - run: uv sync --frozen
       - run: uv run reuse lint
   format:
     runs-on: ubuntu-24.04
