@@ -14,8 +14,9 @@ Thank you for your interest in contributing! This document outlines the developm
 
 - **Java 25** - Toolchain for building (runtime targets Java 17+)
 - **Node.js 24+** - For formatting tools and git hooks
+- **uv** - Python package manager for REUSE tool ([install uv](https://docs.astral.sh/uv/getting-started/installation/))
 
-We recommend using [asdf](https://asdf-vm.com) for version management. Tool versions are defined in `.tool-versions`.
+We recommend using [asdf](https://asdf-vm.com) for version management. Tool versions are defined in `.tool-versions` (uv evolves quickly, so install the latest version separately).
 
 ### Build Tools
 
@@ -38,7 +39,7 @@ We recommend using [asdf](https://asdf-vm.com) for version management. Tool vers
 
 The `contribute` script:
 
-- Installs Python dependencies from `requirements.txt`
+- Syncs Python dependencies using `uv` (installs to a virtual environment)
 - Configures Git hooks for pre-commit checks and conventional commits
 
 ## Build Commands
