@@ -16,16 +16,9 @@
   ],
   packageRules: [
     {
-      // Runs during the 03:00 UTC hour daily (scheduled after update-java at 03:00)
+      // Python deps via uv: Run daily at 03:00 UTC (after update-java)
       schedule: ["* 3 * * *"],
-      // Use pip-compile with PEP 621 pyproject at repo root
-      matchManagers: ["pip-compile"],
-      matchFileNames: ["^pyproject\\.toml$"],
-    },
-    {
-      // Disable legacy requirements manager; we use pip-compile with PEP 621
-      matchManagers: ["pip_requirements"],
-      enabled: false,
+      matchManagers: ["pep621"],
     },
     // 1. Baseline: Disable ALL Gradle updates (minor/patch/pin/digest)
     // This effectively ignores libs.versions.toml and build.gradle.kts for non-major updates.

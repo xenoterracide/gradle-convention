@@ -31,6 +31,8 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen
       - uses: gradle/actions/setup-gradle@v5.0.2
         with:
           gradle-version: current
@@ -48,14 +50,12 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
         name: git status
         id: git_status
-      - uses: actions/setup-python@v6.2.0
-        with:
-          python-version: "3"
+      - uses: astral-sh/setup-uv@v5
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle/wrapper/') }}
-      - run: pip install -r requirements.txt
+      - run: uv sync --frozen
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle/wrapper/') }}
       - run: |
-          reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
+          uv run reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
             --copyright-prefix spdx-string-symbol --merge-copyrights --force-dot-license gradle/wrapper/gradle-wrapper.properties
         name: reuse
         if: ${{ contains(steps.git_status.outputs.stdout, 'gradle-wrapper.jar') }}

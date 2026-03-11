@@ -14,8 +14,9 @@ Thank you for your interest in contributing! This document outlines the developm
 
 - **Java 25** - Toolchain for building (runtime targets Java 17+)
 - **Node.js 24+** - For formatting tools and git hooks
+- **uv** - Python package manager for REUSE tool ([install uv](https://docs.astral.sh/uv/getting-started/installation/))
 
-We recommend using [asdf](https://asdf-vm.com) for version management. Tool versions are defined in `.tool-versions`.
+We recommend using [asdf](https://asdf-vm.com) for version management. Java, Node.js, and uv versions are defined in `.tool-versions`, while the Python version is pinned in `.python-version` (used by `uv python` and compatible with asdf). uv evolves quickly, so install the latest version separately.
 
 ### Build Tools
 
@@ -38,7 +39,7 @@ We recommend using [asdf](https://asdf-vm.com) for version management. Tool vers
 
 The `contribute` script:
 
-- Installs Python dependencies from `requirements.txt`
+- Syncs Python dependencies using `uv` (installs to a virtual environment)
 - Configures Git hooks for pre-commit checks and conventional commits
 
 ## Build Commands
@@ -94,19 +95,19 @@ Every file MUST have an SPDX license header. The project uses the [REUSE](https:
 
 ```bash
 # Check license compliance
-reuse lint
+uv run reuse lint
 
 # Annotate Java files
-reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' \
+uv run reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' \
   --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol \
   --merge-copyrights <file>
 
 # Annotate Gradle/Kotlin files
-reuse annotate --license 'MIT' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'MIT' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights <file>
 
 # Annotate config files
-reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights <file>
 ```
 

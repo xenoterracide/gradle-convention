@@ -123,20 +123,20 @@ Every file MUST have an SPDX license header. Use `reuse` tool to annotate:
 
 ```bash
 # Java files - GPL-3.0-or-later WITH Classpath-exception-2.0
-reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' \
+uv run reuse annotate --license 'GPL-3.0-or-later WITH Classpath-exception-2.0' \
   --copyright 'Caleb Cushing' --copyright-prefix spdx-string-symbol \
   --merge-copyrights <file>
 
 # Gradle/Kotlin files - MIT
-reuse annotate --license 'MIT' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'MIT' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights <file>
 
 # Config/data files - CC0-1.0
-reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'CC0-1.0' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights --fallback-dot-license <file>
 
 # Documentation - CC-BY-NC-4.0
-reuse annotate --license 'CC-BY-NC-4.0' --copyright 'Caleb Cushing' \
+uv run reuse annotate --license 'CC-BY-NC-4.0' --copyright 'Caleb Cushing' \
   --copyright-prefix spdx-string-symbol --merge-copyrights <file>
 ```
 
@@ -395,10 +395,10 @@ yarn ug:dogfood
 
 ```bash
 # Check compliance
-reuse lint
+uv run reuse lint
 
 # Auto-annotate files (use with caution)
-reuse annotate --license ... --copyright ... <files>
+uv run reuse annotate --license ... --copyright ... <files>
 ```
 
 ### Configuration Cache Issues
