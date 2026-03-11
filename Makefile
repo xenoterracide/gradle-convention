@@ -35,23 +35,23 @@ create-pr: build
 	head_before=$$(git rev-parse HEAD); \
 	if gh pr view --json number > /dev/null 2>&1; then \
 		printf '%s\n' "Updating PR message..."; \
-		./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-		  $(SKILL_ARG) || exit 0; \
+		./.share/bin/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
+		  $(SKILL_ARG) || exit 1; \
 		head_after=$$(git rev-parse HEAD); \
 		if [ "$$head_before" != "$$head_after" ]; then \
-			./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-			  $(SKILL_ARG) || exit 0; \
+			./.share/bin/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
+			  $(SKILL_ARG) || exit 1; \
 		fi; \
 		title=$$(cat "$$tmp_dir/title.txt"); \
 		gh pr edit --title "$$title" --body-file "$$tmp_dir/body.txt" || exit 0; \
 		GH_PAGER=cat gh pr view; \
 	else \
-		./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-		  $(SKILL_ARG) || exit 0; \
+		./.share/bin/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
+		  $(SKILL_ARG) || exit 1; \
 		head_after=$$(git rev-parse HEAD); \
 		if [ "$$head_before" != "$$head_after" ]; then \
-			./scripts/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
-			  $(SKILL_ARG) || exit 0; \
+			./.share/bin/pr-message.sh --engine "$(ENGINE)" --title-file "$$tmp_dir/title.txt" --body-file "$$tmp_dir/body.txt" \
+			  $(SKILL_ARG) || exit 1; \
 		fi; \
 		title=$$(cat "$$tmp_dir/title.txt"); \
 		gh pr create --title "$$title" --body-file "$$tmp_dir/body.txt" || exit 0; \
@@ -77,7 +77,7 @@ merge-squash:
 		[Nn]|[Nn][Oo]) printf '%s\n' "Merge cancelled."; exit 1 ;; \
 		*) ;; \
 	esac; \
-	gh pr merge --squash --delete-branch --auto
+	gh pr merge --squash --delete-branch
 
 .PHONY: watch-build
 watch-build:
