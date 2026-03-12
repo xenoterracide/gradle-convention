@@ -93,7 +93,10 @@ ${diff}`;
       console.log("kimi wrote title/body directly");
       return;
     } catch {
-      // Didn't write directly, use captured output
+      // Didn't write directly, use captured output if available
+      if (!existsSync(kimiOut)) {
+        throw new Error("kimi failed to generate message");
+      }
       const output = readFileSync(kimiOut, "utf8");
       await parseAndWriteMessage(output, titleFile, bodyFile);
     }
