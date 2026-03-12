@@ -46,8 +46,13 @@ Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
 
 Use your AI identity:
 
-- `AI_NAME`: Your AI name (e.g., "Kimi", "Copilot", "Claude")
-- `AI_NOREPLY_EMAIL`: A noreply-style email (e.g., `<number>+<username>@users.noreply.github.com` for GitHub, or `ai@localhost` for local)
+| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`             |
+| ------- | ---------------- | ------------------------------ |
+| Kimi    | `Kimi`           | `kimi@noreply.local`           |
+| Copilot | `GitHub Copilot` | `copilot@noreply.github.com`   |
+| Claude  | `Claude`         | `claude@noreply.anthropic.com` |
+
+Use `noreply.local` or similar reserved domains per RFC 2606 (not `example.com`).
 
 ---
 
