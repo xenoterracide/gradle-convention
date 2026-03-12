@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import { execSync } from "child_process";
-import { mkdtempSync, readFileSync, unlinkSync, writeFileSync } from "fs";
+import { execFileSync, execSync } from "child_process";
+import { existsSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
@@ -15,9 +15,9 @@ function run(cmd: string, opts?: { cwd?: string; env?: Record<string, string> })
   return execSync(cmd, { encoding: "utf8", cwd: opts?.cwd, env: { ...process.env, ...opts?.env } }).trim();
 }
 
-function runSilent(cmd: string, opts?: { cwd?: string }): string {
+function runSilent(cmd: string, args: string[], opts?: { cwd?: string }): string {
   try {
-    return run(cmd, opts);
+    return execFileSync(cmd, args, { encoding: "utf8", cwd: opts?.cwd }).trim();
   } catch {
     return "";
   }
@@ -36,7 +36,7 @@ function getHead(): string {
   return run("git rev-parse --verify HEAD");
 }
 
-async function generateMessage(titleFile: string, bodyFile: string): Promise<void> {
+async function generateMessage(titleFile: string, bodyFile: string, tmpDir: string): Promise<void> {
   const diffRange = "origin/HEAD...HEAD";
 
   // Check for changes
@@ -52,17 +52,17 @@ async function generateMessage(titleFile: string, bodyFile: string): Promise<voi
   const changedDiff = run(`git diff ${diffRange}`).split("\n").slice(0, 2000).join("\n");
 
   if (ENGINE === "kimi") {
-    await generateWithKimi(titleFile, bodyFile, changedDiff);
+    await generateWithKimi(titleFile, bodyFile, changedDiff, tmpDir);
   } else if (ENGINE === "junie") {
-    await generateWithJunie(titleFile, bodyFile, changedDiff);
+    await generateWithJunie(titleFile, bodyFile, changedDiff, tmpDir);
   } else {
-    await generateWithCopilot(titleFile, bodyFile, changedDiff, changedFiles);
+    await generateWithCopilot(titleFile, bodyFile, changedDiff, changedFiles, tmpDir);
   }
 }
 
-async function generateWithKimi(titleFile: string, bodyFile: string, diff: string): Promise<void> {
+async function generateWithKimi(titleFile: string, bodyFile: string, diff: string, tmpDir: string): Promise<void> {
   const skillsDir = ".agents/skills";
-  const hasSkillsDir = runSilent("test -d .agents/skills") !== "";
+  const hasSkillsDir = existsSync(skillsDir);
 
   const prompt = `Generate a conventional commit message for the following diff and write the subject line to '${titleFile}' and the body to '${bodyFile}'. Do not run any tests or gradle commands.
 
@@ -78,7 +78,18 @@ ${diff}`;
   const tmpOut = join(tmpdir(), `kimi-out-${Date.now()}.txt`);
 
   try {
-    run(`kimi ${kimiArgs.map((a) => `"${a.replace(/"/g, '\\"')}"`).join(" ")} > "${tmpOut}" 2>&1 || true`);
+    // Write prompt to temp file to avoid shell injection
+    const promptFile = join(tmpDir, "prompt.txt");
+    writeFileSync(promptFile, prompt, "utf8");
+    const kimiArgsSafe = ["--no-thinking", "--quiet", "--prompt-file", promptFile];
+    if (hasSkillsDir) {
+      kimiArgsSafe.unshift("--skills-dir", skillsDir);
+    }
+    try {
+      execFileSync("kimi", kimiArgsSafe, { stdio: ["ignore", "pipe", "pipe"] });
+    } catch {
+      // kimi might have written directly or failed, check below
+    }
 
     // Check if kimi wrote directly to files
     try {
@@ -97,34 +108,51 @@ ${diff}`;
   }
 }
 
-async function generateWithJunie(titleFile: string, bodyFile: string, diff: string): Promise<void> {
+async function generateWithJunie(titleFile: string, bodyFile: string, diff: string, tmpDir: string): Promise<void> {
+  const promptFile = join(tmpDir, "junie-prompt.txt");
   const prompt = `Generate a conventional commit message for the following diff and write the subject line to '${titleFile}' and the body to '${bodyFile}'. Do not run any tests or gradle commands.
 
 Diff:
 ${diff}`;
+  writeFileSync(promptFile, prompt, "utf8");
 
   try {
-    run(`junie --skip-update-check --cache-dir=.junie/cache "${prompt.replace(/"/g, '\\"')}"`);
+    execFileSync("junie", ["--skip-update-check", "--cache-dir=.junie/cache", "--prompt-file", promptFile], {
+      encoding: "utf8",
+    });
     // Check if junie wrote directly
     readFileSync(titleFile, "utf8");
     return;
   } catch {
     // Try to capture output
     try {
-      const output = run(
-        `junie --skip-update-check --cache-dir=.junie/cache --output-format=json "${prompt.replace(/"/g, '\\"')}" 2>&1 | jq -r ".result"`,
+      const output = execFileSync(
+        "junie",
+        ["--skip-update-check", "--cache-dir=.junie/cache", "--output-format=json", "--prompt-file", promptFile],
+        { encoding: "utf8" },
       );
-      await parseAndWriteMessage(output, titleFile, bodyFile);
+      const result = execFileSync("jq", ["-r", ".result"], { input: output, encoding: "utf8" });
+      await parseAndWriteMessage(result.trim(), titleFile, bodyFile);
     } catch {
       throw new Error("junie failed to generate message");
     }
+  } finally {
+    try {
+      unlinkSync(promptFile);
+    } catch {}
   }
 }
 
-async function generateWithCopilot(titleFile: string, bodyFile: string, diff: string, files: string): Promise<void> {
+async function generateWithCopilot(
+  titleFile: string,
+  bodyFile: string,
+  diff: string,
+  files: string,
+  tmpDir: string,
+): Promise<void> {
   const allowedTypes = "ci feat fix perf refactor style test build ops docs chore merge revert";
-  const allowedTypesAlt = allowedTypes.replace(/ /g, "|");
 
+  const promptFile = join(tmpDir, "copilot-prompt.txt");
   const prompt = `You are writing a git commit message for a human developer.
 
 You MUST follow this exact template:
@@ -152,30 +180,46 @@ ${files}
 
 Diff:
 ${diff}`;
+  writeFileSync(promptFile, prompt, "utf8");
 
-  const tmpOut = join(tmpdir(), `copilot-out-${Date.now()}.txt`);
-  const tmpErr = join(tmpdir(), `copilot-err-${Date.now()}.txt`);
+  const copilotOut = join(tmpDir, "copilot-out.txt");
+  const copilotErr = join(tmpDir, "copilot-err.txt");
 
   try {
     const model = process.env.COPILOT_PRMSG_MODEL || "gpt-5.1-codex-mini";
-    run(`copilot --model "${model}" -s -p "${prompt.replace(/"/g, '\\"')}" > "${tmpOut}" 2> "${tmpErr}" || true`);
+    try {
+      const out = execFileSync("copilot", ["--model", model, "-s", "-p", promptFile], {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+      });
+      writeFileSync(copilotOut, out, "utf8");
+    } catch (e) {
+      // Ignore errors, check output below
+    }
 
-    let output = readFileSync(tmpOut, "utf8");
-    const err = readFileSync(tmpErr, "utf8");
+    let output = readFileSync(copilotOut, "utf8");
+    const err = readFileSync(copilotErr, "utf8");
 
     if (!output && err.includes("enable this model")) {
       const fallback = process.env.COPILOT_PRMSG_FALLBACK_MODEL || "gpt-5.1-codex";
-      run(`copilot --model "${fallback}" -s -p "${prompt.replace(/"/g, '\\"')}" > "${tmpOut}" 2> "${tmpErr}" || true`);
-      output = readFileSync(tmpOut, "utf8");
+      try {
+        const out = execFileSync("copilot", ["--model", fallback, "-s", "-p", promptFile], {
+          encoding: "utf8",
+          stdio: ["pipe", "pipe", "pipe"],
+        });
+        writeFileSync(copilotOut, out, "utf8");
+      } catch {
+        // Ignore errors
+      }
+      output = readFileSync(copilotOut, "utf8");
     }
 
     await parseAndWriteMessage(output, titleFile, bodyFile);
   } finally {
     try {
-      unlinkSync(tmpOut);
-    } catch {}
-    try {
-      unlinkSync(tmpErr);
+      unlinkSync(promptFile);
+      unlinkSync(copilotOut);
+      unlinkSync(copilotErr);
     } catch {}
   }
 }
@@ -188,14 +232,16 @@ async function parseAndWriteMessage(aiOutput: string, titleFile: string, bodyFil
 
   // Find subject line matching conventional commit pattern
   let subject = "";
-  const pattern = new RegExp(`^(\\[)?(${allowedTypesAlt})(\\[([^\\]]*)\\])?: .+`);
+  const allowedTypesAlt = allowedTypes.replace(/ /g, "|");
+  // Match: type(scope): ..., type!: ..., or type(scope)!: ...
+  const pattern = new RegExp(`^(${allowedTypesAlt})(\\(([^)]+)\\))?(!)?: .+`);
 
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
     const match = trimmed.match(pattern);
     if (match) {
-      subject = trimmed.replace(/^\[/, "").replace(/\]$/, ""); // Remove brackets if present
+      subject = trimmed;
       break;
     }
   }
@@ -294,7 +340,14 @@ async function main(): Promise<void> {
       process.exit(2);
     }
 
-    await generateMessage(titleFile, bodyFile);
+    const tmpDir = mkdtempSync(join(tmpdir(), "prmsg-"));
+    try {
+      await generateMessage(titleFile, bodyFile, tmpDir);
+    } finally {
+      try {
+        rmSync(tmpDir, { recursive: true, force: true });
+      } catch {}
+    }
     return;
   }
 
@@ -323,6 +376,12 @@ async function main(): Promise<void> {
   }
 
   process.stdout.write("Proceed with squash merge? [Y/n] ");
+
+  if (!process.stdin.isTTY) {
+    console.error("Interactive confirmation required, but no TTY is available. Aborting squash merge.");
+    process.exit(1);
+  }
+
   const reply = await new Promise<string>((resolve) => {
     process.stdin.once("data", (data) => resolve(data.toString().trim().toLowerCase()));
   });
@@ -347,12 +406,12 @@ async function createOrUpdatePR(): Promise<void> {
       console.log("Updating PR message...");
     }
 
-    await generateMessage(titleFile, bodyFile);
+    await generateMessage(titleFile, bodyFile, tmpDir);
     const headAfter = getHead();
 
     // Regenerate if HEAD changed during generation
     if (headBefore !== headAfter) {
-      await generateMessage(titleFile, bodyFile);
+      await generateMessage(titleFile, bodyFile, tmpDir);
     }
 
     const title = readFileSync(titleFile, "utf8").trim();
@@ -367,9 +426,7 @@ async function createOrUpdatePR(): Promise<void> {
     }
   } finally {
     try {
-      unlinkSync(titleFile);
-      unlinkSync(bodyFile);
-      // Node doesn't have rm -rf equivalent easily, but tmp files are fine
+      rmSync(tmpDir, { recursive: true, force: true });
     } catch {}
   }
 }
