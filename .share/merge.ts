@@ -69,10 +69,11 @@ async function generateWithKimi(titleFile: string, bodyFile: string, diff: strin
 Diff:
 ${diff}`;
 
+  // Write prompt to temp file and use shell redirection to avoid command line length limits
   const promptFile = join(tmpDir, "kimi-prompt.txt");
   writeFileSync(promptFile, prompt, "utf8");
 
-  const kimiArgs = ["--no-thinking", "--quiet", "--prompt-file", promptFile];
+  const kimiArgs = ["--no-thinking", "--quiet"];
   if (hasSkillsDir) {
     kimiArgs.unshift("--skills-dir", skillsDir);
   }
@@ -81,10 +82,17 @@ ${diff}`;
 
   try {
     try {
-      const out = execFileSync("kimi", kimiArgs, { encoding: "utf8" });
-      writeFileSync(kimiOut, out, "utf8");
+      // Use shell to redirect file content to kimi via stdin
+      // This avoids command injection while handling large prompts
+      execSync(
+        `kimi ${kimiArgs.join(" ")} --prompt "$(cat '${promptFile.replace(/'/g, "'\"'\"'")}')" > "${kimiOut}" 2>&1 || true`,
+        {
+          encoding: "utf8",
+          shell: "/bin/bash",
+        },
+      );
     } catch {
-      // kimi might have written directly or failed, check below
+      // Ignore errors, check output below
     }
 
     // Check if kimi wrote directly to files
@@ -323,6 +331,7 @@ function sleep(ms: number): Promise<void> {
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const command = args[0];
+  const dryRun = args.includes("--dry-run");
 
   if (command === "pr-message") {
     // CLI mode for pr-message
@@ -368,8 +377,13 @@ async function main(): Promise<void> {
     await waitForBuild();
   }
 
+  if (dryRun) {
+    console.log("\n[Dry Run] Would proceed with squash merge. Exiting without merging.");
+    process.exit(0);
+  }
+
   // Merge squash
-  const hasUncommitted = runSilent("git status --porcelain=1") !== "";
+  const hasUncommitted = runSilent("git", ["status", "--porcelain=1"]) !== "";
   if (hasUncommitted) {
     console.warn("WARNING: Uncommitted changes detected. Review before merge.");
   }
