@@ -312,7 +312,8 @@ async function waitForBuild(): Promise<void> {
     process.exit(1);
   }
 
-  run(`gh run watch "${runId}" --exit-status`);
+  // Stream gh run watch output to console
+  execFileSync("gh", ["run", "watch", runId, "--exit-status"], { stdio: "inherit" });
 }
 
 function sleep(ms: number): Promise<void> {
