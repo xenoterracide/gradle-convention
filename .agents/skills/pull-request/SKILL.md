@@ -40,11 +40,11 @@ Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
 
 Use your AI identity:
 
-| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`     |
-| ------- | ---------------- | ---------------------- |
-| Kimi    | `Kimi`           | `kimi@moonshot.cn`     |
-| Copilot | `GitHub Copilot` | `copilot@github.com`   |
-| Claude  | `Claude`         | `claude@anthropic.com` |
+| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`                 |
+| ------- | ---------------- | ---------------------------------- |
+| Kimi    | `Kimi`           | `kimi@users.noreply.github.com`    |
+| Copilot | `GitHub Copilot` | `copilot@users.noreply.github.com` |
+| Claude  | `Claude`         | `claude@users.noreply.github.com`  |
 
 Place the Co-authored-by trailer at the end of the commit message body, after the description.
 
