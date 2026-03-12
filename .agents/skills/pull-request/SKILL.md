@@ -40,13 +40,11 @@ Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
 
 Use your AI identity:
 
-| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`             |
-| ------- | ---------------- | ------------------------------ |
-| Kimi    | `Kimi`           | `kimi@noreply.local`           |
-| Copilot | `GitHub Copilot` | `copilot@noreply.github.com`   |
-| Claude  | `Claude`         | `claude@noreply.anthropic.com` |
-
-Use `noreply.local` or similar reserved domains per RFC 2606 (not `example.com`).
+| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`     |
+| ------- | ---------------- | ---------------------- |
+| Kimi    | `Kimi`           | `kimi@moonshot.cn`     |
+| Copilot | `GitHub Copilot` | `copilot@github.com`   |
+| Claude  | `Claude`         | `claude@anthropic.com` |
 
 Place the Co-authored-by trailer at the end of the commit message body, after the description.
 

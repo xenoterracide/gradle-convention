@@ -280,6 +280,8 @@ yarn run contributor
 
 ### Pull Request Workflow
 
+**IMPORTANT: AI agents should NEVER merge pull requests.** Merging is a human responsibility.
+
 Follow the [pull-request skill](.agents/skills/pull-request/SKILL.md) for committing changes and creating/updating pull requests.
 
 ## Key Configuration Files
