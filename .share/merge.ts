@@ -3,6 +3,7 @@
 // SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: MIT
 
 import { execFileSync, execSync } from "child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "fs";
@@ -69,24 +70,20 @@ async function generateWithKimi(titleFile: string, bodyFile: string, diff: strin
 Diff:
 ${diff}`;
 
-  const kimiArgs = ["--no-thinking", "--quiet", "--prompt", prompt];
+  const promptFile = join(tmpDir, "kimi-prompt.txt");
+  writeFileSync(promptFile, prompt, "utf8");
 
+  const kimiArgs = ["--no-thinking", "--quiet", "--prompt-file", promptFile];
   if (hasSkillsDir) {
     kimiArgs.unshift("--skills-dir", skillsDir);
   }
 
-  const tmpOut = join(tmpdir(), `kimi-out-${Date.now()}.txt`);
+  const kimiOut = join(tmpDir, "kimi-out.txt");
 
   try {
-    // Write prompt to temp file to avoid shell injection
-    const promptFile = join(tmpDir, "prompt.txt");
-    writeFileSync(promptFile, prompt, "utf8");
-    const kimiArgsSafe = ["--no-thinking", "--quiet", "--prompt-file", promptFile];
-    if (hasSkillsDir) {
-      kimiArgsSafe.unshift("--skills-dir", skillsDir);
-    }
     try {
-      execFileSync("kimi", kimiArgsSafe, { stdio: ["ignore", "pipe", "pipe"] });
+      const out = execFileSync("kimi", kimiArgs, { encoding: "utf8" });
+      writeFileSync(kimiOut, out, "utf8");
     } catch {
       // kimi might have written directly or failed, check below
     }
@@ -98,12 +95,13 @@ ${diff}`;
       return;
     } catch {
       // Didn't write directly, use captured output
-      const output = readFileSync(tmpOut, "utf8");
+      const output = readFileSync(kimiOut, "utf8");
       await parseAndWriteMessage(output, titleFile, bodyFile);
     }
   } finally {
     try {
-      unlinkSync(tmpOut);
+      unlinkSync(promptFile);
+      unlinkSync(kimiOut);
     } catch {}
   }
 }
@@ -188,13 +186,14 @@ ${diff}`;
   try {
     const model = process.env.COPILOT_PRMSG_MODEL || "gpt-5.1-codex-mini";
     try {
-      const out = execFileSync("copilot", ["--model", model, "-s", "-p", promptFile], {
+      const result = execFileSync("copilot", ["--model", model, "-s", "-p", promptFile], {
         encoding: "utf8",
-        stdio: ["pipe", "pipe", "pipe"],
       });
-      writeFileSync(copilotOut, out, "utf8");
-    } catch (e) {
-      // Ignore errors, check output below
+      writeFileSync(copilotOut, result, "utf8");
+    } catch (e: unknown) {
+      // Capture stderr on error
+      const stderr = e && typeof e === "object" && "stderr" in e ? String((e as { stderr: unknown }).stderr) : "";
+      writeFileSync(copilotErr, stderr, "utf8");
     }
 
     let output = readFileSync(copilotOut, "utf8");
@@ -203,12 +202,11 @@ ${diff}`;
     if (!output && err.includes("enable this model")) {
       const fallback = process.env.COPILOT_PRMSG_FALLBACK_MODEL || "gpt-5.1-codex";
       try {
-        const out = execFileSync("copilot", ["--model", fallback, "-s", "-p", promptFile], {
+        const result = execFileSync("copilot", ["--model", fallback, "-s", "-p", promptFile], {
           encoding: "utf8",
-          stdio: ["pipe", "pipe", "pipe"],
         });
-        writeFileSync(copilotOut, out, "utf8");
-      } catch {
+        writeFileSync(copilotOut, result, "utf8");
+      } catch (e: unknown) {
         // Ignore errors
       }
       output = readFileSync(copilotOut, "utf8");
@@ -226,8 +224,6 @@ ${diff}`;
 
 async function parseAndWriteMessage(aiOutput: string, titleFile: string, bodyFile: string): Promise<void> {
   const allowedTypes = "ci feat fix perf refactor style test build ops docs chore merge revert";
-  const allowedTypesAlt = allowedTypes.replace(/ /g, "|");
-
   const lines = aiOutput.replace(/\r/g, "").split("\n");
 
   // Find subject line matching conventional commit pattern
