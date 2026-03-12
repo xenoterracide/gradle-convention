@@ -46,11 +46,11 @@ Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
 
 Use your AI identity:
 
-| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`                 |
-| ------- | ---------------- | ---------------------------------- |
-| Kimi    | `Kimi`           | `kimi@users.noreply.github.com`    |
-| Copilot | `GitHub Copilot` | `copilot@users.noreply.github.com` |
-| Claude  | `Claude`         | `claude@users.noreply.github.com`  |
+| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`           |
+| ------- | ---------------- | ---------------------------- |
+| Kimi    | `Kimi`           | `kimi@moonshot.localhost`    |
+| Copilot | `GitHub Copilot` | `copilot@github.localhost`   |
+| Claude  | `Claude`         | `claude@anthropic.localhost` |
 
 ---
 
