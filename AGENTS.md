@@ -14,8 +14,6 @@ This document provides essential information for AI coding agents working on thi
 
 This applies to all code changes including fixing bugs, adding features, refactoring, debugging, or cleaning up. The workflow ensures changes are properly committed, pushed, and submitted as pull requests with appropriate conventional commit messages.
 
-See the "Pull Request Workflow" section below for the `make merge` command.
-
 ## Project Overview
 
 This is a **Gradle plugin project** that provides opinionated convention plugins for Java/Gradle projects. The plugins are published to both the **Gradle Plugin Portal** and **GitHub Packages**.
@@ -282,18 +280,9 @@ yarn run contributor
 
 ### Pull Request Workflow
 
-```bash
-# Create/update PR with automated message generation
-make merge
-```
+**IMPORTANT: AI agents should NEVER merge pull requests.** Merging is a human responsibility.
 
-This will:
-
-1. Build the project
-2. Generate PR title/body using AI
-3. Create or update the PR
-4. Trigger CI build
-5. Auto-merge on success
+Follow the [pull-request skill](.agents/skills/pull-request/SKILL.md) for committing changes and creating/updating pull requests.
 
 ## Key Configuration Files
 
