@@ -1,10 +1,6 @@
 ---
-# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-#
-# SPDX-License-Identifier: CC-BY-NC-SA-4.0
-
 name: commit-or-pr-message
-description: Generates a concise and descriptive commit or PR message based on the code changes.
+description: When you need to describe what code changes do - whether for a commit message or PR description. Reads the actual git diff to generate proper conventional commit format with type, scope, and summary. Use when writing commit messages, creating PR descriptions, or summarizing changes.
 license: CC-BY-NC-SA-4.0
 metadata:
 author: Caleb Cushing
@@ -39,3 +35,25 @@ allowed-tools: bash(git:_) bash(make:_)
 <type>(<scope>): <summary>
 
 <body>
+
+## AI Attribution
+
+Add a Co-authored-by trailer at the end of the commit message body (after the description, before any footer markers like `BREAKING CHANGE:`):
+
+```
+Co-authored-by: <AI_NAME> <AI_NOREPLY_EMAIL>
+```
+
+Use your AI identity:
+
+| AI Name | `AI_NAME`        | `AI_NOREPLY_EMAIL`           |
+| ------- | ---------------- | ---------------------------- |
+| Kimi    | `Kimi`           | `kimi@moonshot.localhost`    |
+| Copilot | `GitHub Copilot` | `copilot@github.localhost`   |
+| Claude  | `Claude`         | `claude@anthropic.localhost` |
+
+---
+
+SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
