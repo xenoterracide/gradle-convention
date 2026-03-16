@@ -29,6 +29,8 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
   - it is easier to delete and regenerate lockfiles than merge them
 - respond to ALL pr comments.
   - fix and comment if valid, or explain why not if invalid, ask if uncertain. This helps humans understand current comment status.
+  - only address UNRESOLVED comments - check if comments are on outdated commit versions before making changes
+  - use `gh api repos/<owner>/<repo>/pulls/<number>/comments` to see review comments with their commit IDs
 
 ## Workflow
 
@@ -38,16 +40,32 @@ When committing and creating/updating a PR, follow this workflow:
    - What branch you're currently on
    - Whether a PR already exists for this branch
 
-2. **If already on a feature branch with an existing PR:**
+2. **Pull latest changes before starting work:**
+   - Run `git pull <remote> <branch>` to get the latest changes
+   - This ensures you're working on the current state and not outdated code
+   - This also ensures you don't address review comments that are already resolved
+
+3. **If already on a feature branch with an existing PR:**
    - Do NOT create a new branch
+   - Pull latest changes first
    - Commit changes to the current branch
    - Push to update the existing PR
    - Update PR description/title if needed using `gh pr edit`
 
-3. **If on main/master or no PR exists for current branch:**
+4. **If on main/master or no PR exists for current branch:**
    - Create a new feature branch (if not already on one)
    - Commit changes
    - Push and create a new PR
+
+## Handling Review Comments
+
+When addressing review comments on a PR:
+
+1. **Pull first** - Always pull the latest changes before starting
+2. **Check comment status** - Verify if comments are on outdated commits:
+   - Comments on old commit IDs may already be resolved
+   - Only address comments on the current HEAD or marked as "unresolved"
+3. **Verify fixes** - After making changes, confirm they address the current code state
 
 ## AI Attribution
 
