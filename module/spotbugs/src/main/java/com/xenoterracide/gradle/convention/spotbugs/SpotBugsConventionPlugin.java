@@ -22,6 +22,7 @@ import org.gradle.api.Project;
  *   <li>Sets the effort to MAX</li>
  *   <li>Sets the report level to LOW</li>
  *   <li>Adds {@code -longBugCodes} to extra args</li>
+ *   <li>Ensure's compile and runtime dependencies are always available</li>
  * </ul>
  */
 public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
