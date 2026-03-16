@@ -47,9 +47,7 @@ public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
         task.getReportLevel().set(Confidence.LOW);
         task.getExtraArgs().add("-longBugCodes");
 
-        // add runtime and compile in case dependencies are not available by default due to Gradle or JPMS
-        // e.g. jspecify doesn't need to be in the shipped artifact and so is compileOnly, but SpotBugs needs it for null
-        // analysis at runtime.
+        // in case dependencies are not available due to Gradle or JPMS, e.g. compileOnly jspecify
         task.getAuxClassPaths().from(project.getConfigurations().getByName("compileClasspath"));
         task.getAuxClassPaths().from(project.getConfigurations().getByName("runtimeClasspath"));
       });
