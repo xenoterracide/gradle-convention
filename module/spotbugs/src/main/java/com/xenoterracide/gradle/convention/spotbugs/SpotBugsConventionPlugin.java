@@ -1,6 +1,7 @@
-// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2025, 2026 Caleb Cushing
 //
 // SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.spotbugs;
 
@@ -46,6 +47,12 @@ public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
         task.getEffort().set(Effort.MAX);
         task.getReportLevel().set(Confidence.LOW);
         task.getExtraArgs().add("-longBugCodes");
+
+        // add runtime and compile in case dependencies are not available by default due to gradle or JPMS
+        // e.g. jspecify doens't need to be in shipped artifacted and so is compileOnly but spotbugs needs it for null
+        // analysis at runtime.
+        task.getAuxClassPaths().from(project.getConfigurations().getByName("compileClasspath"));
+        task.getAuxClassPaths().from(project.getConfigurations().getByName("runtimeClasspath"));
       });
   }
 }
