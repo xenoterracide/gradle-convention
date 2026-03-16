@@ -30,6 +30,25 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
 - respond to ALL pr comments.
   - fix and comment if valid, or explain why not if invalid, ask if uncertain. This helps humans understand current comment status.
 
+## Workflow
+
+When committing and creating/updating a PR, follow this workflow:
+
+1. **Check current branch status** - Run `git status` and `gh pr view --json number,url,headRefName` to determine:
+   - What branch you're currently on
+   - Whether a PR already exists for this branch
+
+2. **If already on a feature branch with an existing PR:**
+   - Do NOT create a new branch
+   - Commit changes to the current branch
+   - Push to update the existing PR
+   - Update PR description/title if needed using `gh pr edit`
+
+3. **If on main/master or no PR exists for current branch:**
+   - Create a new feature branch (if not already on one)
+   - Commit changes
+   - Push and create a new PR
+
 ## AI Attribution
 
 When creating commits for a PR, include AI attribution in commit messages using a Co-authored-by trailer:
