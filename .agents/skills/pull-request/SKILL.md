@@ -28,7 +28,11 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
 - must be synchronized with HEAD branch using a merge strategy
   - it is easier to delete and regenerate lockfiles than merge them
 - respond to ALL pr comments.
-  - fix and comment if valid, or explain why not if invalid, ask if uncertain. This helps humans understand current comment status.
+  - ALWAYS leave a reply on each review comment to indicate status
+  - If fixed: comment "Fixed" or "Done" with brief explanation
+  - If not an issue: comment explaining why (e.g., "Not applicable because...", "Already resolved...")
+  - If uncertain: ask for clarification
+  - This helps humans know whether to resolve the comment
   - only address UNRESOLVED comments - check review thread resolution status using GraphQL
   - use GraphQL to get review threads with `isResolved` field
 
@@ -85,7 +89,12 @@ When addressing review comments on a PR:
    }'
    ```
 3. **Filter to unresolved** - Only process threads where `isResolved: false`
-4. **Verify fixes** - After making changes, confirm they address the current code state
+4. **Reply to each comment** - After making changes, reply to each review comment:
+   - Fixed: `Fixed in commit SHA`
+   - Not an issue: `Not applicable: [reason]`
+   - Question: `Question: [clarification needed]`
+   - Use `gh pr comment <number> --reply-to <comment-id>` if available, or quote the comment
+5. **Verify fixes** - Confirm changes address the current code state
 
 ## Important Note on Comment APIs
 
