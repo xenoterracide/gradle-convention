@@ -40,23 +40,30 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
 
 When committing and creating/updating a PR, follow this workflow:
 
-1. **Check current branch status** - Run `git status` and `gh pr view --json number,url,headRefName` to determine:
+1. **Check current branch status** - Run `git status` and `gh pr view --json number,url,headRefName,state` to determine:
    - What branch you're currently on
    - Whether a PR already exists for this branch
+   - Whether the PR is OPEN, CLOSED, or MERGED
 
-2. **Pull latest changes before starting work:**
-   - Run `git pull <remote> <branch>` to get the latest changes
+2. **Handle closed/merged PRs:**
+   - If the current branch has a CLOSED or MERGED PR, delete the local branch:
+     - `git checkout develop` (the default HEAD branch)
+     - `git branch -D <old-branch-name>`
+   - Then create a new branch off the updated HEAD for new work
+
+3. **Pull latest changes before starting work:**
+   - Run `git pull origin develop` to get the latest changes
    - This ensures you're working on the current state and not outdated code
    - This also ensures you don't address review comments that are already resolved
 
-3. **If already on a feature branch with an existing PR:**
+4. **If already on a feature branch with an existing OPEN PR:**
    - Do NOT create a new branch
    - Pull latest changes first
    - Commit changes to the current branch
    - Push to update the existing PR
    - Update PR description/title if needed using `gh pr edit`
 
-4. **If on main/master or no PR exists for current branch:**
+5. **If on develop or no PR exists for current branch:**
    - Create a new feature branch (if not already on one)
    - Commit changes
    - Push and create a new PR

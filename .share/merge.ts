@@ -332,6 +332,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const command = args[0];
   const dryRun = args.includes("--dry-run");
+  const admin = args.includes("--admin");
 
   if (command === "pr-message") {
     // CLI mode for pr-message
@@ -404,7 +405,11 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  run("gh pr merge --squash --delete-branch");
+  const mergeArgs = ["--squash", "--delete-branch"];
+  if (admin) {
+    mergeArgs.push("--admin");
+  }
+  run(`gh pr merge ${mergeArgs.join(" ")}`);
 }
 
 async function createOrUpdatePR(): Promise<void> {
