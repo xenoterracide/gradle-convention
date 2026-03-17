@@ -74,9 +74,11 @@ When addressing review comments on a PR:
        pullRequest(number: N) {
          reviewThreads(first: 100) {
            nodes {
+             id
              isResolved
              comments(first: 1) {
                nodes {
+                 id
                  body
                  path
                  originalLine
@@ -86,9 +88,9 @@ When addressing review comments on a PR:
          }
        }
      }
-   }'
+   }' --jq '.data.repository.pullRequest.reviewThreads.nodes | map(select(.isResolved == false))'
    ```
-3. **Filter to unresolved** - Only process threads where `isResolved: false`
+3. **Process unresolved** - The jq filter already returns only threads where `isResolved: false`
 4. **Reply to each comment** - After making changes, reply to each review comment:
    - Fixed: `Fixed in commit SHA`
    - Not an issue: `Not applicable: [reason]`
