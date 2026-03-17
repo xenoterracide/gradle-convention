@@ -29,8 +29,8 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
   - it is easier to delete and regenerate lockfiles than merge them
 - respond to ALL pr comments.
   - fix and comment if valid, or explain why not if invalid, ask if uncertain. This helps humans understand current comment status.
-  - only address UNRESOLVED comments - check if comments are on outdated commit versions before making changes
-  - use `gh api repos/<owner>/<repo>/pulls/<number>/comments` to see review comments with their commit IDs
+  - only address UNRESOLVED comments - check review thread resolution status using GraphQL
+  - use GraphQL to get review threads with `isResolved` field
 
 ## Workflow
 
@@ -62,10 +62,39 @@ When committing and creating/updating a PR, follow this workflow:
 When addressing review comments on a PR:
 
 1. **Pull first** - Always pull the latest changes before starting
-2. **Check comment status** - Verify if comments are on outdated commits:
-   - Comments on old commit IDs may already be resolved
-   - Only address comments on the current HEAD or marked as "unresolved"
-3. **Verify fixes** - After making changes, confirm they address the current code state
+2. **Query unresolved comments** - Use GraphQL to get only unresolved review threads:
+   ```bash
+   gh api graphql -f query='
+   query {
+     repository(owner: "OWNER", name: "REPO") {
+       pullRequest(number: N) {
+         reviewThreads(first: 100) {
+           nodes {
+             isResolved
+             comments(first: 1) {
+               nodes {
+                 body
+                 path
+                 originalLine
+               }
+             }
+           }
+         }
+       }
+     }
+   }'
+   ```
+3. **Filter to unresolved** - Only process threads where `isResolved: false`
+4. **Verify fixes** - After making changes, confirm they address the current code state
+
+## Important Note on Comment APIs
+
+The GitHub REST API (`/repos/{owner}/{repo}/pulls/{pull_number}/comments`) does NOT expose the "resolved" state of review comments. The resolution state is only available via:
+
+- GraphQL API (`reviewThreads.isResolved`)
+- GitHub Web UI
+
+Always use GraphQL to check which review threads are actually unresolved.
 
 ## AI Attribution
 
