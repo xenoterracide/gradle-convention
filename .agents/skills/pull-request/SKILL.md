@@ -68,6 +68,47 @@ When committing and creating/updating a PR, follow this workflow:
    - Commit changes
    - Push and create a new PR
 
+## Creating/Updating PRs
+
+### PR Title Format
+
+Follow conventional commit format for PR titles (they become the squash merge commit message):
+
+```
+<type>(<scope>): <summary>
+```
+
+- Use commit types from `git-conventional-commits.yaml` (feat, fix, docs, etc.)
+- Keep title <= 72 characters
+- Use specific scope when possible
+
+### Creating a New PR
+
+Always provide explicit title and body. Do NOT use `--fill` as it may use the branch name instead of a proper conventional commit message:
+
+```bash
+# Get the commit message for the title
+TITLE=$(git log -1 --format="%s" HEAD)
+
+# Create PR with proper title and body
+gh pr create --title "$TITLE" --body "- Bullet point describing change 1
+- Bullet point describing change 2"
+```
+
+### Updating an Existing PR
+
+```bash
+gh pr edit --title "$TITLE" --body "- Updated bullet points"
+```
+
+### PR Body Format
+
+- Short summary paragraph (optional)
+- Bullet points explaining main changes
+- Each bullet describes one complete logical change
+- Explain WHAT and WHY
+- Wrap lines to <= 72 characters
+
 ## Handling Review Comments
 
 When addressing review comments on a PR:
