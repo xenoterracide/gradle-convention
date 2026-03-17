@@ -40,26 +40,74 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
 
 When committing and creating/updating a PR, follow this workflow:
 
-1. **Check current branch status** - Run `git status` and `gh pr view --json number,url,headRefName` to determine:
+1. **Check current branch status** - Run `git status` and `gh pr view --json number,url,headRefName,state` to determine:
    - What branch you're currently on
    - Whether a PR already exists for this branch
+   - Whether the PR is OPEN, CLOSED, or MERGED
 
-2. **Pull latest changes before starting work:**
-   - Run `git pull <remote> <branch>` to get the latest changes
+2. **Handle closed/merged PRs:**
+   - If the current branch has a CLOSED or MERGED PR, delete the local branch:
+     - `git checkout develop` (the default HEAD branch)
+     - `git branch -D <old-branch-name>`
+   - Then create a new branch off the updated HEAD for new work
+
+3. **Pull latest changes before starting work:**
+   - Run `git pull origin develop` to get the latest changes
    - This ensures you're working on the current state and not outdated code
    - This also ensures you don't address review comments that are already resolved
 
-3. **If already on a feature branch with an existing PR:**
+4. **If already on a feature branch with an existing OPEN PR:**
    - Do NOT create a new branch
    - Pull latest changes first
    - Commit changes to the current branch
    - Push to update the existing PR
    - Update PR description/title if needed using `gh pr edit`
 
-4. **If on main/master or no PR exists for current branch:**
+5. **If on develop or no PR exists for current branch:**
    - Create a new feature branch (if not already on one)
    - Commit changes
    - Push and create a new PR
+
+## Creating/Updating PRs
+
+### PR Title Format
+
+Follow conventional commit format for PR titles (they become the squash merge commit message):
+
+```
+<type>(<scope>): <summary>
+```
+
+- Use commit types from `git-conventional-commits.yaml` (feat, fix, docs, etc.)
+- Keep title <= 72 characters
+- Use specific scope when possible
+
+### Creating a New PR
+
+Always provide explicit title and body. Do NOT use `--fill` as it may use the branch name instead of a proper conventional commit message:
+
+```bash
+# Get the commit message for the title
+TITLE=$(git log -1 --format="%s" HEAD)
+
+# Create PR with proper title and body
+gh pr create --title "$TITLE" --body "- Bullet point describing change 1
+- Bullet point describing change 2"
+```
+
+### Updating an Existing PR
+
+```bash
+gh pr edit --title "$TITLE" --body "- Updated bullet points"
+```
+
+### PR Body Format
+
+- Short summary paragraph (optional)
+- Bullet points explaining main changes
+- Each bullet describes one complete logical change
+- Explain WHAT and WHY
+- Wrap lines to <= 72 characters
 
 ## Handling Review Comments
 
