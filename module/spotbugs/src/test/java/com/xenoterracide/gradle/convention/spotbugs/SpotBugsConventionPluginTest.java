@@ -70,12 +70,18 @@ public class SpotBugsConventionPluginTest {
 
   @Test
   void excludeFilterIsSetWhenFileExists() throws IOException {
+    // Create exclude file BEFORE applying plugin to ensure it's present during task configuration
     var configDir = new File(tempDir, ".config/spotbugs");
     configDir.mkdirs();
     var excludeFile = new File(configDir, "exclude.xml");
     Files.writeString(excludeFile.toPath(), "<FindBugsFilter></FindBugsFilter>");
 
-    var spotbugsMain = project.getTasks().withType(SpotBugsTask.class).named("spotbugsMain");
+    // Create new project with file already in place
+    var projectWithFilter = ProjectBuilder.builder().withName("with-filter").withProjectDir(tempDir).build();
+    projectWithFilter.getPluginManager().apply("java");
+    projectWithFilter.getPluginManager().apply(SpotBugsConventionPlugin.class);
+
+    var spotbugsMain = projectWithFilter.getTasks().withType(SpotBugsTask.class).named("spotbugsMain");
     assertThat(spotbugsMain.get().getExcludeFilter().get().getAsFile()).exists();
   }
 
