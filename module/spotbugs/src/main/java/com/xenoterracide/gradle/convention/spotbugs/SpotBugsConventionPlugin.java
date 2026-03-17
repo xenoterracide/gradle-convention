@@ -1,6 +1,6 @@
-// SPDX-FileCopyrightText: Copyright © 2025 Caleb Cushing
+// SPDX-FileCopyrightText: Copyright © 2025, 2026 Caleb Cushing
 //
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: GPL-3.0-or-later WITH Classpath-exception-2.0
 
 package com.xenoterracide.gradle.convention.spotbugs;
 
@@ -22,6 +22,7 @@ import org.gradle.api.Project;
  *   <li>Sets the effort to MAX</li>
  *   <li>Sets the report level to LOW</li>
  *   <li>Adds {@code -longBugCodes} to extra args</li>
+ *   <li>Ensures compile and runtime dependencies are always available</li>
  * </ul>
  */
 public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
@@ -46,6 +47,10 @@ public abstract class SpotBugsConventionPlugin implements Plugin<Project> {
         task.getEffort().set(Effort.MAX);
         task.getReportLevel().set(Confidence.LOW);
         task.getExtraArgs().add("-longBugCodes");
+
+        // in case dependencies are not available due to Gradle or JPMS, e.g. compileOnly jspecify
+        task.getAuxClassPaths().from(project.getConfigurations().getByName("compileClasspath"));
+        task.getAuxClassPaths().from(project.getConfigurations().getByName("runtimeClasspath"));
       });
   }
 }
