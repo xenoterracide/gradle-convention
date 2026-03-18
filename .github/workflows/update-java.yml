@@ -11,7 +11,7 @@ on:
       - "ci/auto-update**"
 jobs:
   update-java:
-    uses: xenoterracide/github/.github/workflows/update-java.yml@4638b8c9a7a42c42d70da79ed3491a301433a6a1
+    uses: xenoterracide/github/.github/workflows/update-java.yml@develop
     secrets:
       gradle_encryption_key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       merge_pat: ${{ secrets.GH_MERGE_PAT }}
