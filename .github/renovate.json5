@@ -52,6 +52,13 @@
     },
     {
       matchManagers: ["github-actions"],
+      rangeStrategy: "pin", // always prefer v1.2.3
+      automerge: true,
+    },
+    {
+      matchManagers: ["github-actions"],
+      matchPackagePatterns: ["^xenoterracide/github/"],
+      pinDigests: true, // use sha's
       automerge: true,
     },
     {
