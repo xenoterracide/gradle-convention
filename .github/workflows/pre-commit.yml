@@ -6,29 +6,9 @@ name: precommit
 on: [push, workflow_call]
 jobs:
   license:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: astral-sh/setup-uv@v7
-      - run: uv sync --frozen
-      - run: uv run reuse lint
+    uses: xenoterracide/github/.github/workflows/license.yml@4638b8c9a7a42c42d70da79ed3491a301433a6a1
   format:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: actions/setup-node@v6.3.0
-        with:
-          node-version: 24
-          package-manager-cache: false
-      - run: corepack enable
-      - uses: actions/setup-node@v6.3.0
-        with:
-          node-version: 24
-          cache: "yarn"
-      - run: yarn install --immutable --inline-builds --check-resolutions
-      - run: yarn exec prettier --ignore-unknown --check '**'
+    uses: xenoterracide/github/.github/workflows/format.yml@4638b8c9a7a42c42d70da79ed3491a301433a6a1
   format-kotlin:
     runs-on: ubuntu-24.04
     steps:
@@ -36,7 +16,7 @@ jobs:
       - uses: actions/setup-java@v5.2.0
         with:
           distribution: temurin
-          java-version: 25
+          java-version: 21
       - uses: asdf-vm/actions/plugins-add@v4.0.1
       - run: asdf install ktlint
       - run: ktlint '*.gradle.kts' '**/*.gradle.kts'
