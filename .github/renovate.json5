@@ -7,6 +7,7 @@
   extends: ["config:recommended"],
   dependencyDashboard: true,
   timezone: "UTC",
+  platformAutomerge: true,
   automergeStrategy: "rebase",
   hostRules: [
     {
@@ -19,6 +20,7 @@
       // Python deps via uv: Run daily at 03:00 UTC (after update-java)
       schedule: ["* 3 * * *"],
       matchManagers: ["pep621"],
+      automerge: true,
     },
     // 1. Baseline: Disable ALL Gradle updates (minor/patch/pin/digest)
     // This effectively ignores libs.versions.toml and build.gradle.kts for non-major updates.
