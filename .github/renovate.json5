@@ -59,6 +59,8 @@
     {
       // Pin xenoterracide org actions to commit SHAs for build reproducibility
       // Only these get digest pins; other actions get normal version tag updates
+      // NOTE: This requires version tags (v1, v1.0.0) in the xenoterracide/github repo.
+      // Branch references (@develop, @main) cannot be pinned - see Renovate discussion #18360
       matchManagers: ["github-actions"],
       matchDepNames: ["xenoterracide/**"],
       automerge: true,
