@@ -62,7 +62,9 @@
       matchManagers: ["github-actions"],
       matchPackageNames: ["xenoterracide/**"],
       automerge: true,
-      pinDigest: true,
+      pinDigest: {
+        enabled: true,
+      },
     },
     {
       // Run every Wednesday
