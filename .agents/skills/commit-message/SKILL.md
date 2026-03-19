@@ -1,10 +1,9 @@
 ---
-name: commit-or-pr-message
+name: commit-message
 description: When you need to describe what code changes do - whether for a commit message or PR description. Reads the actual git diff to generate proper conventional commit format with type, scope, and summary. Use when writing commit messages, creating PR descriptions, or summarizing changes.
-license: CC-BY-NC-SA-4.0
-metadata:
-author: Caleb Cushing
-allowed-tools: bash(git:_) bash(make:_)
+# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+#
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
 ---
 
 ## Instructions

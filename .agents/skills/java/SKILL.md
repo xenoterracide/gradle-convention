@@ -2,9 +2,9 @@
 name: java
 license: CC-BY-NC-SA-4.0
 description: Write code in the Java programming language.
-metadata:
-  author: Caleb Cushing
-allowed-tools: Shell(./gradlew:*)
+# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+#
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
 ---
 
 Use for writing Java code.

@@ -8,4 +8,7 @@ version = "0.1.0"
 description = "Gradle convention plugins for consistent Java/Gradle project setup"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = ["reuse>=0.13.0"]
+dependencies = []
+
+[dependency-groups]
+dev = ["reuse>=6.2.0"]

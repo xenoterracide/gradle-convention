@@ -1,16 +1,15 @@
 ---
 name: pull-request
-description: When you've made code changes that need to be saved, shared, or merged. Use for any work that results in modified files - whether fixing a bug, adding a feature, refactoring, debugging, or cleaning up. Handles committing, pushing, and creating/updating pull requests through GitHub.
-license: CC-BY-NC-SA-4.0
-metadata:
-  author: Caleb Cushing
-allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add_issue_comment add_reply_to_pull_request_comment update_pull_request list_pull_requests create_pull_request
+description: ALWAYS use this skill when ANY files are modified, created, or deleted - including fixing bugs, adding features, refactoring, debugging, updating configs/workflows, or investigating issues that result in code changes. Handles committing, pushing, and creating/updating pull requests through GitHub.
+# SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
+#
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
 ---
 
-- use commit-or-pr-message
+- use commit-message
 - keep the pull request message up to date
   - NOTE: The PR description becomes the commit message when the PR is squash-merged
-  - Follow the commit-or-pr-message format for PR descriptions since they become permanent commit history
+  - Follow the commit-message format for PR descriptions since they become permanent commit history
   - DO NOT use checkboxes (`- [x]`) in PR descriptions - they render poorly in commit messages
   - Use plain bullet lists (`- item`) instead of GitHub task lists
 - files should be committed and pushed
@@ -20,6 +19,11 @@ allowed-tools: Shell(gh:*) Shell(git:*) Shell(./gradlew:*) pull_request_read add
     - run `./gradlew test` for quick test logic verification
     - run `./gradlew checkstyle` for checkstyle verification
     - run full `./gradlew check` before finalizing or when changes affect multiple modules.
+  - ensure documentation is up to date
+    - review changes to understand what documentation may need updates
+    - update `README.md` if user-facing behavior changes
+    - update `AGENTS.md` if build processes, tools, or agent workflows change
+    - when renaming workflows or changing their interface, update both README and AGENTS.md
   - verify GitHub PR checks pass after pushing
     - use available tools to check workflow status
     - fix any failures before requesting review
@@ -67,6 +71,25 @@ When committing and creating/updating a PR, follow this workflow:
    - Create a new feature branch (if not already on one)
    - Commit changes
    - Push and create a new PR
+
+6. **Before finalizing:**
+   - Review if documentation needs updates (README.md, AGENTS.md)
+   - Ensure PR description accurately reflects all changes including doc updates
+
+### Squash Merge Strategy
+
+This repository uses **squash merge** for PRs. This means:
+
+- **Branch history doesn't matter** - All commits get squashed into one on merge
+- **Merge is preferred over rebase** - When updating a branch with changes from develop, use `git merge origin/develop` instead of `git rebase`
+- **Don't create new branches for updates** - If a PR needs changes, commit to the same branch and push
+- **Don't worry about messy commits** - The squash merge cleans everything up
+
+**When to update a branch:**
+
+- If develop has moved forward and you need those changes: `git merge origin/develop`
+- If review feedback requires changes: commit and push to same branch
+- Avoid force push - repository rules may block it, and it's unnecessary with squash merge
 
 ## Creating/Updating PRs
 
@@ -172,9 +195,3 @@ Use your AI identity:
 | Claude  | `Claude`         | `claude@anthropic.localhost` |
 
 Place the Co-authored-by trailer at the end of the commit message body, after the description.
-
----
-
-SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
-
-SPDX-License-Identifier: CC-BY-NC-SA-4.0
