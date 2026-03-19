@@ -1,6 +1,5 @@
 ---
 name: java
-license: CC-BY-NC-SA-4.0
 description: Write code in the Java programming language.
 # SPDX-FileCopyrightText: Copyright © 2026 Caleb Cushing
 #
