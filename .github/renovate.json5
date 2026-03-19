@@ -55,6 +55,7 @@
     {
       matchManagers: ["github-actions"],
       automerge: true,
+      pinDigest: true,
     },
     {
       // Run every Wednesday
