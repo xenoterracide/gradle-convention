@@ -57,12 +57,14 @@
       automerge: true,
     },
     {
-      // Pin xenoterracide org actions to commit SHAs for security
+      // Pin xenoterracide org actions to commit SHAs for build reproducibility
       // Only these get digest pins; other actions get normal version tag updates
       matchManagers: ["github-actions"],
       matchPackageNames: ["xenoterracide/**"],
       automerge: true,
-      pinDigest: true,
+      pinDigest: {
+        enabled: true,
+      },
     },
     {
       // Run every Wednesday
