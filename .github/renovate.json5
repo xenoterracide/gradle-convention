@@ -55,7 +55,6 @@
     {
       matchManagers: ["github-actions"],
       automerge: true,
-      pinDigest: true,
     },
     {
       // Pin xenoterracide org actions to commit SHAs for security
