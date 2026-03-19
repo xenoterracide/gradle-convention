@@ -6,9 +6,6 @@ name: update-java
 on:
   schedule:
     - cron: "0 3 * * *"
-  push:
-    branches:
-      - ci/auto-update
 
 jobs:
   update-java:
