@@ -60,11 +60,9 @@
       // Pin xenoterracide org actions to commit SHAs for build reproducibility
       // Only these get digest pins; other actions get normal version tag updates
       matchManagers: ["github-actions"],
-      matchPackageNames: ["xenoterracide/**"],
+      matchDepNames: ["xenoterracide/**"],
       automerge: true,
-      pinDigest: {
-        enabled: true,
-      },
+      pinDigests: true,
     },
     {
       // Run every Wednesday
