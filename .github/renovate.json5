@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: Copyright © 2024-2026 Caleb Cushing
-//
-// SPDX-License-Identifier: CC0-1.0
-
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["config:recommended"],
@@ -17,35 +13,22 @@
   ],
   packageRules: [
     {
-      // Python deps via uv: Run daily at 03:00 UTC (after update-java)
       schedule: ["* 3 * * *"],
       matchManagers: ["pep621"],
       automerge: true,
     },
-    // 1. Baseline: Disable ALL Gradle updates (minor/patch/pin/digest)
-    // This effectively ignores libs.versions.toml and build.gradle.kts for non-major updates.
     {
       matchManagers: ["gradle", "gradle-wrapper"],
       matchUpdateTypes: ["minor", "patch", "pin", "digest"],
       enabled: false,
     },
-    // 2. Goal A: Notify on Major updates (excluding wrapper, as requested)
-    // This will re-enable Major updates for TOML/Build files so you get a PR.
     {
-      // remember to sync with update-java
-      // Runs during the 04:00 UTC hour daily (scheduled after update-java at 03:00)
       schedule: ["* 4 * * *"],
       matchManagers: ["gradle"],
-      // Open PRs for MAJOR updates only; minor/patch are handled elsewhere
       matchUpdateTypes: ["major"],
       automerge: false,
     },
-    // 3. Goal B: Settings Exception (Develocity & Plugins)
-    // Re-enable everything for settings files and automerge them.
     {
-      // Ensure Gradle plugin versions in settings files are considered
-      // Match all Java update types; run weekly and not concurrently with dev deps
-      // Weekly on Wednesday during the 05:00 UTC hour (devDependencies window is 04:00)
       schedule: ["* 5 * * 3"],
       matchManagers: ["gradle"],
       matchFileNames: ["**/settings.gradle", "**/settings.gradle.kts"],
@@ -57,16 +40,14 @@
       automerge: true,
     },
     {
-      // Pin xenoterracide org actions to commit SHAs for security
-      // Only these get digest pins; other actions get normal version tag updates
       matchManagers: ["github-actions"],
       matchPackageNames: ["xenoterracide/**"],
       automerge: true,
-      pinDigest: true,
+      pinDigest: {
+        enabled: true,
+      },
     },
     {
-      // Run every Wednesday
-      // Window: 04:00 UTC hour on Wednesday (Renovate cron uses '*' for minutes)
       schedule: ["* 4 * * 3"],
       matchManagers: ["npm", "asdf"],
       groupName: "devDependencies",
