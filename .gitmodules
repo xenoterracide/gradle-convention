@@ -1,0 +1,6 @@
+[submodule ".share"]
+	path = .share
+	url = https://github.com/xenoterracide/subtree-share.git
+[submodule ".agents"]
+	path = .agents
+	url = https://github.com/xenoterracide/subtree-ai.git
