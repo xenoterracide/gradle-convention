@@ -10,4 +10,6 @@ on:
 jobs:
   update-java:
     uses: xenoterracide/github/.github/workflows/update-java.yml@develop
-    secrets: inherit
+    secrets:
+      GRADLE_ENCRYPTION_KEY: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+      MERGE_PAT: ${{ secrets.MERGE_PAT }}
