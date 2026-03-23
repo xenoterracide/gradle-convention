@@ -15,9 +15,9 @@
   },
   "scripts": {
     "contribute": "uv sync --frozen && git config core.hooksPath .share/git/hooks",
-    "merge:copilot": "cd .share && ENGINE=copilot yarn tsx node/merge/merge.ts",
-    "merge:junie": "cd .share && ENGINE=junie yarn tsx node/merge/merge.ts",
-    "merge:kimi": "cd .share && ENGINE=kimi yarn tsx node/merge/merge.ts",
+    "merge:copilot": "cd .share/node/merge && ENGINE=copilot yarn tsx merge.ts",
+    "merge:junie": "cd .share/node/merge && ENGINE=junie yarn tsx merge.ts",
+    "merge:kimi": "cd .share/node/merge && ENGINE=kimi yarn tsx merge.ts",
     "cleaner": "rimraf ./build */build ./module/*/build ./.gradle",
     "dependencies:for": "./gradlew dependencies --configuration",
     "test": "./gradlew check",
