@@ -3,9 +3,6 @@
   "packageManager": "yarn@4.13.0",
   "private": true,
   "license": "GPL-3.0-or-later WITH Classpath-exception-2.0",
-  "workspaces": [
-    ".share/node/*"
-  ],
   "devDependencies": {
     "@prettier/plugin-xml": "^3.4.2",
     "git-conventional-commits": "^2.8.0",
@@ -18,9 +15,9 @@
   },
   "scripts": {
     "contribute": "uv sync --frozen && git config core.hooksPath .share/git/hooks",
-    "merge:copilot": "yarn workspace merge run merge:copilot",
-    "merge:junie": "yarn workspace merge run merge:junie",
-    "merge:kimi": "yarn workspace merge run merge:kimi",
+    "merge:copilot": "cd .share/node/merge && ENGINE=copilot yarn tsx merge.ts",
+    "merge:junie": "cd .share/node/merge && ENGINE=junie yarn tsx merge.ts",
+    "merge:kimi": "cd .share/node/merge && ENGINE=kimi yarn tsx merge.ts",
     "cleaner": "rimraf ./build */build ./module/*/build ./.gradle",
     "dependencies:for": "./gradlew dependencies --configuration",
     "test": "./gradlew check",
